@@ -1,0 +1,48 @@
+{% extends "akamatsu/layout.html" %}
+{% from "akamatsu/_macros.html" import disqus_comments, show_author, show_bio, show_tags %}
+
+{% block title %}{{ post.title }}{% endblock %}
+
+{# Page mini #}
+{% block mini %}.blog{% endblock %}
+
+{# Post content #}
+{% block content %}
+
+<div class="grid grid-pad">
+    <article class="aka-post col-1-1">
+        <h1 class="title">{{ post.title }}</h1>
+
+        <div class="author">
+            {{ show_author(post) }}
+        </div>
+
+        <span class="date">
+            {{ post.timestamp.strftime('%b %d, %Y') }}
+        </span>
+
+        <div class="content">
+            {{ post.content|markdown }}
+        </div>
+
+        <p class="tags">
+            {{ show_tags(post) }}
+        </p>
+
+        <div class="bio">
+            {{ show_bio(post) }}
+        </div>
+
+        {% if post.comments_enabled %}
+            {{ disqus_comments(
+                    'post_' ~ post.id,
+                    post.title,
+                    url_for('blog.show', _external=True, slug=post.slug)
+                )
+            }}
+        {% endif %}
+
+    </article>
+</div>
+
+{% endblock %}

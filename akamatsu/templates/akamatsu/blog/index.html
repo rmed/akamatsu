@@ -1,0 +1,86 @@
+{% extends "akamatsu/layout.html" %}
+{% from "akamatsu/_macros.html" import get_summary, show_author, show_tags %}
+
+{% block title %}Blog index{% endblock %}
+
+{# Blog atom feed #}
+{% block head_extend %}
+<link href="{{ url_for('blog.feed') }}" rel="alternate" title="Recent Posts" type="application/atom+xml"/>
+{% endblock %}
+
+{# Page mini #}
+{% block mini %}.blog{% endblock %}
+
+{# Blog index #}
+{% block content %}
+
+{% if posts.items|length > 0 %}
+{% for post in posts.items %}
+<div class="grid grid-pad">
+    <article class="aka-post col-1-1">
+        <h1 class="title">
+            <a href="{{ url_for('blog.show', slug=post.slug) }}">{{ post.title }}</a>
+        </h1>
+
+        <div class="author">
+            {{ show_author(post) }}
+        </div>
+
+        <span class="date">
+            {{ post.timestamp.strftime('%b %d, %Y') }}
+        </span>
+
+        <div class="content">
+            {{ get_summary(post) }}
+        </div>
+
+        <div class="actions">
+        {% if post.comments_enabled %}
+            <a href="{{ url_for('blog.show', slug=post.slug) }}#disqus_thread">
+                <i class="glyph-chat"></i>Comments
+            </a>
+        {% endif %}
+
+            <a href="{{ url_for('blog.show', slug=post.slug) }}">
+                <i class="glyph-open-book"></i>Read more
+            </a>
+        </div>
+
+        <p class="tags">
+            {{ show_tags(post) }}
+        </p>
+    </article>
+</div>
+
+{% endfor %}
+
+<div class="grid grid-pad">
+{% if posts.has_prev %}
+    <div class="col-1-3 mobile-col-1-2">
+        <a id="aka-prevpage" href="{{ url_for('blog.index', page=posts.prev_num) }}">
+            <i class="glyph-chevron-left"></i> Newer posts
+        </a>
+    </div>
+{% endif %}
+
+{% if posts.has_next %}
+    <div class="col-1-3 mobile-col-1-2 push-right">
+        <a id="aka-nextpage" href="{{ url_for('blog.index', page=posts.next_num) }}">
+            Older posts <i class="glyph-chevron-right"></i>
+        </a>
+    </div>
+{% endif %}
+</div>
+
+{% else %}
+    {# Show error message instead of 404 #}
+    <div class="grid grid-pad">
+        <article class="col-1-1">
+            <h2>No posts found</h2>
+            <hr></hr>
+        </article>
+    </div>
+{% endif %}
+</div>
+
+{% endblock %}

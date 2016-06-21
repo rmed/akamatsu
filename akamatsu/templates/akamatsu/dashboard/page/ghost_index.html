@@ -1,0 +1,108 @@
+{% extends "akamatsu/dashboard/layout.html" %}
+{% from "akamatsu/_macros.html" import sortable_header %}
+
+{% block title %}Ghost page list{% endblock %}
+{% block mini %}.pages{% endblock %}
+
+{# Page index #}
+{% block content %}
+
+{# Actions #}
+<div class="grid grid-pad">
+    <div class="col-2-12 push-right">
+        <a href="{{ url_for('dashboard.page_index') }}" class="aka-db-action">
+            <i class="glyph-eye"></i> View normal pages
+        </a>
+    </div>
+
+    <div class="col-2-12 push-right">
+        <a href="{{ url_for('dashboard.page_create') }}" class="aka-db-action">
+            <i class="glyph-plus"></i> Create new page
+        </a>
+    </div>
+</div>
+
+{% if pages.items|length > 0 %}
+<div class="aka-db-list">
+
+    <div class="grid grid-pad aka-listheader">
+        <div class="col-4-12">
+            {{ sortable_header('route', 'Route', order_key, order_dir) }}
+        </div>
+
+        <div class="col-4-12">
+            {{ sortable_header('ghost', 'Ghosting', order_key, order_dir) }}
+        </div>
+
+        <div class="col-1-12">
+            {{ sortable_header('published', 'Published', order_key, order_dir) }}
+        </div>
+
+        <div class="col-3-12">
+            {{ sortable_header('date', 'Date', order_key, order_dir) }}
+        </div>
+    </div>
+
+{% for page in pages.items %}
+    <div page_id="{{ page.id }}" class="grid aka-listitem">
+        {# Page route #}
+        <div class="col-4-12">
+            <span>{{ page.route }}</span>
+        </div>
+
+        {# Ghosting route #}
+        <div class="col-4-12">
+            <span>{{ page.ghost }}</span>
+        </div>
+
+        {# Published? #}
+        <div class="col-1-12">
+            <span class="aka-listicon-alt">Published:</span>
+            <span class="aka-listicon">
+                {% if page.is_published %}
+                <i class="glyph-check"></i>
+                {% else %}
+                <i class="glyph-cross"></i>
+                {% endif %}
+            </span>
+        </div>
+
+        {# Page timestamp #}
+        <div class="col-3-12">
+            <span class="aka-listdate">{{ page.timestamp }}</span>
+        </div>
+    </div>
+{% endfor %}
+</div>
+
+<div class="grid grid-pad">
+{% if pages.has_prev %}
+    <div class="col-1-3 mobile-col-1-2">
+        <a id="aka-prevpage" href="{{ url_for('dashboard.page_ghost_index', page=pages.prev_num) }}">
+            <i class="glyph-chevron-left"></i> Newer pages
+        </a>
+    </div>
+{% endif %}
+
+{% if pages.has_next %}
+    <div class="col-1-3 mobile-col-1-2 push-right">
+        <a id="aka-nextpage" href="{{ url_for('dashboard.page_ghost_index', page=pages.next_num) }}">
+            Older pages <i class="glyph-chevron-right"></i>
+        </a>
+    </div>
+{% endif %}
+</div>
+
+{% else %}
+    {# Show error message instead of 404 #}
+    <div class="grid grid-pad">
+        <article class="col-1-1">
+            <h2>No pages found</h2>
+            <hr></hr>
+        </article>
+    </div>
+{% endif %}
+</div>
+
+{% endblock %}
+

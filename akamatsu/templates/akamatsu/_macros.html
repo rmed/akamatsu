@@ -1,0 +1,134 @@
+{% macro disqus_comments(id, title, url) %}
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = '{{ config.DISQUS_SHORTNAME }}';
+    var disqus_identifier = '{{ id }}';
+    var disqus_title = '{{ title }}';
+    var disqus_url = '{{ url }}';
+
+    (function() {
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+{% endmacro %}
+
+{% macro disqus_comment_count() %}
+<script type="text/javascript">
+    var disqus_shortname = '{{ config.DISQUS_SHORTNAME }}';
+
+    (function () {
+            var s = document.createElement('script'); s.async = true;
+            s.type = 'text/javascript';
+            s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+            (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+        }());
+</script>
+{% endmacro %}
+
+{# Used to display only the first paragraph of the post as a summary #}
+{% macro get_summary(post) %}
+    {% set summary = post.content.split('\n')[0].strip() %}
+    {{ summary|markdown }}
+{% endmacro %}
+
+{# Show post author #}
+{% macro show_author(post) %}
+    {% set username = post.author.username %}
+    <a href="{{ url_for('blog.by_user', user=username) }}">{{ username }}</a>
+{% endmacro %}
+
+{# Show post tags #}
+{% macro show_tags(post) %}
+{% if post.tags.items|length > 0 %}
+    <span>Tags:</span>
+{% for tag in post.tags %}
+    <a href="{{ url_for('blog.tagged', tag=tag.name) }}">{{ tag.name }}</a>
+{% endfor %}
+{% endif %}
+{% endmacro %}
+
+{# Show post author bio #}
+{% macro show_bio(post) %}
+{% if post.author %}
+    <h5>{{ post.author.username }}</h5>
+    {{ post.author.personal_bio|markdown }}
+{% endif %}
+{% endmacro %}
+
+{# Used to render input field with label over it #}
+{% macro render_field(field, label=None, label_visible=true, is_date=false, down_url=None, down_label=None, num_cols='1-1') %}
+    <div class="grid grid-pad aka-form-group {% if field.errors %}error{% endif %}">
+        <div class="col-{{ num_cols }}">
+            {% if field.type != 'HiddenField' and label_visible %}
+                {% if not label %}{% set label=field.label.text %}{% endif %}
+                <label for="{{ field.id }}">
+                    {{ label|safe }}
+
+                    {% if field.flags.required %}
+                        <small>Required</small>
+                    {% endif %}
+
+                    {% if field.description %}
+                        <span class="aka-description">{{ field.description }}</span>
+                    {% endif %}
+
+                </label>
+            {% endif %}
+
+            {{ field }}
+
+            {% if down_url and down_label %}
+                <a class="aka-underlink" href="{{ down_url }}">{{ down_label }}</a>
+            {% endif %}
+
+            {% if is_date %}
+                <a href="javascript:void(0)" class="aka-setnow" date_field="{{ field.id }}">Set to now</a>
+            {% endif %}
+
+            {% if field.errors %}
+                {% for e in field.errors %}
+                    <span class="aka-help-block">{{ e }}</span>
+                {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+{% endmacro %}
+
+{# Render form checkboxes #}
+{% macro render_checkbox_field(field, label=None) %}
+    {% if not label %}{% set label=field.label.text %}{% endif %}
+    <div class="aka-form-group">
+        <div class="aka-checkbox">
+            <label>
+                {{ field(type='checkbox', **kwargs) }} {{ label }}
+            </label>
+        </div>
+    </div>
+{% endmacro %}
+
+{% macro render_submit_field(field, label=None, class='aka-btn-primary', tabindex=None) %}
+    {% if not label %}{% set label=field.label.text %}{% endif %}
+    <input type="submit" class="{{ class }}" value="{{label}}"
+           {% if tabindex %}tabindex="{{ tabindex }}"{% endif %}
+           >
+{% endmacro %}
+
+{# Dashboard sortable headers #}
+{% macro sortable_header(key, text, order_key='date', order_dir='desc') %}
+    {% if key == order_key %}
+        {% if order_dir == 'asc' %}
+        <span class="aka-listcolumn" order-key="{{ key }}" order="{{ order_dir }}">{{ text }} <i class="glyph-chevron-up"></i></span>
+        {% else %}
+            <span class="aka-listcolumn" order-key="{{ key }}" order="{{ order_dir }}">{{ text }} <i class="glyph-chevron-down"></i></span>
+        {% endif %}
+    {% else %}
+        <span order-key="{{ key }}" class="aka-listcolumn">{{ text }}</span>
+    {% endif %}
+{% endmacro %}

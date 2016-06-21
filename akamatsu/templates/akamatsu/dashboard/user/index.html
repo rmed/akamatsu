@@ -1,0 +1,111 @@
+{% extends "akamatsu/dashboard/layout.html" %}
+{% from "akamatsu/_macros.html" import sortable_header %}
+
+{% block title %}User list{% endblock %}
+{% block mini %}.users{% endblock %}
+
+{# User index #}
+{% block content %}
+
+{# Actions #}
+<div class="grid grid-pad">
+    <div class="col-2-12 push-right">
+        <a href="{{ url_for('dashboard.user_create') }}" class="aka-db-action">
+            <i class="glyph-plus"></i> Create new user
+        </a>
+    </div>
+</div>
+
+{% if users.items|length > 0 %}
+<div class="aka-db-list">
+
+    <div class="grid grid-pad aka-listheader">
+        <div class="col-2-12">
+            {{ sortable_header('username', 'Username', order_key, order_dir) }}
+        </div>
+
+        <div class="col-3-12">
+            {{ sortable_header('email', 'Email', order_key, order_dir) }}
+        </div>
+
+        <div class="col-3-12">
+            {{ sortable_header('firstname', 'First name', order_key, order_dir) }}
+        </div>
+
+        <div class="col-3-12">
+            {{ sortable_header('lastname', 'Last name', order_key, order_dir) }}
+        </div>
+
+        <div class="col-1-12">
+            {{ sortable_header('enabled', 'Enabled', order_key, order_dir) }}
+        </div>
+    </div>
+
+{% for user in users.items %}
+    <div user_id="{{ user.id }}" class="grid aka-listitem">
+        {# Username #}
+        <div class="col-2-12">
+            <span>{{ user.username }}</span>
+        </div>
+
+        {# Email #}
+        <div class="col-3-12">
+            <span>{{ user.email }}</span>
+        </div>
+
+        {# First name #}
+        <div class="col-3-12">
+            <span>{{ user.first_name }}</span>
+        </div>
+
+        {# Last name #}
+        <div class="col-3-12">
+            <span>{{ user.last_name }}</span>
+        </div>
+
+        {# Enabled? #}
+        <div class="col-1-12">
+            <span class="aka-listicon-alt">Enabled:</span>
+            <span class="aka-listicon">
+                {% if user.is_enabled %}
+                <i class="glyph-check"></i>
+                {% else %}
+                <i class="glyph-cross"></i>
+                {% endif %}
+            </span>
+        </div>
+    </div>
+{% endfor %}
+</div>
+
+<div class="grid grid-pad">
+{% if users.has_prev %}
+    <div class="col-1-3 mobile-col-1-2">
+        <a id="aka-prevpage" href="{{ url_for('dashboard.user_index', page=users.prev_num) }}">
+            <i class="glyph-chevron-left"></i> Next page
+        </a>
+    </div>
+{% endif %}
+
+{% if users.has_next %}
+    <div class="col-1-3 mobile-col-1-2 push-right">
+        <a id="aka-nextpage" href="{{ url_for('dashboard.user_index', page=users.next_num) }}">
+            Previous page <i class="glyph-chevron-right"></i>
+        </a>
+    </div>
+{% endif %}
+</div>
+
+{% else %}
+    {# Show error message instead of 404 #}
+    <div class="grid grid-pad">
+        <article class="col-1-1">
+            <h2>No users found</h2>
+            <hr></hr>
+        </article>
+    </div>
+{% endif %}
+</div>
+
+{% endblock %}
+

@@ -1,0 +1,108 @@
+{% extends "akamatsu/dashboard/layout.html" %}
+{% from "akamatsu/_macros.html" import sortable_header %}
+
+{% block title %}Ghost post list{% endblock %}
+{% block mini %}.blog{% endblock %}
+
+{# Blog index #}
+{% block content %}
+
+{# Actions #}
+<div class="grid grid-pad">
+    <div class="col-2-12 push-right">
+        <a href="{{ url_for('dashboard.blog_index') }}" class="aka-db-action">
+            <i class="glyph-eye"></i> View normal posts
+        </a>
+    </div>
+
+    <div class="col-2-12 push-right">
+        <a href="{{ url_for('dashboard.blog_create') }}" class="aka-db-action">
+            <i class="glyph-plus"></i> Create new post
+        </a>
+    </div>
+</div>
+
+{% if posts.items|length > 0 %}
+<div class="aka-db-list">
+
+    <div class="grid grid-pad aka-listheader">
+        <div class="col-4-12">
+            {{ sortable_header('title', 'Title', order_key, order_dir) }}
+        </div>
+
+        <div class="col-4-12">
+            {{ sortable_header('ghost', 'Ghosting', order_key, order_dir) }}
+        </div>
+
+        <div class="col-1-12">
+            {{ sortable_header('published', 'Published', order_key, order_dir) }}
+        </div>
+
+        <div class="col-3-12">
+            {{ sortable_header('date', 'Date', order_key, order_dir) }}
+        </div>
+    </div>
+
+{% for post in posts.items %}
+    <div post_id="{{ post.id }}" class="grid aka-listitem">
+        {# Title #}
+        <div class="col-4-12">
+            <span>{{ post.title }}</span>
+        </div>
+
+        {# Ghosting slug #}
+        <div class="col-4-12">
+            <span>{{ post.ghost }}</span>
+        </div>
+
+        {# Published? #}
+        <div class="col-1-12">
+            <span class="aka-listicon-alt">Published:</span>
+            <span class="aka-listicon">
+                {% if post.is_published %}
+                <i class="glyph-check"></i>
+                {% else %}
+                <i class="glyph-cross"></i>
+                {% endif %}
+            </span>
+        </div>
+
+        {# Post timestamp #}
+        <div class="col-3-12">
+            <span class="aka-listdate">{{ post.timestamp }}</span>
+        </div>
+    </div>
+{% endfor %}
+</div>
+
+<div class="grid grid-pad">
+{% if posts.has_prev %}
+    <div class="col-1-3 mobile-col-1-2">
+        <a id="aka-prevpage" href="{{ url_for('dashboard.blog_ghost_index', page=posts.prev_num) }}">
+            <i class="glyph-chevron-left"></i> Newer posts
+        </a>
+    </div>
+{% endif %}
+
+{% if posts.has_next %}
+    <div class="col-1-3 mobile-col-1-2 push-right">
+        <a id="aka-nextpage" href="{{ url_for('dashboard.blog_ghost_index', page=posts.next_num) }}">
+            Older posts <i class="glyph-chevron-right"></i>
+        </a>
+    </div>
+{% endif %}
+</div>
+
+{% else %}
+    {# Show error message instead of 404 #}
+    <div class="grid grid-pad">
+        <article class="col-1-1">
+            <h2>No posts found</h2>
+            <hr></hr>
+        </article>
+    </div>
+{% endif %}
+</div>
+
+{% endblock %}
+

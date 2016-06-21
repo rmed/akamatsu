@@ -1,0 +1,58 @@
+{% extends "akamatsu/layout.html" %}
+{% from "akamatsu/_macros.html" import disqus_comments %}
+
+{% block html_head %}
+{# Check custom head #}
+{% if page.is_html and page.custom_head %}
+    {{ page.head_as_html() }}
+
+{% else %}
+    {{ super() }}
+{% endif %}
+
+{% endblock %}
+
+{% block title %}{{ page.title }}{% endblock %}
+{% block mini %}.{{ page.mini }}{% endblock %}
+
+{# To show or not to show the default header #}
+{% block akamatsu_header %}
+{% if page.is_html %}
+    {% if page.use_layout_header %}
+        {{ super() }}
+    {% endif %}
+{% else %}
+    {{ super() }}
+{% endif %}
+{% endblock %}
+
+{% block html_body %}
+
+{% if page.is_html %}
+{# Output html #}
+{{ page.content_as_html() }}
+
+{% else %}
+{{ super () }}
+{% endif %}
+{% endblock %}
+
+{% block content %}
+{% if not page.is_html %}
+{# Output markdown #}
+<div class="grid grid-pad">
+    <article class="aka-page col-1-1">
+        {{ page.content|markdown }}
+
+        {% if page.comments_enabled %}
+            {{ disqus_comments(
+                    'page_' ~ page.id,
+                    page.title,
+                    url_for('page.show', _external=True, page=page.route)
+                )
+            }}
+        {% endif %}
+    </article>
+</div>
+{% endif %}
+{% endblock %}

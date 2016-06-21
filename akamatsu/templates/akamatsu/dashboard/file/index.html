@@ -1,0 +1,77 @@
+{% extends "akamatsu/dashboard/layout.html" %}
+{% from "akamatsu/_macros.html" import sortable_header %}
+
+{% block title %}File list{% endblock %}
+{% block mini %}.files{% endblock %}
+
+{# File index #}
+{% block content %}
+
+{# Actions #}
+<div class="grid grid-pad">
+    <div class="col-2-12 push-right">
+        <a href="{{ url_for('dashboard.file_upload') }}" class="aka-db-action">
+            <i class="glyph-publish"></i> Upload a file
+        </a>
+    </div>
+</div>
+
+{% if files.items|length > 0 %}
+<div class="aka-db-list">
+
+    <div class="grid grid-pad aka-listheader">
+        <div class="col-9-12">
+            {{ sortable_header('path', 'Path', order_key, order_dir) }}
+        </div>
+
+        <div class="col-3-12">
+            {{ sortable_header('date', 'Date', order_key, order_dir) }}
+        </div>
+    </div>
+
+{% for file in files.items %}
+    <div file_id="{{ file.id }}" class="grid aka-listitem">
+        {# Path #}
+        <div class="col-9-12">
+            <span>{{ file.path }}</span>
+        </div>
+
+        {# File timestamp #}
+        <div class="col-3-12">
+            <span class="aka-listdate">{{ file.timestamp }}</span>
+        </div>
+    </div>
+{% endfor %}
+</div>
+
+<div class="grid grid-pad">
+{% if files.has_prev %}
+    <div class="col-1-3 mobile-col-1-2">
+        <a id="aka-prevpage" href="{{ url_for('dashboard.file_index', page=files.prev_num) }}">
+            <i class="glyph-chevron-left"></i> Newer files
+        </a>
+    </div>
+{% endif %}
+
+{% if files.has_next %}
+    <div class="col-1-3 mobile-col-1-2 push-right">
+        <a id="aka-nextpage" href="{{ url_for('dashboard.file_index', page=files.next_num) }}">
+            Older files <i class="glyph-chevron-right"></i>
+        </a>
+    </div>
+{% endif %}
+</div>
+
+{% else %}
+    {# Show error message instead of 404 #}
+    <div class="grid grid-pad">
+        <article class="col-1-1">
+            <h2>No files found</h2>
+            <hr></hr>
+        </article>
+    </div>
+{% endif %}
+</div>
+
+{% endblock %}
+

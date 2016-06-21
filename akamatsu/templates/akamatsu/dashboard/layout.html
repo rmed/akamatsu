@@ -1,0 +1,97 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+{# Minified CSS #}
+{% assets "css_pack" %}
+    <link rel="stylesheet" type="text/css" href="{{ ASSET_URL }}">
+{% endassets %}
+
+{# Minified dashboard specific JS #}
+{% assets "db_js_pack" %}
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/zepto/1.1.6/zepto.min.js"></script>
+    <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+{% endassets %}
+
+    <title>{% block title %}{% endblock %} | {{ config['SITENAME'] }} dashboard</title>
+
+    {# Be responsive #}
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<body>
+    {# Header #}
+    <header class="aka-header">
+        <h1 class="aka-sitename"># dashboard{% block mini %}{% endblock %}</h1>
+
+        <nav class="aka-overbox">
+            {# Only for admins #}
+            {% if current_user.has_role('admin') %}
+            <a class="glyph-cog" href="{{ url_for('dashboard.settings_edit') }}"></a>
+            {% endif %}
+
+            <a class="glyph-user" href="{{ url_for('dashboard.profile_edit') }}"></a>
+            <a class="glyph-log-out" href="{{ url_for('user.logout') }}"></a>
+        </nav>
+    </header>
+
+    {# Dashboard links #}
+    <div id="aka-db-links" class="grid grid-pad">
+        <div class="col-1-10">
+            <a class="aka-db-navlink" href="{{ url_for('dashboard.home') }}">
+                <i class="glyph-home"></i> Home
+            </a>
+        </div>
+
+        {% if current_user.has_role('blogger') or current_user.has_role('admin') %}
+        <div class="col-1-10">
+            <a class="aka-db-navlink" href="{{ url_for('dashboard.blog_index') }}">
+                <i class="glyph-chat"></i> Blog
+            </a>
+        </div>
+        {% endif %}
+
+        {% if current_user.has_role('editor') or current_user.has_role('admin') %}
+        <div class="col-1-10">
+            <a class="aka-db-navlink" href="{{ url_for('dashboard.page_index') }}">
+                <i class="glyph-open-book"></i> Pages
+            </a>
+        </div>
+        {% endif %}
+
+        {% if current_user.has_role('admin') or current_user.has_role('uploader') %}
+        <div class="col-1-10">
+            <a class="aka-db-navlink" href="{{ url_for('dashboard.file_index') }}">
+                <i class="glyph-attachment"></i> Files
+            </a>
+        </div>
+        {% endif %}
+
+        {% if current_user.has_role('admin') %}
+        <div class="col-1-10">
+            <a class="aka-db-navlink" href="{{ url_for('dashboard.user_index') }}">
+                <i class="glyph-users"></i> Users
+            </a>
+        </div>
+        {% endif %}
+
+        <div class="col-3-10 push-right">
+            <span>Logged in as: {{ current_user.username }}</span>
+        </div>
+    </div>
+
+{# Main content #}
+{% block content %}{% endblock %}
+
+    {# Footer #}
+    <footer>
+        <div class="aka-footer">
+            <div class="grid grid-pad">
+                <div id="footer-right" class="col-1-3 push-right">
+                    Built with akamatsu
+                </div>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>

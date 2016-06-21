@@ -1,0 +1,56 @@
+{% extends "akamatsu/layout.html" %}
+{% from "akamatsu/_macros.html" import render_field, render_checkbox_field, render_submit_field %}
+
+{% block title %}Login{% endblock %}
+
+{# Page mini #}
+{% block mini %}.login{% endblock %}
+
+{% block content %}
+
+<form action="" method="POST" role="form">
+    {{ form.hidden_tag() }}
+
+    {# Username or Email field #}
+    {% set field = form.username if user_manager.enable_username else form.email %}
+
+    <div class="grid">
+        <div class="col-1-1">
+            {{ render_field(field) }}
+        </div>
+    </div>
+
+    {# Password field #}
+    <div class="grid">
+        <div class="col-1-1">
+            {% set field = form.password %}
+            {% if user_manager.enable_forgot_password %}
+                {% set forgot_link %}{{ url_for('user.forgot_password') }}{% endset %}
+                {% set forgot_label %}Forgot your password?{% endset %}
+
+                {{ render_field(field, down_url=forgot_link, down_label=forgot_label) }}
+
+            {% else %}
+                {{ render_field(field) }}
+            {% endif %}
+        </div>
+    </div>
+
+    {# Remember me #}
+    {% if user_manager.enable_remember_me %}
+    <div class="grid">
+        <div class="col-1-1">
+            {{ render_checkbox_field(login_form.remember_me) }}
+        </div>
+    </div>
+    {% endif %}
+
+    {# Submit button #}
+    <div class="grid">
+        <div class="col-1-3 push-1-3">
+            {{ render_submit_field(form.submit) }}
+        </div>
+    </div>
+</form>
+
+{% endblock %}
