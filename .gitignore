@@ -91,3 +91,7 @@ ENV/
 
 # Minified CSS and JS
 gen/
+
+# Misc
+instance/
+fumi.yml
