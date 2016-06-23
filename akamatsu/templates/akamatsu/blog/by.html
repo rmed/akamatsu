@@ -53,18 +53,19 @@
 </div>
 
 {% endfor %}
+
 <div class="grid grid-pad">
 {% if posts.has_prev %}
-    <div class="col-1-12 mobile-col-1-2">
-        <a id="pagination-prev" href="{{ url_for('blog.by_user', user=user, page=posts.prev_num) }}">
+    <div class="col-1-3 mobile-col-1-2">
+        <a id="aka-prevpage" href="{{ url_for('blog.by_user', user=user, page=posts.prev_num) }}">
             <i class="glyph-chevron-left"></i> Newer posts
         </a>
     </div>
 {% endif %}
 
 {% if posts.has_next %}
-    <div class="col-1-12 mobile-col-1-2 push-right">
-        <a id="pagination-next" href="{{ url_for('blog.by_user', user=user, page=posts.next_num) }}">
+    <div class="col-1-3 mobile-col-1-2 push-right">
+        <a id="aka-nextpage" href="{{ url_for('blog.by_user', user=user, page=posts.next_num) }}">
             Older posts <i class="glyph-chevron-right"></i>
         </a>
     </div>
