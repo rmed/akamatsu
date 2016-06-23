@@ -78,7 +78,7 @@ waffle = WaffleConf(app, configstore)
 
 
 # Misaka markdown parser
-md = Misaka(fenced_code=True, underline=True, no_intra_emphasis=True,
+md = Misaka(fenced_code=True, underline=True, no_intra_emphasis=False,
         strikethrough=True, superscript=True, tables=True, no_html=True)
 md.init_app(app)
 
