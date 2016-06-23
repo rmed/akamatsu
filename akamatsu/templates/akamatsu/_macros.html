@@ -46,11 +46,13 @@
 
 {# Show post tags #}
 {% macro show_tags(post) %}
-{% if post.tags.items|length > 0 %}
+{% if post.tags|length > 0 %}
     <span>Tags:</span>
+
 {% for tag in post.tags %}
     <a href="{{ url_for('blog.tagged', tag=tag.name) }}">{{ tag.name }}</a>
 {% endfor %}
+
 {% endif %}
 {% endmacro %}
 
