@@ -155,11 +155,13 @@ def file_upload():
         filename = secure_filename(form.filename.data)
         subdir = secure_filename(form.subdir.data)
 
-        if not filename:
-            # Use uploaded file name
-            filename = secure_filename(form.upload.data.filename)
+        ul_filename = secure_filename(form.upload.data.filename)
 
-        if not is_allowed_file(filename):
+        if not filename:
+            # Use uploaded file name when storing
+            filename = ul_filename
+
+        if not is_allowed_file(filename) or not is_allowed_file(ul_filename):
             # Extension not allowed
             return render_template(
                 'akamatsu/dashboard/file/upload.html',
