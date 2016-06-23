@@ -40,7 +40,10 @@ def feed():
         feed_url=request.url,
         url=request.url_root)
 
-    posts = Post.query.filter_by(is_published=True, ghost='')
+    posts = (
+        Post.query
+        .filter_by(is_published=True, ghost='')
+        .order_by(Post.timestamp.desc()))
 
     for post in posts:
         feed.add(post.title, markdown(post.content),
@@ -61,6 +64,7 @@ def index(page=1):
     posts = (
         Post.query
         .filter_by(is_published=True, ghost='')
+        .order_by(Post.timestamp.desc())
         .paginate(page, 10, False))
 
     try:
@@ -83,6 +87,7 @@ def tagged(tag, page=1):
         Post.query
         .filter(Post.tags.any(name=tag))
         .filter_by(is_published=True, ghost='')
+        .order_by(Post.timestamp.desc())
         .paginate(page, 10, False))
 
     try:
@@ -109,6 +114,7 @@ def by_user(user, page=1):
         posts = (
             Post.query
             .filter_by(author_id=author.id, is_published=True, ghost='')
+            .order_by(Post.timestamp.desc())
             .paginate(page, 10, False))
 
     else:
