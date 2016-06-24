@@ -10,16 +10,16 @@
 {% block content %}
 
 <div class="grid grid-pad">
-    <h1>Posts by {{ user }}</h1>
+    <h3>Posts by {{ user }}</h3>
 </div>
 
 {% if posts.items|length > 0 %}
 {% for post in posts.items %}
 <div class="grid grid-pad">
     <article class="aka-post col-1-1">
-        <h1 class="title">
+        <h2 class="title">
             <a href="{{ url_for('blog.show', slug=post.slug) }}">{{ post.title }}</a>
-        </h1>
+        </h2>
 
         <div class="author">
             {{ show_author(post) }}
