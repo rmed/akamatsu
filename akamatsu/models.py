@@ -336,16 +336,16 @@ class FileUpload(db.Model):
 # Events
 
 @event.listens_for(Page, 'before_insert')
-@event.listens_for(Page, 'before_update')
 def before_page_save(mapper, connection, page):
-    """Perform several actions when a page is first created or updated.
+    """Perform several actions when a page is first created.
 
     These include:
-        - Slugify the title of the page.
+        - Slugify the title of the page if no slug is provided.
         - Set the route of the page.
     """
     # Slug
-    page.slug = slugify.slugify(page.title, to_lower=True, max_length=255)
+    if not page.slug:
+        page.slug = slugify.slugify(page.title, to_lower=True, max_length=255)
 
     # Route
     if page.is_root:
@@ -357,11 +357,11 @@ def before_page_save(mapper, connection, page):
         page.route = page.base_route + slash + page.slug
 
 @event.listens_for(Post, 'before_insert')
-@event.listens_for(Post, 'before_update')
 def before_post_save(mapper, connection, post):
     """Perform several actions when a post is first created.
 
     These include:
         - Slugify the title of the post.
     """
-    post.slug = slugify.slugify(post.title, to_lower=True, max_length=255)
+    if not post.slug:
+        post.slug = slugify.slugify(post.title, to_lower=True, max_length=255)
