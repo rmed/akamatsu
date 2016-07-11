@@ -58,6 +58,7 @@ migrate = Migrate(app, db)
 
 from akamatsu.views.blog import bp_blog
 from akamatsu.views.dashboard import bp_dashboard
+from akamatsu.views.misc import bp_misc
 from akamatsu.views.page import bp_page
 from akamatsu.util import render_theme
 
@@ -119,6 +120,7 @@ analytics = Analytics(app)
 
 
 # Blueprints
+app.register_blueprint(bp_misc)
 app.register_blueprint(bp_dashboard, url_prefix='/dashboard')
 app.register_blueprint(bp_blog, url_prefix='/blog')
 app.register_blueprint(bp_page)

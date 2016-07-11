@@ -20,6 +20,10 @@ FOOTER_RIGHT = "Built with akamatsu"
 DISQUS_SHORTNAME = ""
 
 
+# humans.txt text
+HUMANS_TXT = ""
+
+
 # Anayltics (Piwik)
 ANALYTICS = {}
 
@@ -121,6 +125,11 @@ WAFFLE_CONFS = {
     "ALLOWED_EXTENSIONS": {
         "desc": "Allowed file extensions",
         "default": set()
+    },
+
+    "HUMANS_TXT": {
+        "desc": "Text for humans.txt endpoint",
+        "default": ""
     }
 }
 

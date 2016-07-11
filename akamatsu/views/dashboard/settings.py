@@ -49,6 +49,7 @@ def settings_edit():
         'navbar': navbar,
         'allowed_extensions': ','.join(parsed.get('ALLOWED_EXTENSIONS', set())),
         'disqus_shortname': parsed.get('DISQUS_SHORTNAME', ''),
+        'humans': parsed.get('HUMANS_TXT', ''),
         'footer_left': parsed.get('FOOTER_LEFT', ''),
         'footer_right': parsed.get('FOOTER_RIGHT', ''),
     }
@@ -97,6 +98,7 @@ def settings_edit():
             'NAVBAR': new_navbar,
             'ALLOWED_EXTENSIONS': set(new_extensions),
             'DISQUS_SHORTNAME': form.disqus_shortname.data,
+            'HUMANS_TXT': form.humans.data,
             'FOOTER_LEFT': form.footer_left.data,
             'FOOTER_RIGHT': form.footer_right.data,
         }

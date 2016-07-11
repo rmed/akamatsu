@@ -93,6 +93,7 @@ ENV/
 gen/
 
 # Misc
+*.swp
 instance/
 fumi.yml
 wsgi.py
