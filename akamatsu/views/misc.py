@@ -28,6 +28,12 @@ bp_misc = Blueprint('misc', __name__)
 
 @bp_misc.route('/humans.txt')
 def humans_txt():
-    """Return the configured contents for humans.txt route."""
+    """Return the configured contents for humans.txt resource."""
     content = current_app.config.get('HUMANS_TXT', '')
+    return Response(content, mimetype='text/plain')
+
+@bp_misc.route('/robots.txt')
+def robots_txt():
+    """Return the configured contents for robots.txt resource."""
+    content = current_app.config.get('ROBOTS_TXT', '')
     return Response(content, mimetype='text/plain')

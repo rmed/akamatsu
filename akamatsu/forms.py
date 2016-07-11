@@ -136,6 +136,7 @@ class SettingsForm(Form):
     disqus_shortname = StringField('Disqus shortname')
 
     humans = TextAreaField('humans.txt content')
+    robots = TextAreaField('robots.txt content')
 
     footer_left = TextAreaField('Left footer', description='HTML enabled')
     footer_right = TextAreaField('Right footer', description='HTML enabled')

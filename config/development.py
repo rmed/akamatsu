@@ -23,6 +23,9 @@ DISQUS_SHORTNAME = ""
 # humans.txt text
 HUMANS_TXT = ""
 
+# robots.txt text
+ROBOTS_TXT = ""
+
 
 # Anayltics (Piwik)
 ANALYTICS = {}
@@ -128,7 +131,12 @@ WAFFLE_CONFS = {
     },
 
     "HUMANS_TXT": {
-        "desc": "Text for humans.txt endpoint",
+        "desc": "Text for humans.txt resource",
+        "default": ""
+    },
+
+    "ROBOTS_TXT": {
+        "desc": "Text for robots.txt resource",
         "default": ""
     }
 }

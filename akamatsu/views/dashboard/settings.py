@@ -50,6 +50,7 @@ def settings_edit():
         'allowed_extensions': ','.join(parsed.get('ALLOWED_EXTENSIONS', set())),
         'disqus_shortname': parsed.get('DISQUS_SHORTNAME', ''),
         'humans': parsed.get('HUMANS_TXT', ''),
+        'robots': parsed.get('ROBOTS_TXT', ''),
         'footer_left': parsed.get('FOOTER_LEFT', ''),
         'footer_right': parsed.get('FOOTER_RIGHT', ''),
     }
@@ -99,6 +100,7 @@ def settings_edit():
             'ALLOWED_EXTENSIONS': set(new_extensions),
             'DISQUS_SHORTNAME': form.disqus_shortname.data,
             'HUMANS_TXT': form.humans.data,
+            'ROBOTS_TXT': form.robots.data,
             'FOOTER_LEFT': form.footer_left.data,
             'FOOTER_RIGHT': form.footer_right.data,
         }
