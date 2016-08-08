@@ -5,7 +5,7 @@
 
 {# Blog atom feed #}
 {% block head_extend %}
-<link href="{{ url_for('blog.feed') }}" rel="alternate" title="Recent Posts" type="application/atom+xml"/>
+<link href="{{ url_for('blog.feed') }}" type="application/atom+xml" rel="alternate" title="Recent Posts" />
 {% endblock %}
 
 {# Page mini #}

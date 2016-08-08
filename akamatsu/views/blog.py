@@ -32,7 +32,7 @@ from werkzeug.exceptions import NotFound
 bp_blog = Blueprint('blog', __name__)
 
 
-@bp_blog.route('/recent.atom')
+@bp_blog.route('/atom.xml')
 def feed():
     """Return an atom feed for the blog."""
     feed = AtomFeed(
@@ -43,11 +43,14 @@ def feed():
     posts = (
         Post.query
         .filter_by(is_published=True, ghost='')
-        .order_by(Post.timestamp.desc()))
+        .order_by(Post.timestamp.desc())
+        .limit(15))
 
     for post in posts:
-        feed.add(post.title, markdown(post.content),
+        feed.add(
+            post.title, markdown(post.content),
             content_type='html',
+            author=post.author.username,
             url=url_for('blog.show', slug=post.slug, _external=True),
             updated=post.timestamp)
 
