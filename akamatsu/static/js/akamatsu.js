@@ -18,6 +18,37 @@ function toggleStickyNav() {
     });
 }
 
+/**
+ * Modal for displaying full size images
+ */
+function toggleImageModal(image) {
+    // Delete any previous modal
+    $('#aka-modal').remove();
+
+    var $modal = $('<div>', {id: 'aka-modal'});
+
+    // Close button
+    var $close = $('<span>', {id: 'aka-modal-close'});
+    $close.append('<i class="glyph-circle-with-cross"></i>');
+
+    $close.on('click', function(e) {
+        $modal.remove();
+    });
+
+    // Image
+    var $image = $('<img>', {id: 'aka-modal-image'});
+    $image.attr('src', image.attr('src'));
+    $image.attr('alt', image.attr('alt'));
+
+    // Caption
+    var $caption = $('<div>', {id: 'aka-modal-caption'});
+    $caption.html(image.attr('alt'));
+
+
+    $modal.append($close, $image, $caption);
+    $modal.appendTo(document.body);
+}
+
 $(function() {
     // Sticky navigation bar
     toggleStickyNav();
@@ -27,5 +58,10 @@ $(function() {
         $('.navitem').toggleClass('shown');
     });
 
+    // Clicked image, show in modal
+    var images = $('.aka-page img').add('.aka-post img').add('img.scale');
+    images.on('click', function(e) {
+        toggleImageModal($(e.target));
+    });
 });
 
