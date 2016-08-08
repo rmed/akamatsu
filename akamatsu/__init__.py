@@ -56,13 +56,6 @@ from akamatsu import models
 migrate = Migrate(app, db)
 
 
-from akamatsu.views.blog import bp_blog
-from akamatsu.views.dashboard import bp_dashboard
-from akamatsu.views.misc import bp_misc
-from akamatsu.views.page import bp_page
-from akamatsu.util import render_theme
-
-
 # Whitespacing Jinja
 app.jinja_env.trim_blocks = True
 app.jinja_env.lstrip_blocks = True
@@ -118,6 +111,12 @@ assets.register('db_js_pack', db_js_bundle)
 # Analytics
 analytics = Analytics(app)
 
+
+from akamatsu.views.blog import bp_blog
+from akamatsu.views.dashboard import bp_dashboard
+from akamatsu.views.misc import bp_misc
+from akamatsu.views.page import bp_page
+from akamatsu.util import render_theme
 
 # Blueprints
 app.register_blueprint(bp_misc)

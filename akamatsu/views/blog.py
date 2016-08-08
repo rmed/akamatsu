@@ -21,11 +21,11 @@
 
 """This file contains unauthenticated blog views."""
 
+from akamatsu import md as markdown
 from akamatsu.models import Post, User
 from akamatsu.util import render_theme
 
 from flask import Blueprint, redirect, request, url_for
-from flask_misaka import markdown
 from werkzeug.contrib.atom import AtomFeed
 from werkzeug.exceptions import NotFound
 
@@ -47,9 +47,10 @@ def feed():
         .limit(15))
 
     for post in posts:
+        # unicode conversion is needed for the content
         feed.add(
             post.title,
-            markdown(post.content).unescape(), # conversion is needed (unicode)
+            markdown.render(post.content).unescape(),
             content_type='html',
             author=post.author.username,
             url=url_for('blog.show', slug=post.slug, _external=True),
