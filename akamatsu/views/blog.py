@@ -48,7 +48,8 @@ def feed():
 
     for post in posts:
         feed.add(
-            post.title, markdown(post.content),
+            post.title,
+            markdown(post.content).unescape(), # conversion is needed (unicode)
             content_type='html',
             author=post.author.username,
             url=url_for('blog.show', slug=post.slug, _external=True),
