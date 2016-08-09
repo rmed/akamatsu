@@ -51,13 +51,16 @@
     </header>
 
 {# Navigation bar #}
-<nav class="aka-navbar">
-    <a id="aka-navmenu" class="glyph-menu" href="javascript:void(0);"></a>
+{% if config['NAVBAR'] %}
+    <nav class="aka-navbar">
+        <a id="aka-navmenu" class="glyph-menu" href="javascript:void(0);"></a>
 
-{% for item in config['NAVBAR'] %}
-    <a class="navitem" href="{{ item['link'] }}">{{ item['text'] }}</a>
-{% endfor %}
-</nav>
+    {% for item in config['NAVBAR'] %}
+        <a class="navitem" href="{{ item['link'] }}">{{ item['text'] }}</a>
+    {% endfor %}
+    </nav>
+{% endif %}
+
 {% endblock %}
 
 {% block html_body %}
