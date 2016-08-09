@@ -51,11 +51,13 @@
     <div post_id="{{ post.id }}" class="grid aka-listitem">
         {# Title #}
         <div class="col-4-12">
+            <span class="aka-list-alt">Title</span>
             <span>{{ post.title }}</span>
         </div>
 
         {# Author name #}
         <div class="col-3-12">
+            <span class="aka-list-alt">Slug</span>
             <span>{{ post.slug }}</span>
         </div>
 
@@ -85,6 +87,7 @@
 
         {# Post timestamp #}
         <div class="col-3-12">
+            <span class="aka-list-alt">Date</span>
             <span class="aka-listdate">{{ post.timestamp }}</span>
         </div>
     </div>

@@ -768,13 +768,15 @@ Dashboard
     text-align: center;
 }
 
-.aka-db-list .aka-listicon-alt {
+.aka-db-list .aka-listicon-alt,
+.aka-db-list .aka-list-alt {
+    font-weight: bold;
     display: inline-block;
 }
 
 .aka-db-list .aka-listdate {
     display: block;
-    text-align: center;
+    text-align: left;
 }
 
 @media (min-width: 750px) {
@@ -782,8 +784,13 @@ Dashboard
         display: block;
     }
 
-    .aka-db-list .aka-listicon-alt {
+    .aka-db-list .aka-listicon-alt,
+    .aka-db-list .aka-list-alt {
         display: none;
+    }
+
+    .aka-db-list .aka-listdate {
+        text-align: center;
     }
 }
 
