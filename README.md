@@ -1,4 +1,4 @@
-# akamatsu
+# ![akamatsu](logo.png)
 My small CMS made in Flask
 
 ## Acknowledgements
