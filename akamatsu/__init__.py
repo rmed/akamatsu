@@ -25,9 +25,8 @@ from flask import Flask, render_template
 from flask_analytics import Analytics
 from flask_assets import Environment, Bundle
 from flask_mail import Mail, Message
-from flask_migrate import Migrate, MigrateCommand
+from flask_migrate import Migrate
 from flask_misaka import Misaka
-from flask_script import Manager
 from flask_sqlalchemy import SQLAlchemy
 from flask_user import SQLAlchemyAdapter, UserManager, user_logged_in
 from flask_waffleconf import AlchemyWaffleStore, WaffleConf
@@ -123,11 +122,6 @@ app.register_blueprint(bp_misc)
 app.register_blueprint(bp_dashboard, url_prefix='/dashboard')
 app.register_blueprint(bp_blog, url_prefix='/blog')
 app.register_blueprint(bp_page)
-
-
-# App commands
-manager = Manager(app)
-manager.add_command('db', MigrateCommand)
 
 
 # 404

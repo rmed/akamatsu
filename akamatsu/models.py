@@ -258,7 +258,6 @@ class User(db.Model, UserMixin):
     is_enabled = db.Column(db.Boolean, nullable=False, default=False)
     first_name = db.Column(db.String(50), nullable=False, default='')
     last_name = db.Column(db.String(50), nullable=False, default='')
-    personal_bio = db.Column(db.String(1024), nullable=True, default='')
 
     # Additional attributes
     personal_bio = db.Column(db.String(1024), nullable=True, default='')
