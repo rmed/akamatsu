@@ -31,6 +31,8 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_user import SQLAlchemyAdapter, UserManager, user_logged_in
 from flask_waffleconf import AlchemyWaffleStore, WaffleConf
 
+from akamatsu.util import HighlighterRenderer
+
 import os
 
 
@@ -71,8 +73,25 @@ waffle = WaffleConf(app, configstore)
 
 
 # Misaka markdown parser
-md = Misaka(fenced_code=True, underline=True, no_intra_emphasis=False,
-        strikethrough=True, superscript=True, tables=True, no_html=True)
+# md = Misaka(
+#     fenced_code=True,
+#     underline=True,
+#     no_intra_emphasis=False,
+#     strikethrough=True,
+#     superscript=True,
+#     tables=True,
+#     no_html=True
+# )
+md = Misaka(
+    renderer=HighlighterRenderer(),
+    fenced_code=True,
+    underline=True,
+    no_intra_emphasis=False,
+    strikethrough=True,
+    superscript=True,
+    tables=True,
+    no_html=True
+)
 md.init_app(app)
 
 

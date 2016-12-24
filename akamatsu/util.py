@@ -21,10 +21,29 @@
 
 """This file contains utility functions for akamatsu."""
 
+import misaka
 from flask import current_app, render_template
+from pygments import highlight
+from pygments.formatters.html import HtmlFormatter
+from pygments.lexers import get_lexer_by_name
 
 
 ROLE_NAMES = ['admin', 'blogger', 'editor', 'uploader']
+
+class HighlighterRenderer(misaka.HtmlRenderer):
+    """Custom renderer to use with Misaka and pygments."""
+
+    def blockcode(self, text, lang):
+        if not lang:
+            return '\n<pre><code>{}</code></pre>\n'.format(text.strip())
+
+        lexer = get_lexer_by_name(lang, stripall=True)
+        formatter = HtmlFormatter(style='friendly')
+
+        return highlight(code=text, lexer=lexer, formatter=formatter)
+
+    def table(self, content):
+        return '\n<table class="table table-bordered table-hover">{}</table>\n'.format(content.strip())
 
 def is_allowed_file(filename):
     """Check if a file extension is allowed.
