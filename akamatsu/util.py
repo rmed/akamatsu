@@ -38,7 +38,7 @@ class HighlighterRenderer(misaka.HtmlRenderer):
             return '\n<pre><code>{}</code></pre>\n'.format(text.strip())
 
         lexer = get_lexer_by_name(lang, stripall=True)
-        formatter = HtmlFormatter(style='friendly')
+        formatter = HtmlFormatter()
 
         return highlight(code=text, lexer=lexer, formatter=formatter)
 

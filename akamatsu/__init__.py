@@ -73,15 +73,6 @@ waffle = WaffleConf(app, configstore)
 
 
 # Misaka markdown parser
-# md = Misaka(
-#     fenced_code=True,
-#     underline=True,
-#     no_intra_emphasis=False,
-#     strikethrough=True,
-#     superscript=True,
-#     tables=True,
-#     no_html=True
-# )
 md = Misaka(
     renderer=HighlighterRenderer(),
     fenced_code=True,
@@ -105,7 +96,7 @@ assets = Environment(app)
 css_bundle = Bundle(
     'css/fira.css',
     'css/entypo.css',
-    'css/highlight-hybrid.css',
+    'css/highlight.css',
     'css/normalize.css',
     'css/simplegrid.css',
     'css/akamatsu.css',
@@ -113,7 +104,6 @@ css_bundle = Bundle(
 
 # Cannot include zepto, throws errors
 js_bundle = Bundle(
-    'js/highlight.pack.js',
     'js/akamatsu.js',
     filters='rjsmin', output='gen/packed.js')
 
