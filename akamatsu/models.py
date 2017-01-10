@@ -328,8 +328,12 @@ class FileUpload(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     path = db.Column(db.String(512), unique=True, nullable=False)
-    description = db.Column(db.Text)
-    timestamp = db.Column(db.DateTime, default=datetime.datetime.now())
+    description = db.Column(db.Text, nullable=False)
+    timestamp = db.Column(
+        db.DateTime,
+        nullable=False,
+        default=datetime.datetime.now()
+    )
 
 
 # Events
