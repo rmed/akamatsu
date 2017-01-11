@@ -34,7 +34,7 @@ from werkzeug.exceptions import NotFound
 
 @bp_dashboard.route('/blog')
 @bp_dashboard.route('/blog/<int:page>')
-@roles_required(['admin', 'blogger'])
+@roles_required(['admin', 'blogger', 'superblogger'])
 def blog_index(page=1):
     """Display list of posts (paginated and available options).
 
@@ -45,9 +45,17 @@ def blog_index(page=1):
     """
     order_key, order_dir, ordering = _sort_posts(request.args)
 
+    filters = {
+        'ghost': '',
+    }
+
+    # Regular bloggers can only see their own posts
+    if current_user.has_role('blogger'):
+        filters['author_id'] = current_user.id
+
     posts = (
         Post.query
-        .filter_by(ghost='')
+        .filter_by(**filters)
         .order_by(ordering)
         .paginate(page, 20, False))
 
@@ -64,7 +72,7 @@ def blog_index(page=1):
 
 @bp_dashboard.route('/blog/ghosts')
 @bp_dashboard.route('/blog/ghosts/<int:page>')
-@roles_required(['admin', 'blogger'])
+@roles_required(['admin', 'blogger', 'superblogger'])
 def blog_ghost_index(page=1):
     """Display list of ghost posts (paginated and available options).
 
@@ -73,9 +81,15 @@ def blog_ghost_index(page=1):
     """
     order_key, order_dir, ordering = _sort_posts(request.args)
 
+    filters = (Post.ghost != '',)
+
+    # Regular bloggers can only see their own posts
+    if current_user.has_role('blogger'):
+        filters = filters + (Post.author_id == current_user.id, )
+
     posts = (
         Post.query
-        .filter(Post.ghost!='')
+        .filter(*filters)
         .order_by(ordering)
         .paginate(page, 20, False))
 
@@ -91,7 +105,7 @@ def blog_ghost_index(page=1):
         return render_template('akamatsu/dashboard/blog/ghost_index.html')
 
 @bp_dashboard.route('/blog/new', methods=['GET', 'POST'])
-@roles_required(['admin', 'blogger'])
+@roles_required(['admin', 'blogger', 'superblogger'])
 def blog_create():
     """Show the form for creating a new post."""
     form = PostForm()
@@ -155,7 +169,7 @@ def blog_create():
         form=form)
 
 @bp_dashboard.route('/blog/edit/<int:post_id>', methods=['GET', 'POST'])
-@roles_required(['admin', 'blogger'])
+@roles_required(['admin', 'blogger', 'superblogger'])
 def blog_edit(post_id):
     """Show the form for editing an existing post.
 
@@ -164,13 +178,22 @@ def blog_edit(post_id):
     """
     post = Post.query.filter_by(id=post_id).first()
 
+    # Check existence
     if not post:
-        # Return error message
         return render_template(
             'akamatsu/dashboard/blog/edit.html',
             mode='edit',
             status='error',
-            errmsg='Post does not exist')
+            errmsg='The post does not exist')
+
+    # Check permissions
+    if current_user.has_role('blogger') and post.author_id != current_user.id:
+        return render_template(
+            'akamatsu/dashboard/blog/edit.html',
+            mode='edit',
+            status='error',
+            errmsg='You do not have the required permissions to edit the post')
+
 
     form = PostForm(obj=post)
 
@@ -252,7 +275,7 @@ def blog_edit(post_id):
         post_id=post_id)
 
 @bp_dashboard.route('/blog/delete/<int:post_id>', methods=['GET', 'POST'])
-@roles_required(['admin', 'blogger'])
+@roles_required(['admin', 'blogger', 'superblogger'])
 def blog_delete(post_id):
     """Confirm deletion of a post.
 
@@ -264,12 +287,19 @@ def blog_delete(post_id):
     """
     post = Post.query.filter_by(id=post_id).first()
 
+    # Check existence
     if not post:
-        # Show error message
         return render_template(
             'akamatsu/dashboard/blog/delete.html',
             status='error',
-            errmsg = 'Post with ID %d does not exist' % post_id)
+            errmsg = 'The post does not exist' % post_id)
+
+    # Check permissions
+    if current_user.has_role('blogger') and post.author_id != current_user.id:
+        return render_template(
+            'akamatsu/dashboard/blog/delete.html',
+            status='error',
+            errmsg='You do not have the required permissions to delete the post')
 
     if request.method == 'POST':
         # Delete post

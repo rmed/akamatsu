@@ -5,7 +5,7 @@
 
 {# Show common options #}
 {% block content %}
-{% if current_user.has_role('blogger') or current_user.has_role('admin') %}
+{% if current_user.has_role('blogger') or current_user.has_role('superblogger') or current_user.has_role('admin') %}
 <div class="grid grid-pad">
     <div class="col-1-1 aka-db-task">
         <a href="{{ url_for('dashboard.blog_create') }}"><i class="glyph-message"></i> New post</a>
@@ -21,7 +21,7 @@
 </div>
 {% endif %}
 
-{% if current_user.has_role('uploader') or current_user.has_role('admin') %}
+{% if current_user.has_role('uploader') or current_user.has_role('superuploader') or current_user.has_role('admin') %}
 <div class="grid grid-pad">
     <div class="col-1-1 aka-db-task">
         <a href="{{ url_for('dashboard.file_upload') }}"><i class="glyph-publish"></i> Upload file</a>

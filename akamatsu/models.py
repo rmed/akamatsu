@@ -46,10 +46,7 @@ post_tags = db.Table('post_tags',
 class Post(db.Model):
     """Model representing blog posts.
 
-    Posts are written in markdown and each post may have several authors.
-
-    If no summary is present, the whole content will be shown in the post
-    index.
+    Posts are written in markdown.
 
     Attributes:
         id (int): ID of the record.
@@ -82,7 +79,7 @@ class Post(db.Model):
     author = db.relationship(
         'User',
         primaryjoin='Post.author_id == User.id',
-        backref=db.backref('posts', lazy='dynamic'))
+       backref=db.backref('posts', lazy='dynamic'))
 
     tags = db.relationship(
         'Tag', secondary=post_tags,

@@ -26,9 +26,12 @@ accessed through the `/dashboard` route.
 
 You can specify roles for existing users:
 
-- `editor`: can manage pages and files
-- `blogger`: can manage blog posts and files
 - `admin`: can manage blog, pages, files and users
+- `editor`: can manage pages
+- `blogger`: can manage their own blog posts
+- `uploader`: can manage their own files (future)
+- `superblogger`: can manage all blog posts
+- `superuploader`: can manage all files (future)
 
 ## Configuration variables
 

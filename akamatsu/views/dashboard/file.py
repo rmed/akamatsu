@@ -38,7 +38,7 @@ import os
 
 @bp_dashboard.route('/files')
 @bp_dashboard.route('/files/<int:page>')
-@roles_required(['admin', 'uploader'])
+@roles_required(['admin', 'uploader', 'superuploader'])
 def file_index(page=1):
     """Show available actions regarding files.
 
@@ -64,7 +64,7 @@ def file_index(page=1):
         return render_template('akamatsu/dashboard/file/index.html')
 
 @bp_dashboard.route('/files/delete/<int:file_id>', methods=['GET', 'POST'])
-@roles_required(['admin', 'uploader'])
+@roles_required(['admin', 'uploader', 'superuploader'])
 def file_delete(file_id):
     """Confirm deletion of a file.
 
@@ -123,7 +123,7 @@ def file_delete(file_id):
         'akamatsu/dashboard/file/delete.html', status='confirm', file=upload)
 
 @bp_dashboard.route('/files/view/<int:file_id>')
-@roles_required(['admin', 'uploader'])
+@roles_required(['admin', 'uploader', 'superuploader'])
 def file_show(file_id):
     """Show details of a file.
 
@@ -146,7 +146,7 @@ def file_show(file_id):
         file=upload)
 
 @bp_dashboard.route('/files/upload', methods=['GET', 'POST'])
-@roles_required(['admin', 'uploader'])
+@roles_required(['admin', 'uploader', 'superuploader'])
 def file_upload():
     """Upload a file to the server."""
     form = UploadForm()

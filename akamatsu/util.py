@@ -28,7 +28,14 @@ from pygments.formatters.html import HtmlFormatter
 from pygments.lexers import get_lexer_by_name
 
 
-ROLE_NAMES = ['admin', 'blogger', 'editor', 'uploader']
+ROLE_NAMES = [
+    'admin',
+    'blogger',
+    'editor',
+    'uploader',
+    'superblogger',
+    'superuploader'
+]
 
 class HighlighterRenderer(misaka.HtmlRenderer):
     """Custom renderer to use with Misaka and pygments."""
