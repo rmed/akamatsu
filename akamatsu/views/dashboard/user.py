@@ -61,7 +61,7 @@ def user_index(page=1):
         return render_template('akamatsu/dashboard/user/index.html')
 
 @bp_dashboard.route('/users/new', methods=['GET', 'POST'])
-@roles_required(['admin', 'blogger'])
+@roles_required('admin')
 def user_create():
     """Show the form for creating a new user."""
     form = UserForm()
@@ -187,9 +187,9 @@ def user_edit(user_id):
         user_id=user_id)
 
 @bp_dashboard.route('/users/delete/<int:user_id>', methods=['GET', 'POST'])
-@roles_required(['admin', 'blogger'])
+@roles_required('admin')
 def user_delete(user_id):
-    """Confirm deletion of a page.
+    """Confirm deletion of a user.
 
     GET requests show a message to confirm and POST requests delete the page
     and redirect back to index.
