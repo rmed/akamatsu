@@ -24,12 +24,11 @@ def upgrade():
         roles_table,
         [
             {'name': 'superblogger'},
-            {'name': 'supereditor'},
             {'name': 'superuploader'},
         ]
     )
 
 def downgrade():
     op.execute(
-        "DELETE FROM roles WHERE name IN ('superblogger', 'supereditor', 'superuploader')"
+        "DELETE FROM roles WHERE name IN ('superblogger', 'superuploader')"
     )
