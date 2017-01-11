@@ -26,11 +26,11 @@
         <nav class="aka-overbox">
             {# Only for admins #}
             {% if current_user.has_role('admin') %}
-            <a class="glyph-cog" href="{{ url_for('dashboard.settings_edit') }}"></a>
+            <a class="fa fa-cog" href="{{ url_for('dashboard.settings_edit') }}"></a>
             {% endif %}
 
-            <a class="glyph-user" href="{{ url_for('dashboard.profile_edit') }}"></a>
-            <a class="glyph-log-out" href="{{ url_for('user.logout') }}"></a>
+            <a class="fa fa-user" href="{{ url_for('dashboard.profile_edit') }}"></a>
+            <a class="fa fa-sign-out" href="{{ url_for('user.logout') }}"></a>
         </nav>
     </header>
 
@@ -38,14 +38,14 @@
     <div id="aka-db-links" class="grid grid-pad">
         <div class="col-1-10">
             <a class="aka-db-navlink" href="{{ url_for('dashboard.home') }}">
-                <i class="glyph-home"></i> Home
+                <i class="fa fa-home"></i> Home
             </a>
         </div>
 
         {% if current_user.has_role('blogger') or current_user.has_role('superblogger') or current_user.has_role('admin') %}
         <div class="col-1-10">
             <a class="aka-db-navlink" href="{{ url_for('dashboard.blog_index') }}">
-                <i class="glyph-chat"></i> Blog
+                <i class="fa fa-comments-o"></i> Blog
             </a>
         </div>
         {% endif %}
@@ -53,7 +53,7 @@
         {% if current_user.has_role('editor') or current_user.has_role('admin') %}
         <div class="col-1-10">
             <a class="aka-db-navlink" href="{{ url_for('dashboard.page_index') }}">
-                <i class="glyph-open-book"></i> Pages
+                <i class="fa fa-book"></i> Pages
             </a>
         </div>
         {% endif %}
@@ -61,7 +61,7 @@
         {% if current_user.has_role('uploader') or current_user.has_role('superuploader') or current_user.has_role('admin') %}
         <div class="col-1-10">
             <a class="aka-db-navlink" href="{{ url_for('dashboard.file_index') }}">
-                <i class="glyph-attachment"></i> Files
+                <i class="fa fa-paperclip"></i> Files
             </a>
         </div>
         {% endif %}
@@ -69,7 +69,7 @@
         {% if current_user.has_role('admin') %}
         <div class="col-1-10">
             <a class="aka-db-navlink" href="{{ url_for('dashboard.user_index') }}">
-                <i class="glyph-users"></i> Users
+                <i class="fa fa-users"></i> Users
             </a>
         </div>
         {% endif %}

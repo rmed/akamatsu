@@ -95,7 +95,7 @@ assets = Environment(app)
 
 css_bundle = Bundle(
     'css/fira.css',
-    'css/entypo.css',
+    'css/font-awesome.min.css',
     'css/highlight.css',
     'css/normalize.css',
     'css/simplegrid.css',

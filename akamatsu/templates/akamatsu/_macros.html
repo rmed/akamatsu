@@ -126,9 +126,9 @@
 {% macro sortable_header(key, text, order_key='date', order_dir='desc') %}
     {% if key == order_key %}
         {% if order_dir == 'asc' %}
-        <span class="aka-listcolumn" order-key="{{ key }}" order="{{ order_dir }}">{{ text }} <i class="glyph-chevron-up"></i></span>
+        <span class="aka-listcolumn" order-key="{{ key }}" order="{{ order_dir }}">{{ text }} <i class="fa fa-chevron-up"></i></span>
         {% else %}
-            <span class="aka-listcolumn" order-key="{{ key }}" order="{{ order_dir }}">{{ text }} <i class="glyph-chevron-down"></i></span>
+            <span class="aka-listcolumn" order-key="{{ key }}" order="{{ order_dir }}">{{ text }} <i class="fa fa-chevron-down"></i></span>
         {% endif %}
     {% else %}
         <span order-key="{{ key }}" class="aka-listcolumn">{{ text }}</span>

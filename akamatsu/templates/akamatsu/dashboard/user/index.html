@@ -11,7 +11,7 @@
 <div class="grid grid-pad">
     <div class="col-2-12 push-right">
         <a href="{{ url_for('dashboard.user_create') }}" class="aka-db-action">
-            <i class="glyph-plus"></i> Create new user
+            <i class="fa fa-user-plus"></i> Create new user
         </a>
     </div>
 </div>
@@ -72,9 +72,9 @@
             <span class="aka-listicon-alt">Enabled:</span>
             <span class="aka-listicon">
                 {% if user.is_enabled %}
-                <i class="glyph-check"></i>
+                <i class="fa fa-check"></i>
                 {% else %}
-                <i class="glyph-cross"></i>
+                <i class="fa fa-times"></i>
                 {% endif %}
             </span>
         </div>
@@ -86,7 +86,7 @@
 {% if users.has_prev %}
     <div class="col-1-3 mobile-col-1-2">
         <a id="aka-prevpage" href="{{ url_for('dashboard.user_index', page=users.prev_num) }}">
-            <i class="glyph-chevron-left"></i> Next page
+            <i class="fa fa-chevron-left"></i> Next page
         </a>
     </div>
 {% endif %}
@@ -94,7 +94,7 @@
 {% if users.has_next %}
     <div class="col-1-3 mobile-col-1-2 push-right">
         <a id="aka-nextpage" href="{{ url_for('dashboard.user_index', page=users.next_num) }}">
-            Previous page <i class="glyph-chevron-right"></i>
+            Previous page <i class="fa fa-chevron-right"></i>
         </a>
     </div>
 {% endif %}

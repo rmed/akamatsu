@@ -100,10 +100,13 @@ Maximum filesize allowed. Note the default example:
 
 ### `SOCIAL`
 
-List that contains links, and the Entypo glyphs representing those links, shown
+List that contains links, and the icon representing those links, shown
 in the top right part of the page in the akamatsu theme.
 
 **This should be set through the dashboard**.
+
+**Note**: to specify a Font Awesome icon, do so without the `fa-` prefix, as it
+is appended automatically.
 
 ### `NAVBAR`
 
@@ -131,9 +134,10 @@ functionality**.
 
 ## Acknowledgements
 
-- [Entypo](http://entypo.com) by Daniel Bruce (Creative Commons BY-SA 4.0)
 - [Fira](https://github.com/mozilla/Fira) by Mozilla (SIL OPEN FONT LICENSE
   Version 1.1)
+- [Font Awesome](http://fontawesome.io/) by Dave Gandy (SIL OPEN FONT LICENSE
+  Version 1.1 and MIT LICENSE)
 - [highlight.js](https://highlightjs.org) by [highlight.js
   contributors](https://github.com/isagalaev/highlight.js/blob/master/AUTHORS.en.txt) (BSD License)
 - [Normalize.css](https://github.com/nercolas/normalize.css) by Nicolas

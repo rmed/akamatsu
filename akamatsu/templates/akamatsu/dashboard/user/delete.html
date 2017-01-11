@@ -22,7 +22,7 @@
 <div class="grid grid-pad">
     <div class="col-1-3 push-1-3">
         <a href="{{ url_for('dashboard.user_index') }}" class="aka-btn-primary plainlink">
-            <i class="glyph-level-up"></i> Back to user list
+            <i class="fa fa-level-up"></i> Back to user list
         </a>
     </div>
 </div>
@@ -39,14 +39,14 @@
     <div class="col-1-4 push-1-4">
         <form action="" method="POST" role="form">
             <button type="submit" class="aka-btn-success">
-                <i class="glyph-trash"></i> Confirm
+                <i class="fa fa-trash"></i> Confirm
             </button>
         </form>
     </div>
 
     <div class="col-1-4">
         <a href="{{ url_for('dashboard.user_edit', user_id=user.id) }}" class="aka-btn-warning plainlink">
-            <i class="glyph-level-up"></i> Cancel
+            <i class="fa fa-level-up"></i> Cancel
         </a>
     </div>
 </div>

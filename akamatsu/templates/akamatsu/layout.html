@@ -46,7 +46,7 @@
 {% if config['SOCIAL'] is defined %}
         <nav class="aka-overbox">
         {% for item in config['SOCIAL'] %}
-            <a class="glyph-{{ item['glyph'] }}" href="{{ item['link'] }}" target="_blank"></a>
+            <a class="fa fa-{{ item['glyph'] }}" href="{{ item['link'] }}" target="_blank"></a>
         {% endfor %}
         </nav>
 {% endif %}
@@ -55,7 +55,7 @@
 {# Navigation bar #}
 {% if config['NAVBAR'] %}
     <nav class="aka-navbar">
-        <a id="aka-navmenu" class="glyph-menu" href="javascript:void(0);"></a>
+        <a id="aka-navmenu" class="fa fa-menu" href="javascript:void(0);"></a>
 
     {% for item in config['NAVBAR'] %}
         <a class="navitem" href="{{ item['link'] }}">{{ item['text'] }}</a>
