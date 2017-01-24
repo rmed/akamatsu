@@ -92,11 +92,47 @@ function onListColumnClick() {
     window.location.assign(current.concat('?', $.param(params)));
 }
 
+/**
+ * Loads SimpleMDE editor in the relevant textarea
+ */
+function loadSimpleMDE() {
+    var textarea = $('#content');
 
-// Add event handlers
+    if (textarea.length) {
+        var simplemde = new SimpleMDE({
+            element: textarea[0],
+            spellChecker: false,
+            tabSize: 4,
+            toolbar: [
+                'bold',
+                'italic',
+                'heading',
+                '|',
+                'code',
+                'quote',
+                'unordered-list',
+                'ordered-list',
+                '|',
+                'link',
+                'image',
+                'table',
+                'horizontal-rule',
+                '|',
+                'preview',
+                'side-by-side',
+                'fullscreen',
+                'guide'
+            ]
+        });
+    }
+}
+
+
+// Add event handlers and initializers
 $(function() {
     $('.aka-listitem').on('click', onListItemClick);
     $('.aka-listcolumn').on('click', onListColumnClick);
     $('.aka-setnow').on('click', onSetTodayClick);
 
+    loadSimpleMDE();
 });

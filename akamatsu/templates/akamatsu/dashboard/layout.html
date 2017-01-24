@@ -12,6 +12,9 @@
     <script type="text/javascript" src="{{ ASSET_URL }}"></script>
 {% endassets %}
 
+{# Miscenlaneous stuff #}
+{% block custom_header %}{% endblock %}
+
     <title>{% block title %}{% endblock %} | {{ config['SITENAME'] }} dashboard</title>
 
     {# Be responsive #}
