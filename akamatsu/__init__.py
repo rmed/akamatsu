@@ -133,6 +133,10 @@ app.register_blueprint(bp_blog, url_prefix='/blog')
 app.register_blueprint(bp_page)
 
 
+# Custom commands
+from akamatsu import commands
+
+
 # 404
 @app.errorhandler(404)
 def not_found(e):
