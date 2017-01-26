@@ -80,8 +80,7 @@ md = Misaka(
     no_intra_emphasis=False,
     strikethrough=True,
     superscript=True,
-    tables=True,
-    no_html=True
+    tables=True
 )
 md.init_app(app)
 

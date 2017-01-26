@@ -23,7 +23,6 @@
 
 from akamatsu import db
 
-from flask import Markup
 from flask_user import UserMixin
 from flask_waffleconf import WaffleMixin
 from sqlalchemy import event
@@ -96,29 +95,20 @@ class Page(db.Model):
     Pages may be written in markdown (default) or in html. Security should
     be taken into consideration when writing html.
 
-    The `<body>` tag is substituted by the `content` attribute for greater
-    control, while he `<head>` tag may be overriden in the `custom_head`
-    attribute (for additional CSS/JS, etc). If not provided, default
-    template `<head>` will be used.
+    The `<head>` can be extended (e.g. to add some custom JS scripts) when
+    writing pages in html.
 
     The flag `is_root` determines whether the page is the root of the
     website ('/'), there can be only one. If there are more records with
     this tag, the first one found will be used.
-
-    The flag `is_html` determines whether the page has been written in
-    markdown (False) or html (True).
 
     Attributes:
         id (int): Unique page ID.
         title (str): Title of the page.
         mini (str): Optional text to show at the top of the page.
         content (str): Main content of the page. This can be written in
-            markdown or html (only parsed if ``is_html`` is True).
-            Writing html implies that the ``<body>`` tag will be  replaced with
-            the content specified. The ``<head>`` can be changed using the
-            ``custom_head`` attribute.
-        custom_head (str): Replace the ``<head>`` of the template with this if
-            present, otherwise use the default one.
+            markdown or html.
+        custom_head (str): Add custom html to the ``<head>`` of the template.
         ghost (str): If present, the route shown in this attribute will
             be used when accessing to this page.
         base_route (str): Base route of the page. This will be appended to
@@ -128,8 +118,6 @@ class Page(db.Model):
         route (str): Modified automatically. Route to this page formed by the
             ``base_route`` and ``slug`` attributes.
         is_root (bool): Whether this page is the one accessed through '/'.
-        is_html (bool): Whether this page is written in html or not.
-        use_layout_header (bool): Whether or not to use the default header.
         is_published (bool): Whether this page is published or not.
         comments_enabled (bool): Whether or not to show comments for the page.
         timestamp (date): Date in which the page was created/edited.
@@ -147,20 +135,10 @@ class Page(db.Model):
     slug = db.Column(db.String(255), unique=False, nullable=False)
     route = db.Column(db.String(512), unique=True, nullable=False)
     is_root = db.Column(db.Boolean, default=False)
-    is_html = db.Column(db.Boolean, default=False)
-    use_layout_header = db.Column(db.Boolean, default=True)
     is_published = db.Column(db.Boolean, default=False)
     comments_enabled = db.Column(db.Boolean, default=False)
     timestamp = db.Column(db.DateTime)
 
-
-    def content_as_html(self):
-        """Return a ``Markup`` object from the ``content`` attribute."""
-        return Markup(self.content)
-
-    def head_as_html(self):
-        """Return a ``Markup`` object from the ``custom_head`` attribute."""
-        return Markup(self.custom_head)
 
 class Tag(db.Model):
     """Post taggings.

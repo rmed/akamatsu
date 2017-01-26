@@ -62,13 +62,11 @@ class PageForm(Form):
 
     # Flags
     is_root = BooleanField('Is root page')
-    is_html = BooleanField('Content is HTML')
-    use_layout_header = BooleanField('Use layout header')
-    is_published = BooleanField('Published')
+    is_published = BooleanField('Is published')
     comments_enabled = BooleanField('Enable comments')
 
     # Timestamp
-    timestamp = DateTimeField('Publish date')
+    timestamp = DateTimeField('Publication date')
 
 
 class PostForm(Form):
@@ -97,11 +95,11 @@ class PostForm(Form):
     tag_list = StringField('Tags', description='comma separated tag names')
 
     # Flags
-    is_published = BooleanField('Published')
+    is_published = BooleanField('Is published')
     comments_enabled = BooleanField('Enable comments')
 
     # Timestamp
-    timestamp = DateTimeField('Publish date')
+    timestamp = DateTimeField('Publication date')
 
 
 class ProfileForm(Form):
