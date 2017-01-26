@@ -52,6 +52,11 @@
                 )
             }}
         {% endif %}
+
+        <span class="date">
+            <i>Last updated: </i>
+            {{ page.timestamp.strftime('%d %b %Y') }}
+        </span>
     </article>
 </div>
 {% endif %}
