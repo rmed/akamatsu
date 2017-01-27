@@ -138,8 +138,6 @@ functionality**.
   Version 1.1)
 - [Font Awesome](http://fontawesome.io/) by Dave Gandy (SIL OPEN FONT LICENSE
   Version 1.1 and MIT LICENSE)
-- [highlight.js](https://highlightjs.org) by [highlight.js
-  contributors](https://github.com/isagalaev/highlight.js/blob/master/AUTHORS.en.txt) (BSD License)
 - [Normalize.css](https://github.com/nercolas/normalize.css) by Nicolas
   Gallagher and Jonathan Neal (MIT License)
 - [Simple-Grid](https://github.com/ThisIsDallas/Simple-Grid) by Dallas Bass
