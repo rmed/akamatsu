@@ -29,14 +29,17 @@ from flask_migrate import Migrate
 from flask_misaka import Misaka
 from flask_sqlalchemy import SQLAlchemy
 from flask_user import SQLAlchemyAdapter, UserManager, user_logged_in
+from flask_user.emails import send_email
 from flask_waffleconf import AlchemyWaffleStore, WaffleConf
 
+from akamatsu.bootstrap import BASE_CONFIG, make_celery
 from akamatsu.util import HighlighterRenderer
 
 import os
 
 
 app = Flask(__name__, instance_relative_config=True)
+app.config.update(BASE_CONFIG)
 
 # Load configuration specified in environment variable or default
 # development one
@@ -57,14 +60,38 @@ from akamatsu import models
 migrate = Migrate(app, db)
 
 
-# Whitespacing Jinja
-app.jinja_env.trim_blocks = True
-app.jinja_env.lstrip_blocks = True
+# Setup Flask-Mail
+mail = Mail(app)
+
+
+# Celery support (optional)
+celery = None
+
+if app.config.get('USE_CELERY', False):
+    celery = make_celery(app)
+
+    # Improt tasks
+    from akamatsu.tasks import async_mail
+
+def _send_user_mail(*args):
+    """Specify the function for sending mails in Flask-User.
+
+    If celery has been initialized, this will be asynchronous. Defaults to the
+    original one in Flask-User.
+    """
+
+    if app.config.get('USE_CELERY', False):
+        # Asynchronous
+        async_mail.delay(*args)
+
+    else:
+        # Synchronous
+        send_email(*args)
 
 
 # Setup Flask-User
 db_adapter = SQLAlchemyAdapter(db, models.User)
-user_manager = UserManager(db_adapter, app)
+user_manager = UserManager(db_adapter, app, send_email_function=_send_user_mail)
 
 
 # Setup Flask-WaffleConf
@@ -85,8 +112,9 @@ md = Misaka(
 md.init_app(app)
 
 
-# Setup Flask-Mail
-mail = Mail(app)
+# Whitespacing Jinja
+app.jinja_env.trim_blocks = True
+app.jinja_env.lstrip_blocks = True
 
 
 # Flask-Assets bundles
@@ -117,6 +145,8 @@ assets.register('db_js_pack', db_js_bundle)
 
 # Analytics
 analytics = Analytics(app)
+
+
 
 
 from akamatsu.views.blog import bp_blog

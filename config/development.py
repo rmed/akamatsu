@@ -38,31 +38,14 @@ ALLOWED_EXTENSIONS = set()
 MAX_CONTENT_LENGTH = 16 * 1024 * 1024 # 16 MB
 
 
+# Celery
+USE_CELERY = False
+CELERY_BROKER_URL = 'redis://localhost:6379'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379'
+
+
 # Flask-User
-USER_APP_NAME               = SITENAME
-USER_ENABLE_EMAIL           = True
-USER_ENABLE_REGISTRATION    = False
-USER_ENABLE_FORGOT_PASSWORD = True
-
-USER_CHANGE_PASSWORD_TEMPLATE = "akamatsu/dashboard/flask_user/change_password.html"
-USER_FORGOT_PASSWORD_TEMPLATE = "akamatsu/dashboard/flask_user/forgot_password.html"
-USER_LOGIN_TEMPLATE           = "akamatsu/dashboard/flask_user/login.html"
-USER_RESET_PASSWORD_TEMPLATE  = "akamatsu/dashboard/flask_user/reset_password.html"
-
-USER_CHANGE_PASSWORD_URL      = '/dashboard/profile/change-password'
-USER_EMAIL_ACTION_URL         = '/dashboard/users/email/<id>/<action>'
-USER_FORGOT_PASSWORD_URL      = '/dashboard/forgot-password'
-USER_LOGIN_URL                = '/dashboard/login'
-USER_LOGOUT_URL               = '/dashboard/logout'
-USER_RESET_PASSWORD_URL       = '/dashboard/reset-password/<token>'
-
-USER_AFTER_CHANGE_PASSWORD_ENDPOINT = 'dashboard.profile_edit'
-USER_AFTER_FORGOT_PASSWORD_ENDPOINT = 'user.login'
-USER_AFTER_LOGIN_ENDPOINT           = 'dashboard.home'
-USER_AFTER_RESET_PASSWORD_ENDPOINT  = 'dashboard.home'
-USER_UNAUTHORIZED_ENDPOINT          = 'dashboard.home'
-
-USER_PASSWORD_HASH = 'sha512_crypt'
+USER_APP_NAME = SITENAME
 
 
 # Flask-Mail
@@ -94,51 +77,5 @@ NAVBAR = [
 ]
 
 # Waffle Conf
-WAFFLE_CONFS = {
-    "SITENAME": {
-        "desc": "Site name",
-        "default": "akamatsu"
-    },
-
-    "FOOTER_LEFT": {
-        "desc": "Left footer",
-        "default": ""
-    },
-
-    "FOOTER_RIGHT": {
-        "desc": "Right footer",
-        "default": ""
-    },
-
-    "DISQUS_SHORTNAME": {
-        "desc": "Disqus shortname",
-        "default": ""
-    },
-
-    "SOCIAL": {
-        "desc": "Social links",
-        "default": []
-    },
-
-    "NAVBAR": {
-        "desc": "Navigation bar",
-        "default": []
-    },
-
-    "ALLOWED_EXTENSIONS": {
-        "desc": "Allowed file extensions",
-        "default": set()
-    },
-
-    "HUMANS_TXT": {
-        "desc": "Text for humans.txt resource",
-        "default": ""
-    },
-
-    "ROBOTS_TXT": {
-        "desc": "Text for robots.txt resource",
-        "default": ""
-    }
-}
-
-# WAFFLE_MULTIPROC = True
+WAFFLE_MULTIPROC = False
+WAFFLE_WATCHTYPE = "file"
