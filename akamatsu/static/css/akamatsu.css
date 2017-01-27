@@ -500,27 +500,43 @@ Pages and posts
 Pagination
 ===============
 */
-#aka-prevpage,
-#aka-prevpage:link,
-#aka-prevpage:visited,
-#aka-nextpage,
-#aka-nextpage:link,
-#aka-nextpage:visited {
+#aka-pagination {
+    border-bottom: 1px solid #E3E3E3;
     color: #222222;
-    display: block;
-    font-weight: bold;
-    opacity: 0.6;
-    text-decoration: none;
+    clear: both;
+    display: table;
+    margin: auto;
+    margin-top: 20px;
+    padding: 0;
 }
 
-#aka-prevpage:hover,
-#aka-nextpage:hover {
+#aka-pagination a,
+#aka-pagination a:link,
+#aka-pagination a:visited,
+#aka-pagination span {
+    color: #222222;
+    border-bottom: 1px solid transparent;
+    display: inline-block;
+    font-weight: normal;
+    padding-left: 10px;
+    padding-right: 10px;
+    opacity: 0.6;
+    text-decoration: none;
+    transition: all 300ms ease 0s;
+}
+
+#aka-pagination a:hover,
+#aka-pagination .current {
+    border-bottom: 1px solid #3E8CC0;
     opacity: 1;
     transition: all 300ms ease 0s;
 }
 
-#aka-prevpage {text-align: left;}
-#aka-nextpage {text-align: right;}
+#aka-pagination.admin a:hover,
+#aka-pagination.admin .current {
+    border-bottom: 1px solid #BB4D4D;
+}
+
 
 /*
 ===============
