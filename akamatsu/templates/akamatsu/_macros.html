@@ -32,9 +32,9 @@
 </script>
 {% endmacro %}
 
-{# Used to display only the first paragraph of the post as a summary #}
+{# Used to display only up to the first page break or the whole post #}
 {% macro get_summary(post) %}
-    {% set summary = post.content.split('\n')[0].strip() %}
+    {% set summary = post.content.split('<!--aka-break-->')[0].strip() %}
     {{ summary|markdown }}
 {% endmacro %}
 

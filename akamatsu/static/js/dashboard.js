@@ -117,6 +117,20 @@ function loadSimpleMDE() {
                 'image',
                 'table',
                 'horizontal-rule',
+                {
+                    name: 'break',
+                    action: function insertBreak(editor) {
+                        var cm = editor.codemirror;
+                        var start = cm.getCursor('start');
+                        var end = cm.getCursor('end');
+
+                        cm.setSelection(start, end);
+                        cm.replaceSelection('<!--aka-break-->');
+                        cm.focus();
+                    },
+                    className: 'fa fa-level-down',
+                    title: 'Insert page break (only for blog posts)'
+                },
                 '|',
                 'preview',
                 'side-by-side',
