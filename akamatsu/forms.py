@@ -21,13 +21,13 @@
 
 """This file contains WTForms form declarations."""
 
-from flask_wtf import Form
+from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileRequired
 from wtforms import BooleanField, DateTimeField, \
         StringField, TextAreaField, validators
 
 
-class PageForm(Form):
+class PageForm(FlaskForm):
     """Form for creating/editing pages."""
     # Basic info
     title = StringField(
@@ -69,7 +69,7 @@ class PageForm(Form):
     timestamp = DateTimeField('Publication date')
 
 
-class PostForm(Form):
+class PostForm(FlaskForm):
     """Form for creating/editing posts."""
     # Basic info
     title = StringField(
@@ -102,7 +102,7 @@ class PostForm(Form):
     timestamp = DateTimeField('Publication date')
 
 
-class ProfileForm(Form):
+class ProfileForm(FlaskForm):
     """Form for editing own profile details."""
     first_name = StringField('Name',[validators.Length(max=50)])
     last_name = StringField('Last name',[validators.Length(max=50)])
@@ -116,7 +116,7 @@ class ProfileForm(Form):
     personal_bio = TextAreaField('Personal bio')
 
 
-class SettingsForm(Form):
+class SettingsForm(FlaskForm):
     """Form for editing site settings."""
     sitename = StringField('Site name')
 
@@ -140,7 +140,7 @@ class SettingsForm(Form):
     footer_right = TextAreaField('Right footer', description='HTML enabled')
 
 
-class UploadForm(Form):
+class UploadForm(FlaskForm):
     """Form for uploading files."""
     filename = StringField(
         'Filename to use',
@@ -157,7 +157,7 @@ class UploadForm(Form):
         [FileRequired()])
 
 
-class UserForm(Form):
+class UserForm(FlaskForm):
     """Form for showing/editing users (administrator)."""
     # Authentication
     username = StringField(
