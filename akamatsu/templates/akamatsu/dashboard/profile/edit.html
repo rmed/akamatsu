@@ -1,6 +1,11 @@
 {% extends "akamatsu/dashboard/layout.html" %}
 {% from "akamatsu/_macros.html" import render_field, render_checkbox_field, render_submit_field %}
 
+{% block custom_header %}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
+    <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
+{% endblock %}
+
 {% block title %}Edit profile{% endblock %}
 {% block mini %}.profile{% endblock %}
 

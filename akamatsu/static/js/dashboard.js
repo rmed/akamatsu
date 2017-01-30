@@ -96,7 +96,7 @@ function onListColumnClick() {
  * Loads SimpleMDE editor in the relevant textarea
  */
 function loadSimpleMDE() {
-    var textarea = $('#content');
+    var textarea = $('#content, #personal_bio');
 
     if (textarea.length) {
         var simplemde = new SimpleMDE({

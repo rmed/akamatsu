@@ -113,7 +113,10 @@ class ProfileForm(FlaskForm):
          validators.Email()])
 
     notify_login = BooleanField('Notify login')
-    personal_bio = TextAreaField('Personal bio')
+    personal_bio = TextAreaField(
+        'Personal bio',
+        description='Markdown enabled'
+    )
 
 
 class SettingsForm(FlaskForm):
