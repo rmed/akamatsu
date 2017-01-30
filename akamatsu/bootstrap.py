@@ -26,6 +26,9 @@ from celery import Celery
 
 # Static configuration values
 BASE_CONFIG = {
+    # Flask-SQLAlchemy
+    'SQLALCHEMY_TRACK_MODIFICATIONS': False,
+
     # Flask-User
     'USER_ENABLE_EMAIL': True,
     'USER_ENABLE_REGISTRATION': False,
