@@ -4,10 +4,10 @@ Flask==0.12
 Flask-Analytics==0.6.0
 Flask-Assets==0.12
 Flask-Mail==0.9.1
-Flask-Migrate==2.0.2
+Flask-Migrate==2.0.3
 Flask-Misaka==0.4.1
 Flask-SQLAlchemy==2.1
-Flask-User==0.6.10
+Flask-User==0.6.11
 Flask-WaffleConf==0.3.1
-Flask-WTF==0.13.1
-pygments==2.1.3
+Flask-WTF==0.14.2
+pygments==2.2.0
