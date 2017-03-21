@@ -1,5 +1,5 @@
 {% extends "akamatsu/dashboard/layout.html" %}
-{% from "akamatsu/_macros.html" import render_field, render_checkbox_field, render_submit_field %}
+{% from "akamatsu/_macros.html" import render_field, render_checkbox_field, render_submit_field, render_success_msg, render_warning_msg %}
 
 {% block title %}Edit settings{% endblock %}
 {% block mini %}.conf{% endblock %}
@@ -9,19 +9,11 @@
 
 {# Status #}
 {% if status == 'saveerror' %}
-<div class="grid grid-pad aka-msg-warning">
-    <div class="col-1-1">
-        <span>{{ errmsg }}</span>
-    </div>
-</div>
+    {{ render_warning_msg(errmsg) }}
 {% endif %}
 
 {% if status == 'saved' %}
-<div class="grid grid-pad aka-msg-success">
-    <div class="col-1-1">
-        <span>Settings updated</span>
-    </div>
-</div>
+    {{ render_success_msg('Settings updated') }}
 {% endif %}
 
 

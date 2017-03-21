@@ -675,13 +675,17 @@ textarea:focus {
 .aka-btn-success,
 .aka-btn-success:link,
 .aka-btn-success:visited {
-    background-color: #61EA6A;
-    border-color: #4DBB54;
+    /* background-color: #61EA6A; */
+    /* border-color: #4DBB54; */
+    background-color: #3CB371;
+    border-color: #308F5A;
 }
 
 .aka-btn-success:hover {
-    background-color: #2AED38;
-    border-bottom: 2px solid #30C722;
+    /* background-color: #2AED38; */
+    background-color: #36A165;
+    /* border-bottom: 2px solid #30C722; */
+    border-bottom: 2px solid #2A7D4F;
 }
 
 /* Red button */
@@ -718,6 +722,7 @@ Dashboard
     font-size: 1.2em;
     font-weight: normal;
     opacity: 0.6;
+    text-align:center;
     text-decoration: none;
     transition: all 300ms ease 0s;
 }
@@ -845,20 +850,28 @@ Messages
 ===============
 */
 
+.aka-msg .aka-close-msg,
+.aka-msg .aka-close-msg:link,
+.aka-msg .aka-close-msg:visited {
+    color: #FEFEFE;
+    float: right;
+    font-size: 1.2em;
+    text-decoration: none;
+}
+
 /* Green message */
 .aka-msg-success {
-    background-color: #4DBB54;
-    border-radius: 5px;
+    background-color: #3CB371;
+    border-radius: 2px;
     color: #FEFEFE;
-    font-weight: bold;
-    padding: 20px;
+    padding: 15px;
 }
 
 
 /* Red message */
 .aka-msg-warning {
     background-color: #EA6161;
-    border-radius: 5px;
+    border-radius: 2px;
     color: #FEFEFE;
-    padding: 20px;
+    padding: 15px;
 }

@@ -3,6 +3,15 @@
  */
 
 /**
+ * Close status messages
+ */
+function onCloseMsgClick() {
+    var msgbox = $(this).closest('.aka-msg');
+
+    msgbox.hide();
+}
+
+/**
  * Update a field with the current date and time.
  *
  * Uses `date_field` attribute to determine the id of the field to update.
@@ -144,6 +153,7 @@ function loadSimpleMDE() {
 
 // Add event handlers and initializers
 $(function() {
+    $('.aka-close-msg').on('click', onCloseMsgClick);
     $('.aka-listitem').on('click', onListItemClick);
     $('.aka-listcolumn').on('click', onListColumnClick);
     $('.aka-setnow').on('click', onSetTodayClick);

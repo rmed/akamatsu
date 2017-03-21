@@ -91,7 +91,7 @@
             {% endif %}
 
             {% if is_date %}
-                <a href="javascript:void(0)" class="aka-setnow" date_field="{{ field.id }}">Set to now</a>
+                <a href="javascript:void(0);" class="aka-setnow" date_field="{{ field.id }}">Set to now</a>
             {% endif %}
 
             {% if field.errors %}
@@ -152,6 +152,29 @@
         </div>
     </div>
     {% endif %}
+{% endmacro %}
+
+
+{# Render success messages in dashboard #}
+{% macro render_success_msg(msg) %}
+<div class="grid grid-pad aka-msg aka-msg-success">
+    <a href="javascript:void(0);" class="aka-close-msg"><i class="fa fa-times"></i></a>
+
+    <div class="col-1-1">
+        <span>{{ msg }}</span>
+    </div>
+</div>
+{% endmacro %}
+
+{# Render warning messages in dashboard #}
+{% macro render_warning_msg(msg) %}
+<div class="grid grid-pad aka-msg aka-msg-warning">
+    <a href="javascript:void(0);" class="aka-close-msg"><i class="fa fa-times"></i></a>
+
+    <div class="col-1-1">
+        <span>{{ msg }}</span>
+    </div>
+</div>
 {% endmacro %}
 
 

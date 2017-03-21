@@ -136,7 +136,7 @@ js_bundle = Bundle(
 
 db_js_bundle = Bundle(
     'js/dashboard.js',
-    filters='rjsmin', output='gen/packed_db.js');
+    filters='rjsmin', output='gen/packed_db.js')
 
 assets.register('css_pack', css_bundle)
 assets.register('js_pack', js_bundle)
