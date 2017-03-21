@@ -1,6 +1,9 @@
 <!DOCTYPE HTML>
 <html>
 <head>
+
+<link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+
 {# Minified CSS #}
 {% assets "css_pack" %}
     <link rel="stylesheet" type="text/css" href="{{ ASSET_URL }}">
