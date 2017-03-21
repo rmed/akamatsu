@@ -21,8 +21,6 @@
 
 """This file contains miscelaneous bootstrap code for akamatsu."""
 
-from celery import Celery
-
 
 # Static configuration values
 BASE_CONFIG = {
@@ -106,14 +104,17 @@ BASE_CONFIG = {
 
 def make_celery(app):
     """Create a celery instance for the application."""
-    celery = Celery(
+    # Celery is optional, import it here rather than globally
+    from celery import Celery
+
+    celery_instance = Celery(
         app.import_name,
         backend=app.config['CELERY_RESULT_BACKEND'],
         broker=app.config['CELERY_BROKER_URL']
     )
 
-    celery.conf.update(app.config)
-    TaskBase = celery.Task
+    celery_instance.conf.update(app.config)
+    TaskBase = celery_instance.Task
 
     class ContextTask(TaskBase):
         abstract = True
@@ -121,6 +122,6 @@ def make_celery(app):
             with app.app_context():
                 return TaskBase.__call__(self, *args, **kwargs)
 
-    celery.Task = ContextTask
+    celery_instance.Task = ContextTask
 
-    return celery
+    return celery_instance
