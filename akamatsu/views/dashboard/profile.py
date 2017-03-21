@@ -67,7 +67,8 @@ def profile_edit():
                     status='saveerror',
                     form=form,
                     errmsg=errmsg,
-                    user_id=user.id)
+                    user_id=user.id
+                )
 
 
         # Profile saved, remain in the edition view
@@ -75,10 +76,12 @@ def profile_edit():
             'akamatsu/dashboard/profile/edit.html',
             status='saved',
             form=form,
-            user_id=user.id)
+            user_id=user.id
+        )
 
     return render_template(
         'akamatsu/dashboard/profile/edit.html',
         status='edit',
         form=form,
-        user_id=user.id)
+        user_id=user.id
+    )

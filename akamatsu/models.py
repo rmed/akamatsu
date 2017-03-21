@@ -78,16 +78,21 @@ class Post(db.Model):
     author = db.relationship(
         'User',
         primaryjoin='Post.author_id == User.id',
-       backref=db.backref('posts', lazy='dynamic'))
+        backref=db.backref('posts', lazy='dynamic')
+    )
 
     tags = db.relationship(
         'Tag', secondary=post_tags,
         backref=db.backref('posts', lazy='dynamic'),
-        cascade='delete, save-update', collection_class=set)
+        cascade='delete, save-update', collection_class=set
+    )
 
     # Proxies
     tag_names = association_proxy(
-            'tags', 'name', creator=lambda n: Tag.get_or_new(n))
+        'tags',
+        'name',
+        creator=lambda n: Tag.get_or_new(n)
+    )
 
 class Page(db.Model):
     """Model representing dynamic pages.
@@ -242,11 +247,15 @@ class User(db.Model, UserMixin):
     roles = db.relationship(
         'Role', secondary='user_roles',
         backref=db.backref('users', lazy='dynamic'),
-        cascade='delete, save-update', collection_class=set)
+        cascade='delete, save-update', collection_class=set
+    )
 
     # Proxies
     role_names = association_proxy(
-            'roles', 'name', creator=lambda n: Role.get_role(n))
+        'roles',
+        'name',
+        creator=lambda n: Role.get_role(n)
+    )
 
     def is_active(self):
         return self.is_enabled
@@ -273,10 +282,14 @@ class UserRoles(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
 
-    user_id = db.Column(db.Integer,
-            db.ForeignKey('users.id', onupdate='CASCADE', ondelete='CASCADE'))
-    role_id = db.Column(db.Integer,
-            db.ForeignKey('roles.id', onupdate='CASCADE', ondelete='CASCADE'))
+    user_id = db.Column(
+        db.Integer,
+        db.ForeignKey('users.id', onupdate='CASCADE', ondelete='CASCADE')
+    )
+    role_id = db.Column(
+        db.Integer,
+        db.ForeignKey('roles.id', onupdate='CASCADE', ondelete='CASCADE')
+    )
 
 
 # Flask-WaffleConf

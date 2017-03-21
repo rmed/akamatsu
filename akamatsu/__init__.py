@@ -127,16 +127,22 @@ css_bundle = Bundle(
     'css/normalize.css',
     'css/simplegrid.css',
     'css/akamatsu.css',
-    filters='cssmin', output='gen/packed.css')
+    filters='cssmin',
+    output='gen/packed.css'
+)
 
 # Cannot include zepto, throws errors
 js_bundle = Bundle(
     'js/akamatsu.js',
-    filters='rjsmin', output='gen/packed.js')
+    filters='rjsmin',
+    output='gen/packed.js'
+)
 
 db_js_bundle = Bundle(
     'js/dashboard.js',
-    filters='rjsmin', output='gen/packed_db.js')
+    filters='rjsmin',
+    output='gen/packed_db.js'
+)
 
 assets.register('css_pack', css_bundle)
 assets.register('js_pack', js_bundle)
@@ -195,6 +201,7 @@ def _do_on_login(sender, user, **extra):
             'akamatsu - New session started',
             recipients=[user.email],
             body=render_template('mail/login.txt', user=user),
-            html=render_template('mail/login.html', user=user))
+            html=render_template('mail/login.html', user=user)
+        )
 
         mail.send(notification)

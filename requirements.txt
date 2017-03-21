@@ -1,5 +1,4 @@
 awesome-slugify==1.6.5
-celery==4.0.2
 cssmin==0.2.0
 Flask==0.12
 Flask-Analytics==0.6.0

@@ -47,14 +47,16 @@ def user_index(page=1):
     users = (
         User.query
         .order_by(ordering)
-        .paginate(page, 20, False))
+        .paginate(page, 20, False)
+    )
 
     try:
         return render_template(
             'akamatsu/dashboard/user/index.html',
             users=users,
             order_key=order_key,
-            order_dir=order_dir)
+            order_dir=order_dir
+        )
 
     except NotFound:
         # Show a 'no posts found' notice instead of a 404 error
@@ -101,7 +103,8 @@ def user_create():
                     mode='create',
                     status='saveerror',
                     form=form,
-                    errmsg=errmsg)
+                    errmsg=errmsg
+                )
 
 
         # Post saved return to index
@@ -110,7 +113,8 @@ def user_create():
     return render_template(
         'akamatsu/dashboard/user/edit.html',
         mode='create',
-        form=form)
+        form=form
+    )
 
 @bp_dashboard.route('/users/edit/<int:user_id>', methods=['GET', 'POST'])
 @roles_required('admin')
@@ -128,7 +132,8 @@ def user_edit(user_id):
             'akamatsu/dashboard/user/edit.html',
             mode='edit',
             status='error',
-            errmsg='User does not exist')
+            errmsg='User does not exist'
+        )
 
     form = UserForm(obj=user)
     # Get roles
@@ -169,7 +174,8 @@ def user_edit(user_id):
                     status='saveerror',
                     form=form,
                     errmsg=errmsg,
-                    user_id=user_id)
+                    user_id=user_id
+                )
 
         # Post saved, remain in the edition view
         return render_template(
@@ -177,14 +183,16 @@ def user_edit(user_id):
             mode='edit',
             status='saved',
             form=form,
-            user_id=user_id)
+            user_id=user_id
+        )
 
     return render_template(
         'akamatsu/dashboard/user/edit.html',
         mode='edit',
         status='edit',
         form=form,
-        user_id=user_id)
+        user_id=user_id
+    )
 
 @bp_dashboard.route('/users/delete/<int:user_id>', methods=['GET', 'POST'])
 @roles_required('admin')
@@ -230,15 +238,21 @@ def user_delete(user_id):
                 return render_template(
                     'akamatsu/dashboard/user/delete.html',
                     status='error',
-                    errmsg=errmsg)
+                    errmsg=errmsg
+                )
 
 
         return render_template(
-            'akamatsu/dashboard/user/delete.html', status='deleted')
+            'akamatsu/dashboard/user/delete.html',
+            status='deleted'
+        )
 
     # Show confirmation
     return render_template(
-        'akamatsu/dashboard/user/delete.html', status='confirm', user=user)
+        'akamatsu/dashboard/user/delete.html',
+        status='confirm',
+        user=user
+    )
 
 def _sort_users(args):
     """Sort users according to the specified key and order.

@@ -39,9 +39,11 @@ def settings_edit():
 
     parsed = state.parse_conf()
     social = '\n'.join(
-        ['%s:%s' % (a.get('glyph',''), a.get('link','')) for a in parsed.get('SOCIAL', [])])
+        ['%s:%s' % (a.get('glyph',''), a.get('link','')) for a in parsed.get('SOCIAL', [])]
+    )
     navbar = '\n'.join(
-        ['%s:%s' % (a.get('text',''), a.get('link','')) for a in parsed.get('NAVBAR', [])])
+        ['%s:%s' % (a.get('text',''), a.get('link','')) for a in parsed.get('NAVBAR', [])]
+    )
 
     populate = {
         'sitename': parsed.get('SITENAME', ''),
@@ -128,16 +130,19 @@ def settings_edit():
                     'akamatsu/dashboard/settings/edit.html',
                     status='saveerror',
                     form=form,
-                    errmsg=errmsg)
+                    errmsg=errmsg
+                )
 
 
         # Settings saved, remain in the edition view
         return render_template(
             'akamatsu/dashboard/settings/edit.html',
             status='saved',
-            form=form)
+            form=form
+        )
 
     return render_template(
         'akamatsu/dashboard/settings/edit.html',
         status='edit',
-        form=form)
+        form=form
+    )

@@ -38,13 +38,15 @@ def feed():
     feed = AtomFeed(
         'Recent Posts',
         feed_url=request.url,
-        url=request.url_root)
+        url=request.url_root
+    )
 
     posts = (
         Post.query
         .filter_by(is_published=True, ghost='')
         .order_by(Post.timestamp.desc())
-        .limit(15))
+        .limit(15)
+    )
 
     for post in posts:
         # unicode conversion is needed for the content
@@ -54,7 +56,8 @@ def feed():
             content_type='html',
             author=post.author.username,
             url=url_for('blog.show', slug=post.slug, _external=True),
-            updated=post.timestamp)
+            updated=post.timestamp
+        )
 
     return feed.get_response()
 
@@ -70,7 +73,8 @@ def index(page=1):
         Post.query
         .filter_by(is_published=True, ghost='')
         .order_by(Post.timestamp.desc())
-        .paginate(page, 10, False))
+        .paginate(page, 10, False)
+    )
 
     try:
         return render_theme('blog/index.html', posts=posts)
@@ -93,7 +97,8 @@ def tagged(tag, page=1):
         .filter(Post.tags.any(name=tag))
         .filter_by(is_published=True, ghost='')
         .order_by(Post.timestamp.desc())
-        .paginate(page, 10, False))
+        .paginate(page, 10, False)
+    )
 
     try:
         return render_theme('blog/tagged.html', posts=posts, tag=tag)
@@ -113,14 +118,16 @@ def by_user(user, page=1):
     """
     author = (
         User.query
-        .filter_by(username=user)).first()
+        .filter_by(username=user)
+    ).first()
 
     if author:
         posts = (
             Post.query
             .filter_by(author_id=author.id, is_published=True, ghost='')
             .order_by(Post.timestamp.desc())
-            .paginate(page, 10, False))
+            .paginate(page, 10, False)
+        )
 
     else:
         posts = None

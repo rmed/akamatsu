@@ -49,14 +49,16 @@ def page_index(page=1):
         Page.query
         .filter_by(ghost='')
         .order_by(ordering)
-        .paginate(page, 20, False))
+        .paginate(page, 20, False)
+    )
 
     try:
         return render_template(
             'akamatsu/dashboard/page/index.html',
             pages=pages,
             order_key=order_key,
-            order_dir=order_dir)
+            order_dir=order_dir
+        )
 
     except NotFound:
         # Show a 'no pages found' notice instead of a 404 error
@@ -77,14 +79,16 @@ def page_ghost_index(page=1):
         Page.query
         .filter(Page.ghost!='')
         .order_by(ordering)
-        .paginate(page, 20, False))
+        .paginate(page, 20, False)
+    )
 
     try:
         return render_template(
             'akamatsu/dashboard/page/ghost_index.html',
             pages=pages,
             order_key=order_key,
-            order_dir=order_dir)
+            order_dir=order_dir
+        )
 
     except NotFound:
         # Show a 'no pages found' notice instead of a 404 error
@@ -125,7 +129,8 @@ def page_create():
                     mode='create',
                     status='saveerror',
                     form=form,
-                    errmsg=errmsg)
+                    errmsg=errmsg
+                )
 
 
         # Page saved return to index
@@ -148,7 +153,8 @@ def page_edit(page_id):
         return render_template(
             mode='edit',
             status='error',
-            errmsg='Page does not exist')
+            errmsg='Page does not exist'
+        )
 
     form = PageForm(obj=page)
 
@@ -181,7 +187,8 @@ def page_edit(page_id):
                     status='saveerror',
                     form=form,
                     errmsg=errmsg,
-                    page_id=page_id)
+                    page_id=page_id
+                )
 
 
         # Page saved, remain in edition view
@@ -190,14 +197,16 @@ def page_edit(page_id):
             mode='edit',
             status='saved',
             form=form,
-            page_id=page_id)
+            page_id=page_id
+        )
 
     return render_template(
         'akamatsu/dashboard/page/edit.html',
         mode='edit',
         status='edit',
         form=form,
-        page_id=page_id)
+        page_id=page_id
+    )
 
 @bp_dashboard.route('/pages/delete/<int:page_id>', methods=['GET', 'POST'])
 @roles_required(['admin', 'editor'])
@@ -216,7 +225,8 @@ def page_delete(page_id):
         # Show error message
         return render_template(
             'akamatsu/dashboard/page/delete.html', status='error',
-            errmsg = 'Page with ID %d does not exist' % page_id)
+            errmsg = 'Page with ID %d does not exist' % page_id
+        )
 
     if request.method == 'POST':
         # Delete post
@@ -243,15 +253,21 @@ def page_delete(page_id):
                 return render_template(
                     'akamatsu/dashboard/page/delete.html',
                     status='error',
-                    errmsg=errmsg)
+                    errmsg=errmsg
+                )
 
 
         return render_template(
-            'akamatsu/dashboard/page/delete.html', status='deleted')
+            'akamatsu/dashboard/page/delete.html',
+            status='deleted'
+        )
 
     # Show confirmation
     return render_template(
-        'akamatsu/dashboard/page/delete.html', status='confirm', page=page)
+        'akamatsu/dashboard/page/delete.html',
+        status='confirm',
+        page=page
+    )
 
 def _sort_pages(args):
     """Sort pages according to the specified key and order.

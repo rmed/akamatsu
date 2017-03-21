@@ -50,14 +50,16 @@ def file_index(page=1):
     files = (
         FileUpload.query
         .order_by(ordering)
-        .paginate(page, 20, False))
+        .paginate(page, 20, False)
+    )
 
     try:
         return render_template(
             'akamatsu/dashboard/file/index.html',
             files=files,
             order_key=order_key,
-            order_dir=order_dir)
+            order_dir=order_dir
+        )
 
     except NotFound:
         # Show a 'no files found' notice instead of a 404 error
@@ -81,7 +83,8 @@ def file_delete(file_id):
         return render_template(
             'akamatsu/dashboard/file/delete.html',
             status='error',
-            errmsg = 'File with ID %d does not exist' % file_id)
+            errmsg = 'File with ID %d does not exist' % file_id
+        )
 
     path = os.path.join(current_app.config['UPLOAD_DIR'], upload.path)
 
@@ -112,15 +115,21 @@ def file_delete(file_id):
                 return render_template(
                     'akamatsu/dashboard/file/delete.html',
                     status='error',
-                    errmsg=errmsg)
+                    errmsg=errmsg
+                )
 
 
         return render_template(
-            'akamatsu/dashboard/file/delete.html', status='deleted')
+            'akamatsu/dashboard/file/delete.html',
+            status='deleted'
+        )
 
     # Show confirmation
     return render_template(
-        'akamatsu/dashboard/file/delete.html', status='confirm', file=upload)
+        'akamatsu/dashboard/file/delete.html',
+        status='confirm',
+        file=upload
+    )
 
 @bp_dashboard.route('/files/view/<int:file_id>')
 @roles_required(['admin', 'uploader', 'superuploader'])
@@ -137,13 +146,15 @@ def file_show(file_id):
         return render_template(
             'akamatsu/dashboard/file/show.html',
             status='error',
-            errmsg='File does not exist')
+            errmsg='File does not exist'
+        )
 
 
     return render_template(
         'akamatsu/dashboard/file/show.html',
         status='ok',
-        file=upload)
+        file=upload
+    )
 
 @bp_dashboard.route('/files/upload', methods=['GET', 'POST'])
 @roles_required(['admin', 'uploader', 'superuploader'])
@@ -167,7 +178,8 @@ def file_upload():
                 'akamatsu/dashboard/file/upload.html',
                 status='saveerror',
                 form=form,
-                errmsg='That file extension is not allowed')
+                errmsg='That file extension is not allowed'
+            )
 
 
         # Check paths
@@ -186,7 +198,8 @@ def file_upload():
                         'akamatsu/dashboard/file/upload.html',
                         status='saveerror',
                         form=form,
-                        errmsg='Could not create subdirectory')
+                        errmsg='Could not create subdirectory'
+                    )
 
         dst_path = os.path.join(dst_path, filename)
 
@@ -196,11 +209,13 @@ def file_upload():
                 'akamatsu/dashboard/file/upload.html',
                 status='saveerror',
                 form=form,
-                errmsg='A file with that name already exists')
+                errmsg='A file with that name already exists'
+            )
 
         new_file = FileUpload(
             path=os.path.join(subdir, filename),
-            description=form.description.data)
+            description=form.description.data
+        )
 
         # Store file
         try:
@@ -217,13 +232,15 @@ def file_upload():
                 'akamatsu/dashboard/file/upload.html',
                 status='saveerror',
                 form=form,
-                errmsg='Failed to save file')
+                errmsg='Failed to save file'
+            )
 
         # Saved correctly
         return render_template(
             'akamatsu/dashboard/file/upload.html',
             status='saved',
-            form=form)
+            form=form
+        )
 
 
     return render_template('akamatsu/dashboard/file/upload.html', form=form)

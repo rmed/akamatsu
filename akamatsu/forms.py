@@ -32,33 +32,39 @@ class PageForm(FlaskForm):
     # Basic info
     title = StringField(
         'Page title',
-        [validators.Length(min=4, max=255),validators.InputRequired()])
+        [validators.Length(min=4, max=255),validators.InputRequired()]
+    )
 
     mini = StringField(
         'Page mini',
         [validators.Length(max=50),],
-        default=None)
+        default=None
+    )
 
     content = TextAreaField('Content', description='Markdown/HTML enabled')
 
     custom_head = TextAreaField(
         'Custom HTML head',
         default=None,
-        description='HTML enabled')
+        description='HTML enabled'
+    )
 
     ghost = StringField(
         'Ghost link',
         [validators.Length(max=512),],
-        default=None)
+        default=None
+    )
 
     base_route = StringField(
         'Base route',
         [validators.Length(max=255), validators.InputRequired()],
-        default='/')
+        default='/'
+    )
 
     slug = StringField(
         'Page slug',
-        [validators.Length(max=255),])
+        [validators.Length(max=255),]
+    )
 
     # Flags
     is_root = BooleanField('Is root page')
@@ -74,21 +80,25 @@ class PostForm(FlaskForm):
     # Basic info
     title = StringField(
         'Post title',
-        [validators.Length(min=4, max=255), validators.InputRequired()])
+        [validators.Length(min=4, max=255), validators.InputRequired()]
+    )
 
     content = TextAreaField(
         'Content',
         [validators.InputRequired()],
-        description='Markdown enabled')
+        description='Markdown enabled'
+    )
 
     ghost = StringField(
         'Ghost link',
         [validators.Length(max=512),],
-        default=None)
+        default=None
+    )
 
     slug = StringField(
         'Post slug',
-        [validators.Length(max=255),])
+        [validators.Length(max=255),]
+    )
 
     # Relational info
     author_name = StringField('Author', description='username')
@@ -110,7 +120,8 @@ class ProfileForm(FlaskForm):
     email = StringField(
         'Email',
         [validators.Length(max=255), validators.InputRequired(),
-         validators.Email()])
+         validators.Email()]
+    )
 
     notify_login = BooleanField('Notify login')
     personal_bio = TextAreaField(
@@ -125,14 +136,18 @@ class SettingsForm(FlaskForm):
 
     social = TextAreaField(
         'Social links',
-        description='format: "glyph-name:URL"')
+        description='format: "glyph-name:URL"'
+    )
+
     navbar = TextAreaField(
         'Navigation bar',
-        description='format: "text:URL"')
+        description='format: "text:URL"'
+    )
 
     allowed_extensions = StringField(
         'Allowed file extensions',
-        description='comma separated extensions')
+        description='comma separated extensions'
+    )
 
     disqus_shortname = StringField('Disqus shortname')
 
@@ -147,17 +162,20 @@ class UploadForm(FlaskForm):
     """Form for uploading files."""
     filename = StringField(
         'Filename to use',
-        description='if empty, uploaded file name is used')
+        description='if empty, uploaded file name is used'
+    )
 
     subdir = StringField(
         'Subdir for the file',
-        description='relative to upload directory in server')
+        description='relative to upload directory in server'
+    )
 
     description = TextAreaField('File description')
 
     upload = FileField(
         'File to upload',
-        [FileRequired()])
+        [FileRequired()]
+    )
 
 
 class UserForm(FlaskForm):
@@ -165,20 +183,24 @@ class UserForm(FlaskForm):
     # Authentication
     username = StringField(
         'Username',
-        [validators.Length(max=50), validators.InputRequired()])
+        [validators.Length(max=50), validators.InputRequired()]
+    )
 
     password = StringField(
         'Password',
-        [validators.Length(max=255), validators.InputRequired()])
+        [validators.Length(max=255), validators.InputRequired()]
+    )
 
     reset_password_token = StringField(
-        'Password reset token', [validators.Length(max=255)])
+        'Password reset token', [validators.Length(max=255)]
+    )
 
     # Email information
     email = StringField(
         'Email',
         [validators.Length(max=255), validators.InputRequired(),
-         validators.Email()])
+         validators.Email()]
+    )
 
     confirmed_at = DateTimeField('Confirmed at')
 

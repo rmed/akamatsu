@@ -57,14 +57,16 @@ def blog_index(page=1):
         Post.query
         .filter_by(**filters)
         .order_by(ordering)
-        .paginate(page, 20, False))
+        .paginate(page, 20, False)
+    )
 
     try:
         return render_template(
             'akamatsu/dashboard/blog/index.html',
             posts=posts,
             order_key=order_key,
-            order_dir=order_dir)
+            order_dir=order_dir
+        )
 
     except NotFound:
         # Show a 'no posts found' notice instead of a 404 error
@@ -91,14 +93,16 @@ def blog_ghost_index(page=1):
         Post.query
         .filter(*filters)
         .order_by(ordering)
-        .paginate(page, 20, False))
+        .paginate(page, 20, False)
+    )
 
     try:
         return render_template(
             'akamatsu/dashboard/blog/ghost_index.html',
             posts=posts,
             order_key=order_key,
-            order_dir=order_dir)
+            order_dir=order_dir
+        )
 
     except NotFound:
         # Show a 'no posts found' notice instead of a 404 error
@@ -117,12 +121,14 @@ def blog_create():
         # Add tags
         if form.tag_list.data:
             new_post.tag_names = set(
-                [n.strip() for n in form.tag_list.data.split(',')])
+                [n.strip() for n in form.tag_list.data.split(',')]
+            )
 
         if form.author_name.data:
             author = (
                 User.query
-                .filter_by(username=form.author_name.data).first())
+                .filter_by(username=form.author_name.data).first()
+            )
 
             if author:
                 # Assign author ID to the post
@@ -157,7 +163,8 @@ def blog_create():
                     mode='create',
                     status='saveerror',
                     form=form,
-                    errmsg=errmsg)
+                    errmsg=errmsg
+                )
 
 
         # Post saved return to index
@@ -166,7 +173,8 @@ def blog_create():
     return render_template(
         'akamatsu/dashboard/blog/edit.html',
         mode='create',
-        form=form)
+        form=form
+    )
 
 @bp_dashboard.route('/blog/edit/<int:post_id>', methods=['GET', 'POST'])
 @roles_required(['admin', 'blogger', 'superblogger'])
@@ -184,7 +192,8 @@ def blog_edit(post_id):
             'akamatsu/dashboard/blog/edit.html',
             mode='edit',
             status='error',
-            errmsg='The post does not exist')
+            errmsg='The post does not exist'
+        )
 
     # Check permissions
     if current_user.has_role('blogger') and post.author_id != current_user.id:
@@ -192,7 +201,8 @@ def blog_edit(post_id):
             'akamatsu/dashboard/blog/edit.html',
             mode='edit',
             status='error',
-            errmsg='You do not have the required permissions to edit the post')
+            errmsg='You do not have the required permissions to edit the post'
+        )
 
 
     form = PostForm(obj=post)
@@ -205,7 +215,8 @@ def blog_edit(post_id):
         if form.author_name.data:
             author = (
                 User.query
-                .filter_by(username=form.author_name.data).first())
+                .filter_by(username=form.author_name.data).first()
+            )
         else:
             author = None
 
@@ -215,7 +226,8 @@ def blog_edit(post_id):
         # Add tags
         if form.tag_list.data:
             post.tag_names = set(
-                [n.strip() for n in form.tag_list.data.split(',')])
+                [n.strip() for n in form.tag_list.data.split(',')]
+            )
 
         # Set new author
         if author:
@@ -252,7 +264,8 @@ def blog_edit(post_id):
                     status='saveerror',
                     form=form,
                     errmsg=errmsg,
-                    post_id=post_id)
+                    post_id=post_id
+                )
 
 
         # Post saved, remain in the edition view
@@ -261,7 +274,8 @@ def blog_edit(post_id):
             mode='edit',
             status='saved',
             form=form,
-            post_id=post_id)
+            post_id=post_id
+        )
 
     # Get author name
     if post.author:
@@ -272,7 +286,8 @@ def blog_edit(post_id):
         mode='edit',
         status='edit',
         form=form,
-        post_id=post_id)
+        post_id=post_id
+    )
 
 @bp_dashboard.route('/blog/delete/<int:post_id>', methods=['GET', 'POST'])
 @roles_required(['admin', 'blogger', 'superblogger'])
@@ -292,14 +307,16 @@ def blog_delete(post_id):
         return render_template(
             'akamatsu/dashboard/blog/delete.html',
             status='error',
-            errmsg = 'The post does not exist' % post_id)
+            errmsg = 'The post does not exist' % post_id
+        )
 
     # Check permissions
     if current_user.has_role('blogger') and post.author_id != current_user.id:
         return render_template(
             'akamatsu/dashboard/blog/delete.html',
             status='error',
-            errmsg='You do not have the required permissions to delete the post')
+            errmsg='You do not have the required permissions to delete the post'
+        )
 
     if request.method == 'POST':
         # Delete post
@@ -325,15 +342,21 @@ def blog_delete(post_id):
                 return render_template(
                     'akamatsu/dashboard/blog/delete.html',
                     status='error',
-                    errmsg=errmsg)
+                    errmsg=errmsg
+                )
 
 
         return render_template(
-            'akamatsu/dashboard/blog/delete.html', status='deleted')
+            'akamatsu/dashboard/blog/delete.html',
+            status='deleted'
+        )
 
     # Show confirmation
     return render_template(
-        'akamatsu/dashboard/blog/delete.html', status='confirm', post=post)
+        'akamatsu/dashboard/blog/delete.html',
+        status='confirm',
+        post=post
+    )
 
 
 def _sort_posts(args):
