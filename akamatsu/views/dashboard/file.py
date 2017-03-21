@@ -179,6 +179,7 @@ def file_upload():
                 # Create subdir
                 try:
                     os.mkdir(dst_path)
+                    os.chmod(dst_path, 755)
 
                 except:
                     return render_template(
@@ -205,7 +206,9 @@ def file_upload():
         try:
             db.session.add(new_file)
             db.session.commit()
+
             form.upload.data.save(dst_path)
+            os.chmod(dst_path, 644)
 
         except:
             db.session.rollback()
