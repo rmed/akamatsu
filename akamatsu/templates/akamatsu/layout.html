@@ -52,7 +52,7 @@
 {# Navigation bar #}
 {% if config['NAVBAR'] %}
     <nav class="aka-navbar">
-        <a id="aka-navmenu" class="fa fa-menu" href="javascript:void(0);"></a>
+        <a id="aka-navmenu" class="fa fa-bars" href="javascript:void(0);"></a>
 
     {% for item in config['NAVBAR'] %}
         <a class="navitem" href="{{ item['link'] }}">{{ item['text'] }}</a>
