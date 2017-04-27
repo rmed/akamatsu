@@ -29,7 +29,7 @@ function toggleImageModal(image) {
 
     // Close button
     var $close = $('<span>', {id: 'aka-modal-close'});
-    $close.append('<i class="glyph-circle-with-cross"></i>');
+    $close.append('<i class="fa fa-times-circle"></i>');
 
     $close.on('click', function(e) {
         $modal.remove();
