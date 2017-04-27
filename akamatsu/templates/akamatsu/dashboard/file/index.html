@@ -30,7 +30,7 @@
     </div>
 
 {% for file in files.items %}
-    <div file_id="{{ file.id }}" class="grid aka-listitem">
+    <a href="{{ url_for('dashboard.file_show', file_id=file.id) }}" class="grid aka-listitem">
         {# Path #}
         <div class="col-9-12">
             <span class="aka-list-alt">Path</span>
@@ -42,7 +42,7 @@
             <span class="aka-list-alt">Date</span>
             <span class="aka-listdate">{{ file.timestamp }}</span>
         </div>
-    </div>
+    </a>
 {% endfor %}
 </div>
 

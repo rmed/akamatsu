@@ -40,40 +40,6 @@ function onSetTodayClick() {
 }
 
 /**
- * Show the edition form for an element in the dashboard.
- *
- * Works with Posts and Pages by extracting the `page_item` or `post_item`
- * attribute values from an element with `.aka-listitem` class.
- */
-function onListItemClick() {
-    var editUrl = '/dashboard';
-
-    if ($(this)[0].hasAttribute('page_id')) {
-        // Is a page
-        editUrl = editUrl.concat('/pages/edit/', $(this).attr('page_id'));
-
-    } else if ($(this)[0].hasAttribute('post_id')) {
-        // Is a post
-        editUrl = editUrl.concat('/blog/edit/', $(this).attr('post_id'));
-
-    } else if ($(this)[0].hasAttribute('user_id')) {
-        // Is an user
-        editUrl = editUrl.concat('/users/edit/', $(this).attr('user_id'));
-
-    } else if ($(this)[0].hasAttribute('file_id')) {
-        // Is an uploaded file
-        editUrl = editUrl.concat('/files/view/', $(this).attr('file_id'));
-
-    } else {
-        // What is this?
-        return null;
-    }
-
-    // Redirect
-    window.location.assign(editUrl);
-}
-
-/**
  * Change ordering in a dashboard list.
  *
  * Uses `ordered` and `order` attributes from elements with `.aka-listcolumn`
@@ -154,7 +120,6 @@ function loadSimpleMDE() {
 // Add event handlers and initializers
 $(function() {
     $('.aka-close-msg').on('click', onCloseMsgClick);
-    $('.aka-listitem').on('click', onListItemClick);
     $('.aka-listcolumn').on('click', onListColumnClick);
     $('.aka-setnow').on('click', onSetTodayClick);
 

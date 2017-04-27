@@ -42,7 +42,7 @@
     </div>
 
 {% for user in users.items %}
-    <div user_id="{{ user.id }}" class="grid aka-listitem">
+    <a href="{{ url_for('dashboard.user_edit', user_id=user.id) }}" class="grid aka-listitem">
         {# Username #}
         <div class="col-2-12">
             <span class="aka-list-alt">Username</span>
@@ -78,7 +78,7 @@
                 {% endif %}
             </span>
         </div>
-    </div>
+    </a>
 {% endfor %}
 </div>
 

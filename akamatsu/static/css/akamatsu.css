@@ -770,11 +770,16 @@ Dashboard
     transition: all 300ms ease 0s;
 }
 
-.aka-db-list .aka-listitem {
+.aka-db-list .aka-listitem,
+.aka-db-list .aka-listitem:link,
+.aka-db-list .aka-listitem:visited {
     border-bottom: 1px solid transparent;
+    color: #222222;
+    display: block;
     padding-bottom: 10px;
     padding-left: 20px;
     padding-top: 10px;
+    text-decoration: none;
     transition: all 300ms ease 0s;
 }
 

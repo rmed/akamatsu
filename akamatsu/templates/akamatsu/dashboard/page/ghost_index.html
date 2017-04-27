@@ -44,7 +44,7 @@
     </div>
 
 {% for page in pages.items %}
-    <div page_id="{{ page.id }}" class="grid aka-listitem">
+    <a href="{{ url_for('dashboard.page_edit', page_id=page.id) }}" class="grid aka-listitem">
         {# Page route #}
         <div class="col-4-12">
             <span class="aka-list-alt">Route</span>
@@ -74,7 +74,7 @@
             <span class="aka-list-alt">Date</span>
             <span class="aka-listdate">{{ page.timestamp }}</span>
         </div>
-    </div>
+    </a>
 {% endfor %}
 </div>
 

@@ -48,7 +48,7 @@
     </div>
 
 {% for post in posts.items %}
-    <div post_id="{{ post.id }}" class="grid aka-listitem">
+    <a href="{{ url_for('dashboard.blog_edit', post_id=post.id) }}" class="grid aka-listitem">
         {# Title #}
         <div class="col-4-12">
             <span class="aka-list-alt">Title</span>
@@ -90,7 +90,7 @@
             <span class="aka-list-alt">Date</span>
             <span class="aka-listdate">{{ post.timestamp }}</span>
         </div>
-    </div>
+    </a>
 {% endfor %}
 </div>
 
