@@ -21,7 +21,7 @@
 
 """This file contains unauthenticated blog views."""
 
-from akamatsu import md as markdown
+from akamatsu import app, md as markdown
 from akamatsu.models import Post, User
 from akamatsu.util import render_theme
 
@@ -36,7 +36,7 @@ bp_blog = Blueprint('blog', __name__)
 def feed():
     """Return an atom feed for the blog."""
     feed = AtomFeed(
-        'Recent Posts',
+        '%s: Recent Posts' % app.config.get('SITENAME', 'akamatsu'),
         feed_url=request.url,
         url=request.url_root
     )
