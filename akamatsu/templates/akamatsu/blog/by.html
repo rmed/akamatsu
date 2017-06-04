@@ -54,7 +54,7 @@
 
 {% endfor %}
 
-{{ render_pagination(posts, 'blog.by_user') }}
+{{ render_pagination(posts, 'blog.by_user', user=user) }}
 
 {% else %}
     {# Show error message instead of 404 #}

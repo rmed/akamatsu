@@ -54,7 +54,7 @@
 
 {% endfor %}
 
-{{ render_pagination(posts, 'blog.tagged') }}
+{{ render_pagination(posts, 'blog.tagged', tag=tag) }}
 
 {% else %}
     {# Show error message instead of 404 #}
