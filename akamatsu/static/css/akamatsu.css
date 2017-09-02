@@ -270,7 +270,10 @@ Header container
     color: #FEFEFE;
     font-size: 2em;
     font-weight: normal;
-    padding: 12px;
+    padding-bottom: 12px;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 12px;
     text-decoration: none;
     transition: all 400ms ease 0s;
 
@@ -283,7 +286,7 @@ Header container
     transition: all 400ms ease 0s;
 }
 
-@media (min-width: 400px) {
+@media (min-width: 500px) {
     .aka-navbar {
         padding-left: 30px !important;
     }
