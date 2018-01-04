@@ -1,5 +1,5 @@
 {% extends "akamatsu/layout.html" %}
-{% from "akamatsu/_macros.html" import disqus_comments, show_author, show_bio, show_tags %}
+{% from "akamatsu/_macros.html" import render_comments, show_author, show_bio, show_tags %}
 
 {% block title %}{{ post.title }}{% endblock %}
 
@@ -33,14 +33,11 @@
             {{ show_bio(post) }}
         </div>
 
-        {% if post.comments_enabled %}
-            {{ disqus_comments(
-                    'post_' ~ post.id,
-                    post.title,
-                    url_for('blog.show', _external=True, slug=post.slug)
-                )
-            }}
-        {% endif %}
+        <section id="comments">
+            {% if post.comments_enabled %}
+                {{ render_comments(post, 'post', 'post.show') }}
+            {% endif %}
+        </section>
 
     </article>
 </div>

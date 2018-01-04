@@ -1,3 +1,20 @@
+{# Select comments to render depending on configured type #}
+{% macro render_comments(item, item_type, url) %}
+{% if config.COMMENT_SYSTEM %}
+
+{% if config.COMMENT_SYSTEM == 'disqus' %}
+{% call disqus_comments('{{ item_type }}_' ~ item.id, item.title, url_for('{{ url }}', _external=True, slug=item.slug)) %}{% endcall %}
+
+{% elif config.COMMENT_SYSTEM == 'isso' %}
+{#{% call isso_comments(item.title) %}{% endcall %}#}
+{{ isso_comments(item.title) }}
+
+{% endif %}
+{% endif %}
+{%- endmacro %}
+
+
+{# Render Disqus comments #}
 {% macro disqus_comments(id, title, url) %}
 <div id="disqus_thread"></div>
 <script type="text/javascript">
@@ -17,8 +34,10 @@
 </script>
 
 <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
-{% endmacro %}
+{%- endmacro %}
 
+
+{# Render Disqus comment count #}
 {% macro disqus_comment_count() %}
 <script type="text/javascript">
     var disqus_shortname = '{{ config.DISQUS_SHORTNAME }}';
@@ -30,19 +49,39 @@
             (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
         }());
 </script>
-{% endmacro %}
+{%- endmacro %}
+
+
+{# Render isso comments #}
+{% macro isso_comments(title) %}
+<script data-isso="//{{ config.ISSO_URL }}"
+        data-isso-reply-to-self="{{ config.ISSO_REPLY_SELF }}"
+        data-isso-require-author="{{ config.ISSO_REQUIRE_AUTHOR }}"
+        data-isso-require-email="{{ config.ISSO_REQUIRE_EMAIL }}"
+        data-isso-max-comments-top="15"
+        data-isso-max-comments-nested="5"
+        data-isso-avatar="true"
+        data-isso-vote="{{ config.ISSO_VOTING }}"
+        src="//{{ config.ISSO_URL }}/js/embed.min.js"></script>
+
+<section id="isso-thread" data-title="{{ title }}"></section>
+{%- endmacro %}
+
+
 
 {# Used to display only up to the first page break or the whole post #}
 {% macro get_summary(post) %}
     {% set summary = post.content.split('<!--aka-break-->')[0].strip() %}
     {{ summary|markdown }}
-{% endmacro %}
+{%- endmacro %}
+
 
 {# Show post author #}
 {% macro show_author(post) %}
     {% set username = post.author.username %}
     <a href="{{ url_for('blog.by_user', user=username) }}">{{ username }}</a>
-{% endmacro %}
+{%- endmacro %}
+
 
 {# Show post tags #}
 {% macro show_tags(post) %}
@@ -54,7 +93,8 @@
 {% endfor %}
 
 {% endif %}
-{% endmacro %}
+{%- endmacro %}
+
 
 {# Show post author bio #}
 {% macro show_bio(post) %}
@@ -62,7 +102,8 @@
     <h5>{{ post.author.username }}</h5>
     {{ post.author.personal_bio|markdown }}
 {% endif %}
-{% endmacro %}
+{%- endmacro %}
+
 
 {# Used to render input field with label over it #}
 {% macro render_field(field, label=None, label_visible=true, is_date=false, down_url=None, down_label=None, num_cols='1-1') %}
@@ -101,7 +142,8 @@
             {% endif %}
         </div>
     </div>
-{% endmacro %}
+{%- endmacro %}
+
 
 {# Render form checkboxes #}
 {% macro render_checkbox_field(field, label=None) %}
@@ -113,14 +155,16 @@
             </label>
         </div>
     </div>
-{% endmacro %}
+{%- endmacro %}
+
 
 {% macro render_submit_field(field, label=None, class='aka-btn-primary', tabindex=None) %}
     {% if not label %}{% set label=field.label.text %}{% endif %}
     <input type="submit" class="{{ class }}" value="{{label}}"
            {% if tabindex %}tabindex="{{ tabindex }}"{% endif %}
            >
-{% endmacro %}
+{%- endmacro %}
+
 
 {% macro render_pagination(pagination, endpoint, admin=false) %}
     {% if pagination.pages > 1 %}
@@ -152,7 +196,7 @@
         </div>
     </div>
     {% endif %}
-{% endmacro %}
+{%- endmacro %}
 
 
 {# Render success messages in dashboard #}
@@ -164,7 +208,8 @@
         <span>{{ msg }}</span>
     </div>
 </div>
-{% endmacro %}
+{%- endmacro %}
+
 
 {# Render warning messages in dashboard #}
 {% macro render_warning_msg(msg) %}
@@ -175,7 +220,7 @@
         <span>{{ msg }}</span>
     </div>
 </div>
-{% endmacro %}
+{%- endmacro %}
 
 
 {# Dashboard sortable headers #}
@@ -189,4 +234,4 @@
     {% else %}
         <span order-key="{{ key }}" class="aka-listcolumn">{{ text }}</span>
     {% endif %}
-{% endmacro %}
+{%- endmacro %}

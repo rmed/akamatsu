@@ -69,8 +69,38 @@ BASE_CONFIG = {
             'default': ''
         },
 
+        'COMMENT_SYSTEM': {
+            'desc': 'Comment system to use ("disqus" or "isso")',
+            'default': ''
+        },
+
         'DISQUS_SHORTNAME': {
             'desc': 'Disqus shortname',
+            'default': ''
+        },
+
+        'ISSO_URL': {
+            'desc': 'Location of the isso API (URL)',
+            'default': ''
+        },
+
+        'ISSO_REPLY_SELF': {
+            'desc': 'Allow replying to self in isso ("true" or "false")',
+            'default': ''
+        },
+
+        'ISSO_REQUIRE_AUTHOR': {
+            'desc': 'Require name when commenting in isso ("true" or "false")',
+            'default': ''
+        },
+
+        'ISSO_REQUIRE_EMAIL': {
+            'desc': 'Require email when commenting in isso ("true" or "false")',
+            'default': ''
+        },
+
+        'ISSO_VOTING': {
+            'desc': 'Allow voting comments in isso ("true" or "false")',
             'default': ''
         },
 

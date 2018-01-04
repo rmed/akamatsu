@@ -149,7 +149,22 @@ class SettingsForm(FlaskForm):
         description='comma separated extensions'
     )
 
+    comment_system = StringField(
+        'Comment system',
+        description='"disqus" or "isso"'
+    )
+
     disqus_shortname = StringField('Disqus shortname')
+
+    isso_url = StringField('isso API location')
+    isso_reply_self = BooleanField('Allow replying to self in isso')
+    isso_require_author = BooleanField(
+        'Require author name when writing a comment'
+    )
+    isso_require_email = BooleanField(
+        'Require email when writing a comment'
+    )
+    isso_voting = BooleanField('Allow voting in isso')
 
     humans = TextAreaField('humans.txt content')
     robots = TextAreaField('robots.txt content')

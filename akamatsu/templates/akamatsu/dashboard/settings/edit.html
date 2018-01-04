@@ -28,7 +28,34 @@
 
     {{ render_field(form.allowed_extensions) }}
 
-    {{ render_field(form.disqus_shortname) }}
+    {{ render_field(form.comment_system) }}
+
+    {% if config.COMMENT_SYSTEM == 'disqus' %}
+        {{ render_field(form.disqus_shortname) }}
+
+    {% elif config.COMMENT_SYSTEM == 'isso' %}
+        {{ render_field(form.isso_url)}}
+
+        <div class="grid grid-pad">
+            <div class="col-1-2">
+                {{ render_checkbox_field(form.isso_reply_self) }}
+            </div>
+
+            <div class="col-1-2">
+                {{ render_checkbox_field(form.isso_require_author) }}
+            </div>
+        </div>
+
+        <div class="grid grid-pad">
+            <div class="col-1-2">
+                {{ render_checkbox_field(form.isso_require_email) }}
+            </div>
+
+            <div class="col-1-2">
+                {{ render_checkbox_field(form.isso_voting) }}
+            </div>
+        </div>
+    {% endif %}
 
     {{ render_field(form.humans) }}
     {{ render_field(form.robots) }}

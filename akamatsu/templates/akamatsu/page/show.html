@@ -1,5 +1,5 @@
 {% extends "akamatsu/layout.html" %}
-{% from "akamatsu/_macros.html" import disqus_comments %}
+{% from "akamatsu/_macros.html" import render_comments %}
 
 {# Custom head extensions #}
 {% block head_extend %}{{ page.custom_head|safe }}{% endblock %}
@@ -17,14 +17,11 @@
             {{ page.timestamp.strftime('%d %b %Y') }}
         </span>
 
-        {% if page.comments_enabled %}
-            {{ disqus_comments(
-                    'page_' ~ page.id,
-                    page.title,
-                    url_for('page.show', _external=True, page=page.route)
-                )
-            }}
-        {% endif %}
+        <section id="comments">
+            {% if page.comments_enabled %}
+                {{ render_comments(page, 'page', 'page.show') }}
+            {% endif %}
+        </section>
     </article>
 </div>
 {% endblock %}

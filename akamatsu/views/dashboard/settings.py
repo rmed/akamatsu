@@ -45,12 +45,23 @@ def settings_edit():
         ['%s:%s' % (a.get('text',''), a.get('link','')) for a in parsed.get('NAVBAR', [])]
     )
 
+    isso_reply_self = True if parsed.get('ISSO_REPLY_SELF', 'false') == 'true' else False
+    isso_require_author = True if parsed.get('ISSO_REQUIRE_AUTHOR', 'false') == 'true' else False
+    isso_require_email = True if parsed.get('ISSO_REQUIRE_EMAIL', 'false') == 'true' else False
+    isso_voting = True if parsed.get('ISSO_VOTING', 'false') == 'true' else False
+
     populate = {
         'sitename': parsed.get('SITENAME', ''),
         'social': social,
         'navbar': navbar,
         'allowed_extensions': ','.join(parsed.get('ALLOWED_EXTENSIONS', set())),
+        'comment_system': parsed.get('COMMENT_SYSTEM', ''),
         'disqus_shortname': parsed.get('DISQUS_SHORTNAME', ''),
+        'isso_url': parsed.get('ISSO_URL', ''),
+        'isso_reply_self': isso_reply_self,
+        'isso_require_author': isso_require_author,
+        'isso_require_email': isso_require_email,
+        'isso_voting': isso_voting,
         'humans': parsed.get('HUMANS_TXT', ''),
         'robots': parsed.get('ROBOTS_TXT', ''),
         'footer_left': parsed.get('FOOTER_LEFT', ''),
@@ -100,7 +111,13 @@ def settings_edit():
             'SOCIAL': new_social,
             'NAVBAR': new_navbar,
             'ALLOWED_EXTENSIONS': set(new_extensions),
+            'COMMENT_SYSTEM': form.comment_system.data,
             'DISQUS_SHORTNAME': form.disqus_shortname.data,
+            'ISSO_URL': form.isso_url.data,
+            'ISSO_REPLY_SELF': 'true' if form.isso_reply_self.data else 'false',
+            'ISSO_REQUIRE_AUTHOR': 'true' if form.isso_require_author.data else 'false',
+            'ISSO_REQUIRE_EMAIL': 'true' if form.isso_require_email.data else 'false',
+            'ISSO_VOTING': 'true' if form.isso_voting.data else 'false',
             'HUMANS_TXT': form.humans.data,
             'ROBOTS_TXT': form.robots.data,
             'FOOTER_LEFT': form.footer_left.data,

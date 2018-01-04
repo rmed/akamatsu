@@ -63,9 +63,54 @@ This defaults to the `'akamatsu'` theme.
 Content (html) that appears in the bottom left and right parts of the page in
 the akamatsu templates.
 
+### `COMMENT_SYSTEM`
+
+Akamatsu supports Disqus and [isso](https://github.com/posativ/isso) for
+comments.
+
+Set this value to `'disqus'` or `'isso'` accordingly (or leave blank to disable
+comments).
+
 ### `DISQUS_SHORTNAME`
 
-Shortname to enable Disqus comments in blog and pages.
+Shortname to enable Disqus comments in blog and pages (when `COMMENT_SYSTEM` is
+`'disqus'`).
+
+### `ISSO_URL`
+
+URL where the isso API is located (when `COMMENT_SYSTEM` is `'isso'`).
+
+### `ISSO_REPLY_SELF`
+
+Whether to enable replying to self (when `COMMENT_SYSTEM` is `'isso'`).
+Depends on isso server guard config.
+
+**Note that this value is set as a string rather than a boolean, as it is used 
+to configure the JS script** (valid values are `'true'` or `'false'`).
+
+### `ISSO_REQUIRE_AUTHOR`
+
+Whether to require author name when commenting (when `COMMENT_SYSTEM` is
+`'isso'`). Depends on isso server guard config.
+
+**Note that this value is set as a string rather than a boolean, as it is used 
+to configure the JS script** (valid values are `'true'` or `'false'`).
+
+### `ISSO_REQUIRE_EMAIL`
+
+Whether to require an email when commenting (when `COMMENT_SYSTEM` is
+`'isso'`). Depends on isso server guard config.
+
+**Note that this value is set as a string rather than a boolean, as it is used 
+to configure the JS script** (valid values are `'true'` or `'false'`).
+
+### `ISSO_VOTING`
+
+Whether to enable voting in comments (when `COMMENT_SYSTEM` is `'isso'`).
+Depends on isso server guard config.
+
+**Note that this value is set as a string rather than a boolean, as it is used 
+to configure the JS script** (valid values are `'true'` or `'false'`).
 
 ### `HUMANS_TXT` and `ROBOTS_TXT`
 

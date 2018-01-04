@@ -16,8 +16,16 @@ FOOTER_LEFT = "Copyright (C) akamatsu"
 FOOTER_RIGHT = "Built with akamatsu"
 
 
-# Disqus
+# Comments
+COMMENT_SYSTEM = "" # 'isso' or 'disqus'
+
 DISQUS_SHORTNAME = ""
+
+ISSO_URL = ""
+ISSO_REPLY_SELF = "true"
+ISSO_REQUIRE_AUTHOR = "true"
+ISSO_REQUIRE_EMAIL = "true"
+ISSO_VOTING = "false"
 
 
 # humans.txt text
