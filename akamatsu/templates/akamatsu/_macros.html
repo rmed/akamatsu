@@ -1,15 +1,13 @@
 {# Select comments to render depending on configured type #}
 {% macro render_comments(item, item_type, url) %}
 {% if config.COMMENT_SYSTEM %}
+    {% if config.COMMENT_SYSTEM == 'disqus' %}
+        {{ disqus_comments('{{ item_type }}_' ~ item.id, item.title, url_for('{{ url }}', _external=True, slug=item.slug)) }}
 
-{% if config.COMMENT_SYSTEM == 'disqus' %}
-{% call disqus_comments('{{ item_type }}_' ~ item.id, item.title, url_for('{{ url }}', _external=True, slug=item.slug)) %}{% endcall %}
+    {% elif config.COMMENT_SYSTEM == 'isso' %}
+        {{ isso_comments(item.title) }}
 
-{% elif config.COMMENT_SYSTEM == 'isso' %}
-{#{% call isso_comments(item.title) %}{% endcall %}#}
-{{ isso_comments(item.title) }}
-
-{% endif %}
+    {% endif %}
 {% endif %}
 {%- endmacro %}
 
