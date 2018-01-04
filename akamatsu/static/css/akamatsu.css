@@ -233,7 +233,6 @@ Header container
 }
 
 .aka-navbar.sticky {
-    box-shadow: none;
     left: 0;
     position: fixed;
     top: 0;
