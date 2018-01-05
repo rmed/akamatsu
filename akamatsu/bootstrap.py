@@ -131,9 +131,19 @@ BASE_CONFIG = {
     },
 }
 
+class CeleryWrapper(object):
+    """Wrapper for deferred initialization of Celery."""
 
-def make_celery(app):
-    """Create a celery instance for the application."""
+    def __init__(self):
+        self._celery = None
+        self.task = None
+
+    def make_celery(self, app):
+    """Create a celery instance for the application.
+
+    Args:
+        app: Application instance
+    """
     # Celery is optional, import it here rather than globally
     from celery import Celery
 
@@ -154,4 +164,5 @@ def make_celery(app):
 
     celery_instance.Task = ContextTask
 
-    return celery_instance
+    self._celery = celery_instance
+    self.task = self._celery.task

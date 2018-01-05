@@ -30,76 +30,25 @@ from flask_misaka import Misaka
 from flask_sqlalchemy import SQLAlchemy
 from flask_user import SQLAlchemyAdapter, UserManager, user_logged_in
 from flask_user.emails import send_email
-from flask_waffleconf import AlchemyWaffleStore, WaffleConf
 
-from akamatsu.bootstrap import BASE_CONFIG, make_celery
+from akamatsu.bootstrap import BASE_CONFIG, CeleryWrapper
 from akamatsu.util import HighlighterRenderer
 
 import os
 
 
-app = Flask(__name__, instance_relative_config=True)
-app.config.update(BASE_CONFIG)
-
-# Load configuration specified in environment variable or default
-# development one
-# Production configurations shold be stored in `instance/`
-if 'AKAMATSU_CONFIG_FILE' in os.environ:
-    app.config.from_envvar('AKAMATSU_CONFIG_FILE')
-
-else:
-    app.config.from_object('config.development')
-
-
-# Setup database before importing rest of the application code
-db = SQLAlchemy(app)
-# Force model registration
-from akamatsu import models
-
-# Database migrations
-migrate = Migrate(app, db)
-
-
-# Setup Flask-Mail
-mail = Mail(app)
-
-
-# Celery support (optional)
-celery = None
-
-if app.config.get('USE_CELERY', False):
-    celery = make_celery(app)
-
-    # Improt tasks
-    from akamatsu.tasks import async_mail
-
-def _send_user_mail(*args):
-    """Specify the function for sending mails in Flask-User.
-
-    If celery has been initialized, this will be asynchronous. Defaults to the
-    original one in Flask-User.
-    """
-
-    if app.config.get('USE_CELERY', False):
-        # Asynchronous
-        async_mail.delay(*args)
-
-    else:
-        # Synchronous
-        send_email(*args)
-
-
-# Setup Flask-User
-db_adapter = SQLAlchemyAdapter(db, models.User)
-user_manager = UserManager(db_adapter, app, send_email_function=_send_user_mail)
-
-
-# Setup Flask-WaffleConf
-configstore = AlchemyWaffleStore(db=db, model=models.WaffleModel)
-waffle = WaffleConf(app, configstore)
-
-
-# Misaka markdown parser
+# SQLAlchemy
+db = SQLAlchemy()
+# Flask-Migrate
+migrate = Migrate()
+# Flask-Mail
+mail = Mail()
+# Celery (optional)
+celery = CeleryWrapper()
+# Flask-User
+user_db_adapter = SQLAlchemyAdapter(db, models.User)
+user_manager = UserManager(user_db_adapter)
+# Flask-Misaka
 md = Misaka(
     renderer=HighlighterRenderer(),
     fenced_code=True,
@@ -109,99 +58,162 @@ md = Misaka(
     superscript=True,
     tables=True
 )
-md.init_app(app)
+# Flask-Assets
+assets = Environment()
 
 
-# Whitespacing Jinja
-app.jinja_env.trim_blocks = True
-app.jinja_env.lstrip_blocks = True
+def init_app():
+    """Initialize akamatsu."""
+    app = Flask(__name__)
+    app.config.update(BASE_CONFIG)
+
+    # Load configuration specified in environment variable or default
+    # development one.
+    # Production configurations shold be stored in a separate directory, such
+    # as `instance`.
+    if 'AKAMATSU_CONFIG' in os.environ:
+        app.config.from_envvar('AKAMATSU_CONFIG')
+
+    else:
+        app.config.from_object('config.development')
+
+    # Whitespacing Jinja
+    app.jinja_env.trim_blocks = True
+    app.jinja_env.lstrip_blocks = True
 
 
-# Flask-Assets bundles
-assets = Environment(app)
+    # Setup database
+    db.init_app(app)
+    # Force model registration
+    from akamatsu import models
 
-css_bundle = Bundle(
-    'css/fira.css',
-    'css/font-awesome.min.css',
-    'css/highlight.css',
-    'css/normalize.css',
-    'css/simplegrid.css',
-    'css/akamatsu.css',
-    filters='cssmin',
-    output='gen/packed.css'
-)
-
-# Cannot include zepto, throws errors
-js_bundle = Bundle(
-    'js/akamatsu.js',
-    filters='rjsmin',
-    output='gen/packed.js'
-)
-
-db_js_bundle = Bundle(
-    'js/dashboard.js',
-    filters='rjsmin',
-    output='gen/packed_db.js'
-)
-
-assets.register('css_pack', css_bundle)
-assets.register('js_pack', js_bundle)
-assets.register('db_js_pack', db_js_bundle)
+    # Database migrations
+    migrate.init_app(app, db)
 
 
-# Analytics
-analytics = Analytics(app)
+    # Setup Flask-Mail
+    mail.init_app(app)
 
 
+    # Celery support (optional)
+    if app.config.get('USE_CELERY', False):
+        celery.make_celery(app)
+
+        # Import tasks
+        from akamatsu.tasks import async_user_mail, async_mail
 
 
-from akamatsu.views.blog import bp_blog
-from akamatsu.views.dashboard import bp_dashboard
-from akamatsu.views.misc import bp_misc
-from akamatsu.views.page import bp_page
-from akamatsu.util import render_theme
+    # Setup Flask-User
+    def _send_user_mail(*args):
+        """Specify the function for sending mails in Flask-User.
 
-# Blueprints
-app.register_blueprint(bp_misc)
-app.register_blueprint(bp_dashboard, url_prefix='/dashboard')
-app.register_blueprint(bp_blog, url_prefix='/blog')
-app.register_blueprint(bp_page)
+        If celery has been initialized, this will be asynchronous. Defaults to
+        the original one in Flask-User.
+        """
+        if app.config.get('USE_CELERY', False):
+            # Asynchronous
+            async_user_mail.delay(*args)
 
-
-# Custom commands
-from akamatsu import commands
-
-
-# 404
-@app.errorhandler(404)
-def not_found(e):
-    msg = "It's gone! Poof! Magic!"
-    return render_theme('error.html', error_code=404, error_msg=msg)
+        else:
+            # Synchronous
+            send_email(*args)
 
 
-# Before first request is served
-@app.before_first_request
-def _do_before_hook():
-    """Operations to perform before first request.
+    user_manager.init_app(app, send_email_function=_send_user_mail)
 
-    This includes:
-        - Updating Flask-WaffleConf config values
-    """
-    waffle.state.update_conf()
 
-# Signals
-@user_logged_in.connect_via(app)
-def _do_on_login(sender, user, **extra):
-    """Notify the user of a new login.
+    # Setup Flask-Misaka
+    md.init_app(app)
 
-    This is only done if the ``notify_login`` attribute is set to ``True``.
-    """
-    if user.notify_login:
-        notification = Message(
-            'akamatsu - New session started',
-            recipients=[user.email],
-            body=render_template('mail/login.txt', user=user),
-            html=render_template('mail/login.html', user=user)
-        )
 
-        mail.send(notification)
+    # Setup Flask-Assets and bundles
+    assets.init_app(app)
+
+    css_bundle = Bundle(
+        'css/fira.css',
+        'css/font-awesome.min.css',
+        'css/highlight.css',
+        'css/normalize.css',
+        'css/simplegrid.css',
+        'css/akamatsu.css',
+        filters='cssmin',
+        output='gen/packed.css'
+    )
+
+    # Cannot include zepto, throws errors
+    js_bundle = Bundle(
+        'js/akamatsu.js',
+        filters='rjsmin',
+        output='gen/packed.js'
+    )
+
+    db_js_bundle = Bundle(
+        'js/dashboard.js',
+        filters='rjsmin',
+        output='gen/packed_db.js'
+    )
+
+    assets.register('css_pack', css_bundle)
+    assets.register('js_pack', js_bundle)
+    assets.register('db_js_pack', db_js_bundle)
+
+
+    # Setup Flask-Analytics (does not need to be global)
+    analytics = Analytics(app)
+
+
+    # Register blueprints
+    from akamatsu.views.blog import bp_blog
+    from akamatsu.views.dashboard import bp_dashboard
+    from akamatsu.views.misc import bp_misc
+    from akamatsu.views.page import bp_page
+    from akamatsu.util import render_theme
+
+    app.register_blueprint(bp_misc)
+    app.register_blueprint(bp_dashboard, url_prefix='/dashboard')
+    app.register_blueprint(bp_blog, url_prefix='/blog')
+    app.register_blueprint(bp_page)
+
+
+    # Custom commands
+    from akamatsu import commands
+
+
+    # 404
+    @app.errorhandler(404)
+    def not_found(e):
+        msg = "It's gone! Poof! Magic!"
+        return render_theme('error.html', error_code=404, error_msg=msg)
+
+
+    # Before first request is served
+    @app.before_first_request
+    def _do_before_hook():
+        """Operations to perform before first request.
+
+        This includes:
+            - Updating Flask-WaffleConf config values
+        """
+        waffle.state.update_conf()
+
+    # Signals
+    @user_logged_in.connect_via(app)
+    def _do_on_login(sender, user, **extra):
+        """Notify the user of a new login.
+
+        This is only done if the ``notify_login`` attribute is set to ``True``.
+
+        If Celery is enabled, the message will be sent asynchronously.
+        """
+        if user.notify_login:
+            notification = Message(
+                'akamatsu - New session started',
+                recipients=[user.email],
+                body=render_template('mail/login.txt', user=user),
+                html=render_template('mail/login.html', user=user)
+            )
+
+            if app.config.get('USE_CELERY', False):
+                async_mail.delay(notification)
+            else:
+                mail.send(notification)

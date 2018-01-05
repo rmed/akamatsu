@@ -21,14 +21,22 @@
 
 """This file contains custom command definitions for akamatsu."""
 
-from akamatsu import app, db, user_manager
+from flask.cli import FlaskGroup
+
+from akamatsu import db, user_manager, init_app
 from akamatsu.models import User
 from akamatsu.util import ROLE_NAMES
+
 import click
 import datetime
 
+@click.group(cls=FlaskGroup, create_app=init_app)
+def cli():
+    """Management script."""
+    pass
 
-@app.cli.command()
+
+@cli.command()
 @click.option('--username', help='username (must be unique)', prompt=True)
 @click.option('--email', help='email (must be unique)', prompt=True)
 @click.option('--password', help='password', prompt=True, hide_input=True)
@@ -67,7 +75,7 @@ def adduser(username, email, password):
         else:
             click.echo('New user created')
 
-@app.cli.command()
+@cli.command()
 @click.argument('username')
 def rmuser(username):
     """Remove a user from the database."""
@@ -102,7 +110,7 @@ def rmuser(username):
         else:
             click.echo('User removed')
 
-@app.cli.command()
+@cli.command()
 def listroles():
     """List roles available in the application."""
     click.echo('Roles:\n')
@@ -110,7 +118,7 @@ def listroles():
     for role in ROLE_NAMES:
         click.echo('- %s' % role)
 
-@app.cli.command()
+@cli.command()
 @click.argument('username')
 @click.argument('roles')
 def setroles(username, roles):
@@ -155,7 +163,7 @@ def setroles(username, roles):
         else:
             click.echo('Roles updated')
 
-@app.cli.command()
+@cli.command()
 @click.argument('username')
 def showroles(username):
     """Show roles of a given user.

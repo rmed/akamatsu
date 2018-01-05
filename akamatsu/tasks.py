@@ -21,10 +21,17 @@
 
 """This file contains celery tasks."""
 
-from akamatsu import celery
+from akamatsu import celery, mail
 from flask_user.emails import send_email
+
+
+@celery.task()
+def async_user_mail(*args):
+    """Send Flask-User emails asynchronously."""
+    send_email(*args)
+
 
 @celery.task()
 def async_mail(*args):
-    """Send email asynchronously."""
-    send_email(*args)
+    """Send Flask-Mail emails asynchronously."""
+    mail.send(*args)
