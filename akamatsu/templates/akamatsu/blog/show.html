@@ -32,14 +32,15 @@
         <div class="bio">
             {{ show_bio(post) }}
         </div>
-
-        <section id="comments">
-            {% if post.comments_enabled %}
-                {{ render_comments(post, 'post', 'post.show') }}
-            {% endif %}
-        </section>
-
     </article>
+</div>
+
+<div class="grid grid-pad">
+    <section id="comments">
+        {% if post.comments_enabled %}
+            {{ render_comments(post, 'post', 'post.show') }}
+        {% endif %}
+    </section>
 </div>
 
 {% endblock %}

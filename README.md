@@ -179,6 +179,8 @@ functionality**.
 
 ## Acknowledgements
 
+- [Cookie Consent](https://github.com/insites/cookieconsent) by Silktide Ltd
+  (MIT License)
 - [Fira](https://github.com/mozilla/Fira) by Mozilla (SIL OPEN FONT LICENSE
   Version 1.1)
 - [Font Awesome](http://fontawesome.io/) by Dave Gandy (SIL OPEN FONT LICENSE
