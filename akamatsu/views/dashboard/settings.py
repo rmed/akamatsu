@@ -21,13 +21,13 @@
 
 """This file contains the view for the ``settings`` section of the dashboard."""
 
-from akamatsu import db
-from akamatsu.forms import SettingsForm
-from akamatsu.views.dashboard import bp_dashboard
-
 from flask import current_app, render_template
 from flask_user import roles_required
 from sqlalchemy.exc import SQLAlchemyError
+
+from akamatsu import db
+from akamatsu.forms import SettingsForm
+from akamatsu.views.dashboard import bp_dashboard
 
 
 @bp_dashboard.route('/settings', methods=['GET', 'POST'])

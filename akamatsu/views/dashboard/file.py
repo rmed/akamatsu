@@ -21,17 +21,17 @@
 
 """This file contains the views for managing file uploads."""
 
-from akamatsu import db
-from akamatsu.forms import UploadForm
-from akamatsu.models import FileUpload
-from akamatsu.util import is_allowed_file
-from akamatsu.views.dashboard import bp_dashboard
-
 from flask import current_app, render_template, request
 from flask_user import roles_required
 from sqlalchemy.exc import SQLAlchemyError
 from werkzeug import secure_filename
 from werkzeug.exceptions import NotFound
+
+from akamatsu import db
+from akamatsu.forms import UploadForm
+from akamatsu.models import FileUpload
+from akamatsu.util import is_allowed_file
+from akamatsu.views.dashboard import bp_dashboard
 
 import os
 

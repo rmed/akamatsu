@@ -21,14 +21,14 @@
 
 """This file contains the view for the ``profile`` section of the dashboard."""
 
+from flask import render_template
+from flask_user import current_user, login_required
+from sqlalchemy.exc import SQLAlchemyError
+
 from akamatsu import db
 from akamatsu.forms import ProfileForm
 from akamatsu.models import User
 from akamatsu.views.dashboard import bp_dashboard
-
-from flask import render_template
-from flask_user import current_user, login_required
-from sqlalchemy.exc import SQLAlchemyError
 
 
 @bp_dashboard.route('/profile', methods=['GET', 'POST'])

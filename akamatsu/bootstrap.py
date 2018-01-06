@@ -139,30 +139,30 @@ class CeleryWrapper(object):
         self.task = None
 
     def make_celery(self, app):
-    """Create a celery instance for the application.
+        """Create a celery instance for the application.
 
-    Args:
-        app: Application instance
-    """
-    # Celery is optional, import it here rather than globally
-    from celery import Celery
+        Args:
+            app: Application instance
+        """
+        # Celery is optional, import it here rather than globally
+        from celery import Celery
 
-    celery_instance = Celery(
-        app.import_name,
-        backend=app.config['CELERY_RESULT_BACKEND'],
-        broker=app.config['CELERY_BROKER_URL']
-    )
+        celery_instance = Celery(
+            app.import_name,
+            backend=app.config['CELERY_RESULT_BACKEND'],
+            broker=app.config['CELERY_BROKER_URL']
+        )
 
-    celery_instance.conf.update(app.config)
-    TaskBase = celery_instance.Task
+        celery_instance.conf.update(app.config)
+        TaskBase = celery_instance.Task
 
-    class ContextTask(TaskBase):
-        abstract = True
-        def __call__(self, *args, **kwargs):
-            with app.app_context():
-                return TaskBase.__call__(self, *args, **kwargs)
+        class ContextTask(TaskBase):
+            abstract = True
+            def __call__(self, *args, **kwargs):
+                with app.app_context():
+                    return TaskBase.__call__(self, *args, **kwargs)
 
-    celery_instance.Task = ContextTask
+        celery_instance.Task = ContextTask
 
-    self._celery = celery_instance
-    self.task = self._celery.task
+        self._celery = celery_instance
+        self.task = self._celery.task

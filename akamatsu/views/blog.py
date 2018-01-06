@@ -21,13 +21,13 @@
 
 """This file contains unauthenticated blog views."""
 
-from akamatsu import app, md as markdown
-from akamatsu.models import Post, User
-from akamatsu.util import render_theme
-
-from flask import Blueprint, redirect, request, url_for
+from flask import Blueprint, current_app, redirect, request, url_for
 from werkzeug.contrib.atom import AtomFeed
 from werkzeug.exceptions import NotFound
+
+from akamatsu import md as markdown
+from akamatsu.models import Post, User
+from akamatsu.util import render_theme
 
 bp_blog = Blueprint('blog', __name__)
 

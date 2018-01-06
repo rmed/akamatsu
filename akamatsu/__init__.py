@@ -46,8 +46,7 @@ mail = Mail()
 # Celery (optional)
 celery = CeleryWrapper()
 # Flask-User
-user_db_adapter = SQLAlchemyAdapter(db, models.User)
-user_manager = UserManager(user_db_adapter)
+user_manager = UserManager()
 # Flask-Misaka
 md = Misaka(
     renderer=HighlighterRenderer(),
@@ -75,7 +74,7 @@ def init_app():
         app.config.from_envvar('AKAMATSU_CONFIG')
 
     else:
-        app.config.from_object('config.development')
+        app.config.from_object('akamatsu.config.development')
 
     # Whitespacing Jinja
     app.jinja_env.trim_blocks = True
@@ -119,7 +118,12 @@ def init_app():
             send_email(*args)
 
 
-    user_manager.init_app(app, send_email_function=_send_user_mail)
+    user_db_adapter = SQLAlchemyAdapter(db, models.User)
+    user_manager.init_app(
+        app,
+        db_adapter=user_db_adapter,
+        send_email_function=_send_user_mail
+    )
 
 
     # Setup Flask-Misaka
@@ -164,13 +168,13 @@ def init_app():
 
     # Register blueprints
     from akamatsu.views.blog import bp_blog
-    from akamatsu.views.dashboard import bp_dashboard
+    # from akamatsu.views.dashboard import bp_dashboard
     from akamatsu.views.misc import bp_misc
     from akamatsu.views.page import bp_page
     from akamatsu.util import render_theme
 
     app.register_blueprint(bp_misc)
-    app.register_blueprint(bp_dashboard, url_prefix='/dashboard')
+    # app.register_blueprint(bp_dashboard, url_prefix='/dashboard')
     app.register_blueprint(bp_blog, url_prefix='/blog')
     app.register_blueprint(bp_page)
 
@@ -185,16 +189,6 @@ def init_app():
         msg = "It's gone! Poof! Magic!"
         return render_theme('error.html', error_code=404, error_msg=msg)
 
-
-    # Before first request is served
-    @app.before_first_request
-    def _do_before_hook():
-        """Operations to perform before first request.
-
-        This includes:
-            - Updating Flask-WaffleConf config values
-        """
-        waffle.state.update_conf()
 
     # Signals
     @user_logged_in.connect_via(app)
@@ -217,3 +211,6 @@ def init_app():
                 async_mail.delay(notification)
             else:
                 mail.send(notification)
+
+
+    return app

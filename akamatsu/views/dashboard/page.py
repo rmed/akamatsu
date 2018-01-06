@@ -21,15 +21,16 @@
 
 """This file contains the views for the ``pages`` section of the dashboard."""
 
+from flask import redirect, render_template, request, url_for
+from flask_user import roles_required
+from sqlalchemy.exc import SQLAlchemyError
+from werkzeug.exceptions import NotFound
+
 from akamatsu import db
 from akamatsu.forms import PageForm
 from akamatsu.models import Page
 from akamatsu.views.dashboard import bp_dashboard
 
-from flask import redirect, render_template, request, url_for
-from flask_user import roles_required
-from sqlalchemy.exc import SQLAlchemyError
-from werkzeug.exceptions import NotFound
 
 
 @bp_dashboard.route('/pages')

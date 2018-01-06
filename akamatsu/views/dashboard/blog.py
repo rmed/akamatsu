@@ -21,15 +21,15 @@
 
 """This file contains the views for the ``blog`` section of the dashboard."""
 
-from akamatsu import db
-from akamatsu.forms import PostForm
-from akamatsu.models import Post, User
-from akamatsu.views.dashboard import bp_dashboard
-
 from flask import redirect, render_template, request, url_for
 from flask_user import current_user, roles_required
 from sqlalchemy.exc import SQLAlchemyError
 from werkzeug.exceptions import NotFound
+
+from akamatsu import db
+from akamatsu.forms import PostForm
+from akamatsu.models import Post, User
+from akamatsu.views.dashboard import bp_dashboard
 
 
 @bp_dashboard.route('/blog')

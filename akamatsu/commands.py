@@ -30,7 +30,13 @@ from akamatsu.util import ROLE_NAMES
 import click
 import datetime
 
-@click.group(cls=FlaskGroup, create_app=init_app)
+
+def init_wrapper(info):
+    """Wrapper for the application initialization function."""
+    return init_app()
+
+
+@click.group(cls=FlaskGroup, create_app=init_wrapper)
 def cli():
     """Management script."""
     pass
@@ -181,3 +187,7 @@ def showroles(username):
     roles = ', '.join(user.role_names) or 'No roles'
 
     click.echo('Roles of user "%s": %s' % (username, roles))
+
+
+if __name__ == '__main__':
+    cli()

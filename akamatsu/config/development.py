@@ -1,5 +1,7 @@
-# SQLALCHEMY_DATABASE_URI = "sqlite:///testdb.sqlite"
-SQLALCHEMY_DATABASE_URI = "sqlite:////tmp/testdb.sqlite"
+"""Development configuration."""
+import os
+
+SQLALCHEMY_DATABASE_URI = "sqlite:////%s" % os.path.join(os.getcwd(), "testdb.sqlite")
 SECRET_KEY = "potato"
 DEBUG = True
 
@@ -83,7 +85,3 @@ NAVBAR = [
         "text": "Blog"
     },
 ]
-
-# Waffle Conf
-WAFFLE_MULTIPROC = False
-WAFFLE_WATCHTYPE = "file"

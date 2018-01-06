@@ -21,16 +21,16 @@
 
 """This file contains the views for the ``users`` section of the dashboard."""
 
+from flask import redirect, render_template, request, url_for
+from flask_user import roles_required
+from sqlalchemy.exc import SQLAlchemyError
+from werkzeug.exceptions import NotFound
+
 from akamatsu import db
 from akamatsu.forms import UserForm
 from akamatsu.models import User
 from akamatsu.views.dashboard import bp_dashboard
 from akamatsu.util import ROLE_NAMES
-
-from flask import redirect, render_template, request, url_for
-from flask_user import roles_required
-from sqlalchemy.exc import SQLAlchemyError
-from werkzeug.exceptions import NotFound
 
 
 @bp_dashboard.route('/users')

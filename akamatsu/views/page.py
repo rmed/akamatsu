@@ -21,10 +21,10 @@
 
 """This file contains unauthenticated page views."""
 
+from flask import Blueprint, redirect, url_for
+
 from akamatsu.models import Page
 from akamatsu.util import render_theme
-
-from flask import Blueprint, redirect, url_for
 
 bp_page = Blueprint('page', __name__)
 
