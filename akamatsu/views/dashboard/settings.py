@@ -30,136 +30,45 @@ from akamatsu.forms import SettingsForm
 from akamatsu.views.dashboard import bp_dashboard
 
 
-@bp_dashboard.route('/settings', methods=['GET', 'POST'])
+@bp_dashboard.route('/settings')
 @roles_required('admin')
-def settings_edit():
-    """Show the form for editing site settings."""
-    # Get current values
-    state = current_app.extensions['waffleconf']
+def settings_show():
+    """Show current application settings"""
+    config = current_app.config
 
-    parsed = state.parse_conf()
     social = '\n'.join(
-        ['%s:%s' % (a.get('glyph',''), a.get('link','')) for a in parsed.get('SOCIAL', [])]
+        ['%s:%s' % (a.get('glyph',''), a.get('link','')) for a in config.get('SOCIAL', [])]
     )
     navbar = '\n'.join(
-        ['%s:%s' % (a.get('text',''), a.get('link','')) for a in parsed.get('NAVBAR', [])]
+        ['%s:%s' % (a.get('text',''), a.get('link','')) for a in config.get('NAVBAR', [])]
     )
 
-    isso_reply_self = True if parsed.get('ISSO_REPLY_SELF', 'false') == 'true' else False
-    isso_require_author = True if parsed.get('ISSO_REQUIRE_AUTHOR', 'false') == 'true' else False
-    isso_require_email = True if parsed.get('ISSO_REQUIRE_EMAIL', 'false') == 'true' else False
-    isso_voting = True if parsed.get('ISSO_VOTING', 'false') == 'true' else False
+    isso_reply_self = True if config.get('ISSO_REPLY_SELF', 'false') == 'true' else False
+    isso_require_author = True if config.get('ISSO_REQUIRE_AUTHOR', 'false') == 'true' else False
+    isso_require_email = True if config.get('ISSO_REQUIRE_EMAIL', 'false') == 'true' else False
+    isso_voting = True if config.get('ISSO_VOTING', 'false') == 'true' else False
 
     populate = {
-        'sitename': parsed.get('SITENAME', ''),
+        'sitename': config.get('SITENAME', ''),
         'social': social,
         'navbar': navbar,
-        'allowed_extensions': ','.join(parsed.get('ALLOWED_EXTENSIONS', set())),
-        'comment_system': parsed.get('COMMENT_SYSTEM', ''),
-        'disqus_shortname': parsed.get('DISQUS_SHORTNAME', ''),
-        'isso_url': parsed.get('ISSO_URL', ''),
+        'allowed_extensions': ','.join(config.get('ALLOWED_EXTENSIONS', set())),
+        'comment_system': config.get('COMMENT_SYSTEM', ''),
+        'disqus_shortname': config.get('DISQUS_SHORTNAME', ''),
+        'isso_url': config.get('ISSO_URL', ''),
         'isso_reply_self': isso_reply_self,
         'isso_require_author': isso_require_author,
         'isso_require_email': isso_require_email,
         'isso_voting': isso_voting,
-        'humans': parsed.get('HUMANS_TXT', ''),
-        'robots': parsed.get('ROBOTS_TXT', ''),
-        'footer_left': parsed.get('FOOTER_LEFT', ''),
-        'footer_right': parsed.get('FOOTER_RIGHT', ''),
+        'humans': config.get('HUMANS_TXT', ''),
+        'robots': config.get('ROBOTS_TXT', ''),
+        'footer_left': config.get('FOOTER_LEFT', ''),
+        'footer_right': config.get('FOOTER_RIGHT', ''),
     }
 
     form = SettingsForm(**populate)
 
-    if form.validate_on_submit():
-        # Update configs
-        new_social = []
-        if form.social.data:
-            for s in form.social.data.split('\n'):
-                split = s.split(':', 1)
-                try:
-                    new_social.append({
-                        'glyph': split[0].strip(),
-                        'link': split[1].strip()
-                    })
-
-                except:
-                    # Skip this element, it was not well written
-                    pass
-
-        new_navbar = []
-        if form.navbar.data:
-            for s in form.navbar.data.split('\n'):
-                split = s.split(':', 1)
-                try:
-                    new_navbar.append({
-                        'text': split[0].strip(),
-                        'link': split[1].strip()
-                    })
-
-                except:
-                    # Skip this element, it was not well written
-                    pass
-
-        new_extensions = []
-
-        if form.allowed_extensions.data:
-            new_extensions = [
-                a.strip() for a in form.allowed_extensions.data.split(',')]
-
-        to_store = {
-            'SITENAME': form.sitename.data,
-            'SOCIAL': new_social,
-            'NAVBAR': new_navbar,
-            'ALLOWED_EXTENSIONS': set(new_extensions),
-            'COMMENT_SYSTEM': form.comment_system.data,
-            'DISQUS_SHORTNAME': form.disqus_shortname.data,
-            'ISSO_URL': form.isso_url.data,
-            'ISSO_REPLY_SELF': 'true' if form.isso_reply_self.data else 'false',
-            'ISSO_REQUIRE_AUTHOR': 'true' if form.isso_require_author.data else 'false',
-            'ISSO_REQUIRE_EMAIL': 'true' if form.isso_require_email.data else 'false',
-            'ISSO_VOTING': 'true' if form.isso_voting.data else 'false',
-            'HUMANS_TXT': form.humans.data,
-            'ROBOTS_TXT': form.robots.data,
-            'FOOTER_LEFT': form.footer_left.data,
-            'FOOTER_RIGHT': form.footer_right.data,
-        }
-
-        try:
-            correct = True
-            state.update_db(to_store)
-
-        except SQLAlchemyError as e:
-            # Catch SQLAlchemy errors
-            correct = False
-            errmsg = e.orig
-
-        except Exception as e:
-            # Catch anything unknown
-            correct = False
-            errmsg = 'Unknown error'
-
-        finally:
-            if not correct:
-                # Cleanup and show error
-                db.session.rollback()
-
-                return render_template(
-                    'akamatsu/dashboard/settings/edit.html',
-                    status='saveerror',
-                    form=form,
-                    errmsg=errmsg
-                )
-
-
-        # Settings saved, remain in the edition view
-        return render_template(
-            'akamatsu/dashboard/settings/edit.html',
-            status='saved',
-            form=form
-        )
-
     return render_template(
-        'akamatsu/dashboard/settings/edit.html',
-        status='edit',
+        'akamatsu/dashboard/settings/show.html',
         form=form
     )

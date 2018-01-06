@@ -19,10 +19,12 @@ FOOTER_RIGHT = "Built with akamatsu"
 
 
 # Comments
-COMMENT_SYSTEM = "" # 'isso' or 'disqus'
+COMMENT_SYSTEM = "disqus" # 'isso' or 'disqus'
 
+# When COMMENT_SYSTEM is "disqus"
 DISQUS_SHORTNAME = ""
 
+# When COMMENT_SYSTEM is "isso" (all values are strings!)
 ISSO_URL = ""
 ISSO_REPLY_SELF = "true"
 ISSO_REQUIRE_AUTHOR = "true"

@@ -32,7 +32,7 @@
         <nav class="aka-overbox">
             {# Only for admins #}
             {% if current_user.has_role('admin') %}
-            <a class="fa fa-cog" href="{{ url_for('dashboard.settings_edit') }}"></a>
+            <a class="fa fa-cog" href="{{ url_for('dashboard.settings_show') }}"></a>
             {% endif %}
 
             <a class="fa fa-user" href="{{ url_for('dashboard.profile_edit') }}"></a>
@@ -85,15 +85,22 @@
         </div>
     </div>
 
-{# Main content #}
-{% block content %}{% endblock %}
+
+    <div class="grid grid-pad">
+        <div class="col-1-1">
+            <h3>{{ self.title() }}</h3>
+        </div>
+    </div>
+
+    {# Main content #}
+    {% block content %}{% endblock %}
 
     {# Footer #}
     <footer>
         <div class="aka-footer">
             <div class="grid grid-pad">
                 <div id="footer-right" class="col-1-3 push-right">
-                    Built with akamatsu
+                    Built with <a href="https://github.com/rmed/akamatsu" target="_blank">akamatsu</a>
                 </div>
             </div>
         </div>

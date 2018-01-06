@@ -24,7 +24,6 @@
 from akamatsu import db
 
 from flask_user import UserMixin
-from flask_waffleconf import WaffleMixin
 from sqlalchemy import event
 from sqlalchemy.ext.associationproxy import association_proxy
 
@@ -290,16 +289,6 @@ class UserRoles(db.Model):
         db.Integer,
         db.ForeignKey('roles.id', onupdate='CASCADE', ondelete='CASCADE')
     )
-
-
-# Flask-WaffleConf
-class WaffleModel(db.Model, WaffleMixin):
-    """Flask-WaffleConf model for storing variables."""
-    __tablename__ = 'waffleconfs'
-
-    id = db.Column(db.Integer, primary_key=True)
-    key = db.Column(db.String(255), unique=True, nullable=False)
-    value = db.Column(db.Text, nullable=False)
 
 
 # File uploads

@@ -131,46 +131,82 @@ class ProfileForm(FlaskForm):
 
 
 class SettingsForm(FlaskForm):
-    """Form for editing site settings."""
-    sitename = StringField('Site name')
+    """Form for showing application settings."""
+    # General settings
+    sitename = StringField('Site name', render_kw={'readonly': True})
 
     social = TextAreaField(
         'Social links',
-        description='format: "glyph-name:URL"'
+        description='format: "glyph-name:URL"',
+        render_kw={'readonly': True}
     )
 
     navbar = TextAreaField(
         'Navigation bar',
-        description='format: "text:URL"'
+        description='format: "text:URL"',
+        render_kw={'readonly': True}
     )
 
+    # Uploads
     allowed_extensions = StringField(
         'Allowed file extensions',
-        description='comma separated extensions'
+        description='comma separated extensions',
+        render_kw={'readonly': True}
     )
 
+    # Comment system to use
     comment_system = StringField(
         'Comment system',
-        description='"disqus" or "isso"'
+        description='"disqus" or "isso"',
+        render_kw={'readonly': True}
     )
 
-    disqus_shortname = StringField('Disqus shortname')
+    # Disqus shortname
+    disqus_shortname = StringField(
+        'Disqus shortname',
+        render_kw={'readonly': True}
+    )
 
-    isso_url = StringField('isso API location')
-    isso_reply_self = BooleanField('Allow replying to self in isso')
+    # Isso comments
+    isso_url = StringField('Isso API location', render_kw={'readonly': True})
+    isso_reply_self = BooleanField(
+        'Allow replying to self in isso',
+        render_kw={'readonly': True}
+    )
     isso_require_author = BooleanField(
-        'Require author name when writing a comment'
+        'Require author name when writing a comment',
+        render_kw={'readonly': True}
     )
     isso_require_email = BooleanField(
-        'Require email when writing a comment'
+        'Require email when writing a comment',
+        render_kw={'readonly': True}
     )
-    isso_voting = BooleanField('Allow voting in isso')
+    isso_voting = BooleanField(
+        'Allow voting in isso',
+        render_kw={'readonly': True}
+    )
 
-    humans = TextAreaField('humans.txt content')
-    robots = TextAreaField('robots.txt content')
+    # humans.txt and robots.txt
+    humans = TextAreaField(
+        'humans.txt content',
+        render_kw={'readonly': True}
+    )
+    robots = TextAreaField(
+        'robots.txt content',
+        render_kw={'readonly': True}
+    )
 
-    footer_left = TextAreaField('Left footer', description='HTML enabled')
-    footer_right = TextAreaField('Right footer', description='HTML enabled')
+    # Footer
+    footer_left = TextAreaField(
+        'Left footer',
+        description='HTML enabled',
+        render_kw={'readonly': True}
+    )
+    footer_right = TextAreaField(
+        'Right footer',
+        description='HTML enabled',
+        render_kw={'readonly': True}
+    )
 
 
 class UploadForm(FlaskForm):
