@@ -89,7 +89,8 @@ def init_app():
     from akamatsu import models
 
     # Database migrations
-    migrate.init_app(app, db)
+    migrations_dir = os.path.join(app.root_path, 'migrations')
+    migrate.init_app(app, db, migrations_dir)
 
 
     # Setup Flask-Mail

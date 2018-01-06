@@ -42,7 +42,12 @@ setup(
     packages=find_packages(),
 
     package_data={
-        'akamatsu': ['templates/*', 'static/*']
+        'akamatsu': [
+            'migrations/*',
+            'migrations/versions/*',
+            'templates/*',
+            'static/*'
+        ]
     },
     exclude_package_data={
         '': ['static/gen/*']
