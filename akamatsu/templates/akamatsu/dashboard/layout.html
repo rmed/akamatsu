@@ -1,27 +1,26 @@
 <!DOCTYPE HTML>
 <html>
 <head>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}"/>
 
-<link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    {# Minified CSS #}
+    {% assets "css_pack" %}
+        <link rel="stylesheet" type="text/css" href="{{ ASSET_URL }}"/>
+    {% endassets %}
 
-{# Minified CSS #}
-{% assets "css_pack" %}
-    <link rel="stylesheet" type="text/css" href="{{ ASSET_URL }}">
-{% endassets %}
-
-{# Minified dashboard specific JS #}
-{% assets "db_js_pack" %}
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/zepto/1.1.6/zepto.min.js"></script>
-    <script type="text/javascript" src="{{ ASSET_URL }}"></script>
-{% endassets %}
-
-{# Miscenlaneous stuff #}
-{% block custom_header %}{% endblock %}
-
+    {# Minified dashboard specific JS #}
+    {% assets "db_js_pack" %}
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/zepto/1.1.6/zepto.min.js"></script>
+        <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+    {% endassets %}
     <title>{% block title %}{% endblock %} | {{ config['SITENAME'] }} dashboard</title>
 
-    {# Be responsive #}
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {# Meta tags #}
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+    {# Miscenlaneous stuff #}
+    {% block custom_header %}{% endblock %}
 </head>
 
 <body>
@@ -32,7 +31,7 @@
         <nav class="aka-overbox">
             {# Only for admins #}
             {% if current_user.has_role('admin') %}
-            <a class="fa fa-cog" href="{{ url_for('dashboard.settings_show') }}"></a>
+                <a class="fa fa-cog" href="{{ url_for('dashboard.settings_show') }}"></a>
             {% endif %}
 
             <a class="fa fa-user" href="{{ url_for('dashboard.profile_edit') }}"></a>
@@ -49,35 +48,35 @@
         </div>
 
         {% if current_user.has_role('blogger') or current_user.has_role('superblogger') or current_user.has_role('admin') %}
-        <div class="col-1-10">
-            <a class="aka-db-navlink" href="{{ url_for('dashboard.blog_index') }}">
-                <i class="fa fa-comments-o"></i> Blog
-            </a>
-        </div>
+            <div class="col-1-10">
+                <a class="aka-db-navlink" href="{{ url_for('dashboard.blog_index') }}">
+                    <i class="fa fa-comments-o"></i> Blog
+                </a>
+            </div>
         {% endif %}
 
         {% if current_user.has_role('editor') or current_user.has_role('admin') %}
-        <div class="col-1-10">
-            <a class="aka-db-navlink" href="{{ url_for('dashboard.page_index') }}">
-                <i class="fa fa-book"></i> Pages
-            </a>
-        </div>
+            <div class="col-1-10">
+                <a class="aka-db-navlink" href="{{ url_for('dashboard.page_index') }}">
+                    <i class="fa fa-book"></i> Pages
+                </a>
+            </div>
         {% endif %}
 
         {% if current_user.has_role('uploader') or current_user.has_role('superuploader') or current_user.has_role('admin') %}
-        <div class="col-1-10">
-            <a class="aka-db-navlink" href="{{ url_for('dashboard.file_index') }}">
-                <i class="fa fa-paperclip"></i> Files
-            </a>
-        </div>
+            <div class="col-1-10">
+                <a class="aka-db-navlink" href="{{ url_for('dashboard.file_index') }}">
+                    <i class="fa fa-paperclip"></i> Files
+                </a>
+            </div>
         {% endif %}
 
         {% if current_user.has_role('admin') %}
-        <div class="col-1-10">
-            <a class="aka-db-navlink" href="{{ url_for('dashboard.user_index') }}">
-                <i class="fa fa-users"></i> Users
-            </a>
-        </div>
+            <div class="col-1-10">
+                <a class="aka-db-navlink" href="{{ url_for('dashboard.user_index') }}">
+                    <i class="fa fa-users"></i> Users
+                </a>
+            </div>
         {% endif %}
 
         <div class="col-3-10 push-right">
@@ -105,6 +104,5 @@
             </div>
         </div>
     </footer>
-
 </body>
 </html>

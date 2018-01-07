@@ -4,88 +4,90 @@
 <html>
 <head>
 {% block html_head %}
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}"/>
 
-<link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    {# humans.txt #}
+    <link type="text/plain" rel="author" href="{{ url_for('misc.humans_txt') }}"/>
 
-{# Minified CSS #}
-{% assets "css_pack" %}
-    <link rel="stylesheet" type="text/css" href="{{ ASSET_URL }}">
-{% endassets %}
+    {# Minified CSS #}
+    {% assets "css_pack" %}
+        <link rel="stylesheet" type="text/css" href="{{ ASSET_URL }}"/>
+    {% endassets %}
 
-{# Minified JS #}
-{% assets "js_pack" %}
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/zepto/1.1.6/zepto.min.js"></script>
-    <script type="text/javascript" src="{{ ASSET_URL }}"></script>
-{% endassets %}
+    {# Minified JS #}
+    {% assets "js_pack" %}
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/zepto/1.1.6/zepto.min.js"></script>
+        <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+    {% endassets %}
 
     <title>{% block title %}{% endblock %} | {{ config['SITENAME'] }}</title>
 
-    {# Be responsive #}
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    {# humans.txt #}
-    <link type="text/plain" rel="author" href="{{ url_for('misc.humans_txt') }}" />
+    {# Meta tags #}
+    <meta charset="utf-8"/>
+    <meta name="distribution" content="global"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta property="og:title" content="{{ self.title() }}"/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:url" content="{{ request.url }}"/>
+    <meta property="og:site_name" content="{{ config['SITENAME'] }}"/>
 
     {# Analytics #}
     {{ analytics }}
 
-{# Additional tags #}
-{% block head_extend %}{% endblock %}
+    {# Additional tags #}
+    {% block head_extend %}{% endblock %}
 
-{% endblock %}
+    {% endblock %}
 
     {# Cookie notice #}
     {{ cookie_notice() }}
 </head>
 
 <body>
-{% block akamatsu_header %}
-    {# Header #}
-    <header class="aka-header">
-        <h1 class="aka-sitename">{{ config['SITENAME'] }}{% block mini %}{% endblock %}</h1>
+    {% block akamatsu_header %}
+        {# Header #}
+        <header class="aka-header">
+            <h1 class="aka-sitename">{{ config['SITENAME'] }}{% block mini %}{% endblock %}</h1>
 
-{# Social links #}
-{% if config['SOCIAL'] is defined %}
-        <nav class="aka-overbox">
-        {% for item in config['SOCIAL'] %}
-            <a class="fa fa-{{ item['glyph'] }}" href="{{ item['link'] }}" target="_blank"></a>
-        {% endfor %}
-        </nav>
-{% endif %}
-    </header>
+            {# Social links #}
+            {% if config['SOCIAL'] is defined %}
+                    <nav class="aka-overbox">
+                        {% for item in config['SOCIAL'] %}
+                            <a class="fa fa-{{ item['glyph'] }}" href="{{ item['link'] }}" target="_blank"></a>
+                        {% endfor %}
+                    </nav>
+            {% endif %}
+        </header>
 
-{# Navigation bar #}
-{% if config['NAVBAR'] %}
-    <nav class="aka-navbar">
-        <a id="aka-navmenu" class="fa fa-bars" href="javascript:void(0);"></a>
+        {# Navigation bar #}
+        {% if config['NAVBAR'] %}
+            <nav class="aka-navbar">
+                <a id="aka-navmenu" class="fa fa-bars" href="javascript:void(0);"></a>
 
-    {% for item in config['NAVBAR'] %}
-        <a class="navitem" href="{{ item['link'] }}">{{ item['text'] }}</a>
-    {% endfor %}
-    </nav>
-{% endif %}
+                {% for item in config['NAVBAR'] %}
+                    <a class="navitem" href="{{ item['link'] }}">{{ item['text'] }}</a>
+                {% endfor %}
+            </nav>
+        {% endif %}
+    {% endblock %}
 
-{% endblock %}
+    {% block html_body %}
+        {# Main content #}
+        {% block content %}{% endblock %}
 
-{% block html_body %}
-
-{# Main content #}
-{% block content %}{% endblock %}
-
-{# Footer #}
-<footer>
-    <div class="aka-footer">
-        <div class="grid grid-pad">
-            <div id="footer-left" class="col-1-3">
-                {{ config["FOOTER_LEFT"]|safe }}
+        {# Footer #}
+        <footer>
+            <div class="aka-footer">
+                <div class="grid grid-pad">
+                    <div id="footer-left" class="col-1-3">
+                        {{ config["FOOTER_LEFT"]|safe }}
+                    </div>
+                    <div id="footer-right" class="col-1-3 push-right">
+                        {{ config["FOOTER_RIGHT"]|safe }}
+                    </div>
+                </div>
             </div>
-            <div id="footer-right" class="col-1-3 push-right">
-                {{ config["FOOTER_RIGHT"]|safe }}
-            </div>
-        </div>
-    </div>
-</footer>
-
-{% endblock %}
+        </footer>
+    {% endblock %}
 </body>
 </html>

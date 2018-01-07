@@ -3,6 +3,19 @@
 
 {% block title %}{{ post.title }}{% endblock %}
 
+{% block head_extend %}
+    {# Keywords #}
+    <meta name="keywords" content="{{ post.tags|map(attribute='name')|join(', ') }}"/>
+
+    {# Author name (or username) #}
+    {% set author = "%(name)s %(lastname)s"|format(name=post.author.first_name, lastname=post.author.last_name)|trim %}
+    {% if author %}
+        <meta name="author" content="{{ author }}"/>
+    {% else %}
+        <meta name="author" content="post.author.username"/>
+    {% endif %}
+{% endblock %}
+
 {# Page mini #}
 {% block mini %}.blog{% endblock %}
 
