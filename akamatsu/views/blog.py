@@ -36,7 +36,7 @@ bp_blog = Blueprint('blog', __name__)
 def feed():
     """Return an atom feed for the blog."""
     feed = AtomFeed(
-        '%s: Recent Posts' % app.config.get('SITENAME', 'akamatsu'),
+        '%s: Recent Posts' % current_app.config.get('SITENAME', 'akamatsu'),
         feed_url=request.url,
         url=request.url_root
     )

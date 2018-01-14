@@ -60,6 +60,13 @@ class CeleryWrapper(object):
         self._celery = None
         self.task = None
 
+    def __getattr__(self, attr):
+        """Wrap internal celery attributes."""
+        if attr == 'make_celery':
+            return getattr(self, attr)
+
+        return getattr(self._celery, attr)
+
     def make_celery(self, app):
         """Create a celery instance for the application.
 

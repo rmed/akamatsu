@@ -203,17 +203,17 @@ def init_app():
         If Celery is enabled, the message will be sent asynchronously.
         """
         if user.notify_login:
-            notification = Message(
-                'akamatsu - New session started',
-                recipients=[user.email],
-                body=render_template('mail/login.txt', user=user),
-                html=render_template('mail/login.html', user=user)
-            )
+            notify_args = ('akamatsu - New session started',)
+            notify_kwargs = {
+                'recipients': [user.email],
+                'body': render_template('mail/login.txt', user=user),
+                'html': render_template('mail/login.html', user=user)
+            }
 
             if app.config.get('USE_CELERY', False):
-                async_mail.delay(notification)
+                async_mail.delay(*notify_args, **notify_kwargs)
             else:
-                mail.send(notification)
+                mail.send(Message(*notify_args, **notify_kwargs))
 
 
     return app
