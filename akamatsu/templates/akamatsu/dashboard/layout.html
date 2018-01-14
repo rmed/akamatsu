@@ -1,7 +1,10 @@
+{% from "akamatsu/_macros.html" import favicon_tags %}
+
 <!DOCTYPE HTML>
 <html>
 <head>
-    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}"/>
+    {# Favicon #}
+    {{ favicon_tags() }}
 
     {# Minified CSS #}
     {% assets "css_pack" %}

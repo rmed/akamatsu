@@ -1,4 +1,4 @@
-# ![akamatsu](logo.png)
+# ![akamatsu](akamatsu/static/favicon/android-chrome-192x192.png) Akamatsu
 
 My small CMS made in Flask
 

@@ -1,10 +1,11 @@
-{% from "akamatsu/_macros.html" import cookie_notice %}
+{% from "akamatsu/_macros.html" import cookie_notice, favicon_tags %}
 
 <!DOCTYPE HTML>
 <html>
 <head>
 {% block html_head %}
-    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}"/>
+    {# Favicon #}
+    {{ favicon_tags() }}
 
     {# humans.txt #}
     <link type="text/plain" rel="author" href="{{ url_for('misc.humans_txt') }}"/>
@@ -26,6 +27,7 @@
     <meta charset="utf-8"/>
     <meta name="distribution" content="global"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta name="theme-color" content="#3E8CC0"/>
     <meta property="og:title" content="{{ self.title() }}"/>
     <meta property="og:type" content="website"/>
     <meta property="og:url" content="{{ request.url }}"/>

@@ -18,11 +18,20 @@
 {% endmacro %}
 
 
+{# Set favicon tags #}
+{% macro favicon_tags() %}
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='favicon/apple-touch-icon.png') }}"/>
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='favicon/favicon-32x32.png') }}"/>
+    <link rel="mask-icon" href="{{ url_for('static', filename='favicon/safari-pinned-tab.svg') }}" color="#d40000"/>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon/favicon.ico') }}"/>
+{% endmacro %}
+
+
 {# Select comments to render depending on configured type #}
 {% macro render_comments(item, item_type, url) %}
 {% if config.COMMENT_SYSTEM %}
     {% if config.COMMENT_SYSTEM == 'disqus' %}
-        {{ disqus_comments('{{ item_type }}_' ~ item.id, item.title, url_for('{{ url }}', _external=True, slug=item.slug)) }}
+        {{ disqus_comments('{{ item_type }}_' ~ item.id, item.title, url_for(url, _external=True, slug=item.slug)) }}
 
     {% elif config.COMMENT_SYSTEM == 'isso' %}
         {{ isso_comments(item.title) }}
