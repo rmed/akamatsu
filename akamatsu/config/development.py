@@ -9,6 +9,10 @@ DEBUG = True
 SITENAME = "akamatsu"
 
 
+# Cookie notice
+COOKIE_NOTICE = True
+
+
 # Active theme
 THEME = "akamatsu"
 

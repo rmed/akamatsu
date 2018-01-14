@@ -51,6 +51,9 @@ BASE_CONFIG = {
     'USER_UNAUTHORIZED_ENDPOINT': 'dashboard.home',
 
     'USER_PASSWORD_HASH': 'sha512_crypt',
+
+    # Cookie notice
+    'COOKIE_NOTICE': True,
 }
 
 class CeleryWrapper(object):
