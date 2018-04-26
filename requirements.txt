@@ -1,6 +1,6 @@
 awesome-slugify==1.6.5
 cssmin==0.2.0
-Flask==0.12.2
+Flask==1.0
 Flask-Analytics==0.6.0
 Flask-Assets==0.12
 Flask-Mail==0.9.1
