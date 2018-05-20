@@ -13,7 +13,12 @@
             "button": {
               "background": "#3E8CC0"
             }
-          }
+          },
+          {% if config.COOKIE_LINK %}
+            "content": {
+              "href": "{{ config.COOKIE_LINK }}"
+            }
+          {% endif %}
         })});
         </script>
     {% endif %}
