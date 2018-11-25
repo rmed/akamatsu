@@ -9,4 +9,4 @@ Flask-Misaka==0.4.1
 Flask-SQLAlchemy==2.3.2
 Flask-User==0.6.21
 Flask-WTF==0.14.2
-pygments==2.2.0
+pygments==2.3.0
