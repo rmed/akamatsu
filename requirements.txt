@@ -4,7 +4,7 @@ Flask==1.0.2
 Flask-Analytics==0.6.0
 Flask-Assets==0.12
 Flask-Mail==0.9.1
-Flask-Migrate==2.3.0
+Flask-Migrate==2.3.1
 Flask-Misaka==0.4.1
 Flask-SQLAlchemy==2.3.2
 Flask-User==0.6.21
