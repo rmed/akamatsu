@@ -7,6 +7,6 @@ Flask-Mail==0.9.1
 Flask-Migrate==2.3.0
 Flask-Misaka==0.4.1
 Flask-SQLAlchemy==2.3.2
-Flask-User==0.6.21
+Flask-User==1.0.2.2
 Flask-WTF==0.14.2
 pygments==2.2.0
