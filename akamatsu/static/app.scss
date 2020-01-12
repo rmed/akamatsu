@@ -1,0 +1,43 @@
+// Customizations
+@import "scss/custom.scss";
+
+// Bulma
+@import "sass/vendor/bulma/bulma.sass";
+
+// Bulma extensions
+@import "sass/vendor/bulma-extensions/bulma-divider.sass";
+@import "sass/vendor/bulma-extensions/bulma-switch.sass";
+@import "sass/vendor/bulma-extensions/bulma-tagsinput.sass";
+@import "sass/vendor/bulma-extensions/bulma-tooltip.sass";
+
+// Font awesome
+$fa-font-path: "../fonts/fontawesome";
+@import "scss/vendor/fontawesome/fontawesome.scss";
+@import "scss/vendor/fontawesome/solid.scss";
+
+// Noty
+@import "css/vendor/noty";
+@import "css/vendor/noty-mint";
+
+
+html, body {
+    background-color: $light;
+    height: 100%;
+}
+
+// Margin helpers
+.has-margin-left {
+    margin-left: 20px;
+}
+
+.has-margin-right {
+    margin-right: 20px;
+}
+
+.has-margin-top {
+    margin-top: 20px;
+}
+
+.has-margin-bottom {
+    margin-bottom: 20px;
+}

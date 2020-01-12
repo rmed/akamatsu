@@ -1,0 +1,336 @@
+{# Renders an input field #}
+{% macro render_input(field, label="", placeholder="", size="", icon="", label_icon="") %}
+    {% if not label %}
+        {% set label = field.label.text %}
+    {% endif %}
+
+    {% if size %}
+        {% set size = "is-"+size %}
+    {% endif %}
+
+    <div class="field">
+        {% if label %}
+            <label class="label" for="{{ field.id }}">
+                {% if label_icon %}
+                    <span class="icon"><i class="fas fa-{{ label_icon }}"></i></span>
+                {% endif %}
+                <span>{{ label }}</span>
+                <small class="is-pulled-right has-text-grey">{{ field.description }}</small>
+            </label>
+        {% endif %}
+
+        {% if icon %}
+            <div class="control has-icons-left">
+                {{ field(class_="input "+size) }}
+
+                <span class="icon is-small is-left">
+                    <i class="fas fa-{{ icon }}"></i>
+                </span>
+            </div>
+
+        {% else %}
+            <div class="control">
+                {{ field(class_="input "+size) }}
+            </div>
+        {% endif %}
+    </div>
+{% endmacro %}
+
+
+{# Renders a date field #}
+{% macro render_date_input(field, label="", placeholder="", size="", icon="", label_icon="") %}
+    {% if not label %}
+        {% set label = field.label.text %}
+    {% endif %}
+
+    {% if size %}
+        {% set size = "is-"+size %}
+    {% endif %}
+
+    <div class="field">
+        {% if label %}
+            <label class="label" for="{{ field.id }}">
+                {% if label_icon %}
+                    <span class="icon"><i class="fas fa-{{ label_icon }}"></i></span>
+                {% endif %}
+                <span>{{ label }}</span>
+                <small class="is-pulled-right has-text-grey">{{ field.description }}</small>
+            </label>
+        {% endif %}
+
+        {% if icon %}
+            <div class="control has-icons-left">
+                {{ field(class_="input "+size, type="date", pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}") }}
+
+                <span class="icon is-small is-left">
+                    <i class="fas fa-{{ icon }}"></i>
+                </span>
+            </div>
+
+        {% else %}
+            <div class="control">
+                {{ field(class_="input "+size, type="date", pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}") }}
+            </div>
+        {% endif %}
+    </div>
+{% endmacro %}
+
+
+{# Renders a number input field #}
+{% macro render_number_input(field, label="", placeholder="", size="", icon="", min=1, max=0) %}
+    {% if not label %}
+        {% set label = field.label.text %}
+    {% endif %}
+
+    {% if size %}
+        {% set size = "is-"+size %}
+    {% endif %}
+
+    {% if label %}
+        {% if icon %}
+            <label class="label" for="{{ field.id }}">
+                <span class="icon"><i class="fas fa-{{ icon }}"></i></span>
+                <span>{{ label }}</span>
+                <small class="is-pulled-right has-text-grey">{{ field.description }}</small>
+            </label>
+        {% else %}
+            <label class="label" for="{{ field.id }}">
+                <span>{{ label }}</span>
+                <small class="is-pulled-right has-text-grey">{{ field.description }}</small>
+            </label>
+        {% endif %}
+    {% endif %}
+
+    <div class="field has-addons has-addons-centered">
+        <p class="control is-expanded">
+            {{ field(class_="input "+size, type="number", min=min) }}
+        </p>
+
+        <p class="control">
+            <a class="button num-sub">
+                <span class="icon"><i class="fas fa-minus"></i></span>
+            </a>
+        </p>
+
+        <p class="control">
+            <a class="button num-add">
+                <span class="icon"><i class="fas fa-plus"></i></span>
+            </a>
+        </p>
+    </div>
+{% endmacro %}
+
+
+{# Renders a tag input field #}
+{% macro render_tag_input(field, label="", placeholder="", size="", icon="") %}
+    {% if not label %}
+        {% set label = field.label.text %}
+    {% endif %}
+
+    {% if size %}
+        {% set size = "is-"+size %}
+    {% endif %}
+
+    <div class="field">
+        {% if label %}
+            {% if icon %}
+                <label class="label" for="{{ field.id }}">
+                    <span class="icon"><i class="fas fa-{{ icon }}"></i></span>
+                    <span>{{ label }}</span>
+                    <small class="is-pulled-right has-text-grey">{{ field.description }}</small>
+                </label>
+            {% else %}
+                <label class="label" for="{{ field.id }}">
+                    <span>{{ label }}</span>
+                    <small class="is-pulled-right has-text-grey">{{ field.description }}</small>
+                </label>
+            {% endif %}
+        {% endif %}
+
+        <div class="control">
+            {{ field(class_="input "+size, type="tags") }}
+        </div>
+    </div>
+{% endmacro %}
+
+
+{# Renders a textarea field #}
+{% macro render_textarea(field, label="", placeholder="", size="", icon="") %}
+    {% if not label %}
+        {% set label = field.label.text %}
+    {% endif %}
+
+    {% if size %}
+        {% set size = "is-"+size %}
+    {% endif %}
+
+    <div class="field">
+        {% if label %}
+            {% if icon %}
+                <label class="label" for="{{ field.id }}">
+                    <span class="icon"><i class="fas fa-{{ icon }}"></i></span>
+                    <span>{{ label }}</span>
+                    <small class="is-pulled-right has-text-grey">{{ field.description }}</small>
+                </label>
+            {% else %}
+                <label class="label" for="{{ field.id }}">
+                    <span>{{ label }}</span>
+                    <small class="is-pulled-right has-text-grey">{{ field.description }}</small>
+                </label>
+            {% endif %}
+        {% endif %}
+
+        <div class="control">
+            {{ field(class_="textarea "+size) }}
+        </div>
+    </div>
+{% endmacro %}
+
+
+{# Renders a button/submit field #}
+{% macro render_submit(field, label="", size="", color="primary", icon="", fullwidth=true) %}
+    {% if not label %}
+        {% set label = field.label.text %}
+    {% endif %}
+
+    {% if size %}
+        {% set size = "is-"+size %}
+    {% endif %}
+
+    <div class="field">
+        <div class="control">
+            <button type="submit" class="button is-{{ color }} {{ size }} {% if fullwidth %}is-fullwidth{% endif %}">
+                {% if icon %}
+                    <span class="icon {{ size }}">
+                        <i class="fas fa-{{ icon }}"></i>
+                    </span>
+                {% endif %}
+
+                <span>{{ label }}</span>
+            </button>
+        </div>
+    </div>
+{% endmacro %}
+
+
+{# Renders a select field #}
+{% macro render_select(field, label="", size="", icon="", label_icon="") %}
+    {% if not label %}
+        {% set label = field.label.text %}
+    {% endif %}
+
+    {% if size %}
+        {% set size = "is-"+size %}
+    {% endif %}
+
+    <div class="field">
+        {% if label %}
+            <label class="label" for="{{ field.id }}">
+                {% if label_icon %}
+                    <span class="icon"><i class="fas fa-{{ label_icon }}"></i></span>
+                {% endif %}
+                <span>{{ label }}</span>
+                <small class="is-pulled-right has-text-grey">{{ field.description }}</small>
+            </label>
+        {% endif %}
+
+        <div class="control {% if icon %}has-icons-left{% endif %}">
+            <div class="select {{ size }}">
+                {{ field(default_='es') }}
+            </div>
+
+            {% if icon %}
+                <div class="icon is-left">
+                    <i class="fas fa-globe"></i>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endmacro %}
+
+
+{# Renders a checkbox as a switch #}
+{% macro render_switch(field, label="", size="", color="primary") %}
+    {% if not label %}
+        {% set label = field.label.text %}
+    {% endif %}
+
+    {% if size %}
+        {% set size = "is-"+size %}
+    {% endif %}
+
+    <div class="field">
+        {{ field(class_="switch "+size+" is-"+color) }}
+        <label for="{{ field.id }}">{{ label }}</label>
+    </div>
+{% endmacro %}
+
+
+{# Renders a list of warnings for form fields #}
+{% macro render_messages(messages, size="", color="warning") %}
+    {% if size %}
+        {% set size = "is-"+size %}
+    {% endif %}
+
+    <article class="message {{ size }} is-{{ color }}">
+        <div class="message-body">
+            {% for message in messages %}
+                <p>{{ message }}</p>
+            {% endfor %}
+        </div>
+    </article>
+{% endmacro %}
+
+
+{# Render flash messages #}
+{% macro render_flash_messages() %}
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <script type="text/javascript">
+                {% for category, message in messages %}
+                    showNotification('{{ category }}', '{{ message }}');
+                {% endfor %}
+            </script>
+        {% endif %}
+    {% endwith %}
+{% endmacro %}
+
+
+{# Renders pagination controls
+
+Use kwargs for additional arguments for the URL. For instance:
+
+    <a {% if pagination.has_next %}href="{{ url_for_self(page=pagination.page+1, search=kwargs['search'], sort=kwargs['sort'], order=kwargs['order']) }}"{% else %}disabled{% endif %} class="pagination-next">
+
+Would render a link to the next page taking into account search arguments, sorting and ordering of a table.
+#}
+{% macro render_pagination(pagination) %}
+    <nav class="pagination" role="navigation" aria-label="pagination" data-target="{{ target }}">
+        <a {% if pagination.has_prev %}href="{{ url_for_self(page=pagination.page-1) }}"{% else %}disabled{% endif %} class="pagination-previous">
+            <span class="icon"><i class="fas fa-chevron-left"></i></span>
+            <span>{{ _('Previous') }}</span>
+        </a>
+
+        <a {% if pagination.has_next %}href="{{ url_for_self(page=pagination.page+1) }}"{% else %}disabled{% endif %} class="pagination-next">
+            <span>{{ _('Next') }}</span>
+            <span class="icon"><i class="fas fa-chevron-right"></i></span>
+        </a>
+
+        <ul class="pagination-list">
+            {% for page in pagination.iter_pages() %}
+                <li>
+                    {% if page %}
+                        {% if page != pagination.page %}
+                            <a href="{{ url_for_self(page=page) }}"class="pagination-link">{{ page }}</a>
+                        {% else %}
+                            <a class="pagination-link is-current">{{ page }}</a>
+                        {% endif %}
+
+                    {% else %}
+                        <span class="pagination-ellipsis">&hellip;</span>
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    </nav>
+{% endmacro %}

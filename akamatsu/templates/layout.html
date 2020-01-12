@@ -1,0 +1,80 @@
+{% import "macros.html" as macros %}
+
+<!DOCTYPE HTML>
+<html>
+{% block html_head %}
+<head>
+    {# Favicon #}
+
+    <title>{% block title %}{% endblock %} | {{ config['SITENAME'] }}e</title>
+
+    {# Minified CSS #}
+    {% assets "css_pack" %}
+        <link rel="stylesheet" type="text/css" href="{{ ASSET_URL }}"/>
+    {% endassets %}
+
+    {# Minified JS #}
+    {% assets "js_pack" %}
+        <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+    {% endassets %}
+
+    {# Meta tags #}
+    <meta charset="utf-8"/>
+    <meta name="distribution" content="global"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta property="og:title" content="{{ self.title() }}"/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:url" content="{{ request.url }}"/>
+    <meta property="og:site_name" content="{{ config['SITENAME'] }}"/>
+
+    {# CSRF token. Set flag in templates when needed #}
+    {% if _include_csrf %}
+        <meta name="csrf-token" content="{{ csrf_token() }}"/>
+    {% endif %}
+
+    {# Additional tags #}
+    {% block head_extend %}{% endblock %}
+</head>
+{% endblock %}
+
+{% block html_body %}
+<body>
+    {# Top navbar #}
+    <nav class="navbar has-shadow">
+        <div class="container">
+            <div class="navbar-brand">
+                <a href="{{ url_for('general.home') }}" class="navbar-item">{{ _('Home') }}</a>
+
+                <a id="sidebar-toggle" role="button" class="navbar-burger" data-target="nav-menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </a>
+            </div>
+
+            {% if current_user.is_authenticated %}
+                <div id="nav-menu" class="navbar-menu">
+                    <div class="navbar-end">
+                        <a href="{{ url_for('auth.logout') }}" class="navbar-item is-tab">
+                            <span class="icon"><i class="fas fa-sign-out-alt"></i></span>
+                            <span>{{ _('Logout') }}</span>
+                        </a>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </nav>
+
+    {# Breadcrumbs #}
+    {% block breadcrumbs %}{% endblock %}
+
+    {# Main content #}
+    <section class="container">
+        {% block content %}{% endblock %}
+    </section>
+
+    {# Show flash messages #}
+    {{ macros.render_flash_messages() }}
+</body>
+{% endblock %}
+</html>

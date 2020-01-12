@@ -1,0 +1,11 @@
+{% extends "layout.html" %}
+
+{% block title %}{{ _('Internal server error') }}{% endblock %}
+
+{% block content %}
+    <h3 class="subtitle is-3">{{ _('Internal server error') }}</h3>
+
+    <div class="box">
+        <h4 class="subtitle is-4">{{ _('Ooops, something happening while processing your request. Please contact an administrator') }}</h4>
+    </div>
+{% endblock %}

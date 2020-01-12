@@ -1,0 +1,10 @@
+{% block message %}
+{{ _('A new session has been started for your account at site "%(sitename)s".', sitename=config.get('SITENAME', 'akamatsu')) }}
+
+{{ _('To stop receiving these messages, change your profile settings in the following link: ') }}
+
+{{ url_for('dashboard.profile_edit', _external=True) }}
+
+{{ _('Sincerely,') }}
+akamatsu
+{% endblock %}

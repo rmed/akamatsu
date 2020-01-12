@@ -1,51 +1,55 @@
 # -*- coding: utf-8 -*-
 #
-# akamatsu CMS
+# Akamatsu CMS
 # https://github.com/rmed/akamatsu
 #
-# Copyright (C) 2016 Rafael Medina García <rafamedgar@gmail.com>
+# MIT License
 #
-# This program is free software; you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; either version 2 of the License, or
-# (at your option) any later version.
+# Copyright (c) 2020 Rafael Medina García <rafamedgar@gmail.com>
 #
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
 #
-# You should have received a copy of the GNU General Public License along
-# with this program; if not, write to the Free Software Foundation, Inc.,
-# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
 
-"""This file contains the blueprint definition for the dashboard."""
+"""This module contains dashboard views."""
 
 from flask import Blueprint, render_template
-from flask_user import login_required
+from flask_babel import _
+from flask_login import login_required
+
 
 bp_dashboard = Blueprint('dashboard', __name__)
+
 
 @bp_dashboard.route('/')
 @login_required
 def home():
-    """Show the general view of the dashboard."""
-    return render_template('akamatsu/dashboard/index.html')
+    """Show dashboard home."""
+    return render_template('dashboard/index.html')
+
 
 # Import subviews
-import akamatsu.views.dashboard.blog
-import akamatsu.views.dashboard.file
-import akamatsu.views.dashboard.page
-import akamatsu.views.dashboard.profile
-import akamatsu.views.dashboard.settings
-import akamatsu.views.dashboard.user
+# from akamatsu.views.dashboard import blog
+
 
 @bp_dashboard.errorhandler(404)
 @login_required
-def not_found(e):
-    """Show the 404 error."""
-    msg = "It's gone! Poof! Magic!"
+def dashboard_not_found(e):
     return render_template(
-        'akamatsu/dashboard/error.html',
-        error_code=404,
-        error_msg=msg)
+        'dashboard/error.html',
+        error_msg=_('It\'s gone! Poof! Magic!')
+    ), 404

@@ -3,266 +3,259 @@
 # Akamatsu CMS
 # https://github.com/rmed/akamatsu
 #
-# Copyright (C) 2016 Rafael Medina García <rafamedgar@gmail.com>
+# MIT License
 #
-# This program is free software; you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; either version 2 of the License, or
-# (at your option) any later version.
+# Copyright (c) 2020 Rafael Medina García <rafamedgar@gmail.com>
 #
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
 #
-# You should have received a copy of the GNU General Public License along
-# with this program; if not, write to the Free Software Foundation, Inc.,
-# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
 
-"""This file contains WTForms form declarations."""
+"""This file contains form definitions."""
 
+from flask_babel import lazy_gettext as _l
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileRequired
-from wtforms import BooleanField, DateTimeField, \
-        StringField, TextAreaField, validators
+from wtforms import BooleanField, DateTimeField, PasswordField, StringField, \
+        TextAreaField, SubmitField
+from wtforms import validators
+from wtforms.ext.sqlalchemy.fields import QuerySelectField, \
+        QuerySelectMultipleField
 
 
+# Authentication forms
+class LoginForm(FlaskForm):
+    """Application login form."""
+    identity = StringField(
+        _l('Username or email'),
+        validators=[
+            validators.InputRequired(_l('Identity is required')),
+        ]
+    )
+
+    password = PasswordField(
+        _l('Password'),
+        validators=[
+            validators.InputRequired(_l('Password is required')),
+        ]
+    )
+
+    remember_me = BooleanField(_l('Remember me'))
+
+    submit = SubmitField(_l('Sign in'))
+
+
+class ForgotPasswordForm(FlaskForm):
+    """Form to request password reset token."""
+    email = StringField(
+        _l('Email'),
+        validators=[
+            validators.InputRequired(_l('Email is required')),
+            validators.Email(_l('Invalid Email'))
+        ]
+    )
+
+    submit = SubmitField(_l('Reset password'))
+
+
+class ReauthenticationForm(FlaskForm):
+    """Reauthentication form."""
+    password = PasswordField(
+        _l('Password'),
+        validators=[
+            validators.InputRequired(_l('Password is required')),
+        ]
+    )
+
+    submit = SubmitField(_l('Sign in'))
+
+
+class PasswordResetForm(FlaskForm):
+    """Reset password form."""
+    password = PasswordField(
+        _l('New password'),
+        validators=[validators.InputRequired(_l('Password is required'))]
+    )
+
+    retype_password = PasswordField(
+        _l('Retype new password'),
+        validators=[
+            validators.EqualTo(
+                'password',
+                message=_l('Passwords did not match')
+            )
+        ]
+    )
+
+    submit = SubmitField(_l('Reset password'))
+
+
+# CMS forms
 class PageForm(FlaskForm):
-    """Form for creating/editing pages."""
-    # Basic info
+    """Page form."""
+    ghosted = QuerySelectField(_l('Page to ghost'), allow_blank=True)
+
     title = StringField(
-        'Page title',
-        [validators.Length(min=4, max=255),validators.InputRequired()]
+        _l('Title'),
+        validators=[
+            validators.InputRequired(_l('Page title is required')),
+            validators.Length(
+                min=3,
+                max=255,
+                message=_l(
+                    'Title length should be between 3 and 255 characters long'
+                )
+            )
+        ]
     )
 
     mini = StringField(
-        'Page mini',
-        [validators.Length(max=50),],
-        default=None
+        _l('Page mini'),
+        validators=[
+            validators.Length(
+                max=50,
+                message=_l('Mini should be 50 characters long at most')
+            )
+        ]
     )
 
-    content = TextAreaField('Content', description='Markdown/HTML enabled')
+    route = StringField(
+        _l('Page route'),
+        validators=[
+            validators.InputRequired(_l('Page route is required')),
+            validators.Length(
+                max=512,
+                message=_l('Route should be 512 characters long at most')
+            )
+        ]
+    )
 
     custom_head = TextAreaField(
-        'Custom HTML head',
+        _l('Custom HTML head'),
         default=None,
-        description='HTML enabled'
-    )
-
-    ghost = StringField(
-        'Ghost link',
-        [validators.Length(max=512),],
-        default=None
-    )
-
-    base_route = StringField(
-        'Base route',
-        [validators.Length(max=255), validators.InputRequired()],
-        default='/'
-    )
-
-    slug = StringField(
-        'Page slug',
-        [validators.Length(max=255),]
-    )
-
-    # Flags
-    is_root = BooleanField('Is root page')
-    is_published = BooleanField('Is published')
-    comments_enabled = BooleanField('Enable comments')
-
-    # Timestamp
-    timestamp = DateTimeField('Publication date')
-
-
-class PostForm(FlaskForm):
-    """Form for creating/editing posts."""
-    # Basic info
-    title = StringField(
-        'Post title',
-        [validators.Length(min=4, max=255), validators.InputRequired()]
+        description=_l('HTML enabled')
     )
 
     content = TextAreaField(
-        'Content',
-        [validators.InputRequired()],
-        description='Markdown enabled'
+        _l('Page content'),
+        description=_l('Markdown/HTML enabled'),
+        validatos=[validators.InputRequired(_l('Page content is required'))]
     )
 
-    ghost = StringField(
-        'Ghost link',
-        [validators.Length(max=512),],
-        default=None
+    is_published = BooleanField(_l('Is published'))
+    comments_enabled = BooleanField(_l('Enable comments'))
+
+    last_updated = DateTimeField(
+        _l('Last updated'),
+        description=_l('Autogenerated if not set')
+    )
+
+    submit = SubmitField(_l('Save page'))
+
+
+class PostForm(FlaskForm):
+    """Blog post form."""
+    ghosted = QuerySelectField(_l('Post to ghost'), allow_blank=True)
+    authors = QuerySelectMultipleField(_l('Post authors'), allow_blank=True)
+
+    title = StringField(
+        _l('Title'),
+        validators=[
+            validators.InputRequired(_l('Post title is required')),
+            validators.Length(
+                min=4,
+                max=255,
+                message=_l(
+                    'Title length should be between 4 and 255 characters long'
+                )
+            )
+        ]
     )
 
     slug = StringField(
-        'Post slug',
-        [validators.Length(max=255),]
+        _l('Post slug'),
+        description=_l('Autogenerated if not set'),
+        validators=[
+            validators.Length(
+                max=255,
+                message=_l('Slug should be 50 characters long at most')
+            )
+        ]
     )
 
-    # Relational info
-    author_name = StringField('Author', description='username')
-    tag_list = StringField('Tags', description='comma separated tag names')
+    content = TextAreaField(
+        _l('Post content'),
+        description=_l('Markdown enabled'),
+        validators=[validators.InputRequired(_l('Post content is required'))]
+    )
 
-    # Flags
-    is_published = BooleanField('Is published')
-    comments_enabled = BooleanField('Enable comments')
+    tag_list = StringField(_l('Tag list'))
 
-    # Timestamp
-    timestamp = DateTimeField('Publication date')
+    is_published = BooleanField(_l('Is published'))
+    comments_enabled = BooleanField(_l('Enable comments'))
+
+    last_updated = DateTimeField(
+        _l('Last updated'),
+        description=_l('Autogenerated if not set')
+    )
+
+    submit = SubmitField(_l('Save post'))
 
 
 class ProfileForm(FlaskForm):
-    """Form for editing own profile details."""
-    first_name = StringField('Name',[validators.Length(max=50)])
-    last_name = StringField('Last name',[validators.Length(max=50)])
-
-    email = StringField(
-        'Email',
-        [validators.Length(max=255), validators.InputRequired(),
-         validators.Email()]
+    """For for editing own profile details."""
+    first_name = StringField(
+        _l('First name'),
+        validators=[
+            validators.Length(
+                max=50,
+                message=_l('First name must be 50 characters long at most')
+            )
+        ]
     )
 
-    notify_login = BooleanField('Notify login')
+    last_name = StringField(
+        _l('Last name'),
+        validators=[
+            validators.Length(
+                max=50,
+                message=_l('Last name must be 50 characters long at most')
+            )
+        ]
+    )
+
+    email = StringField(
+        _l('Email'),
+        validators=[
+            validators.InputRequired(_l('Email is required')),
+            validators.Email(_l('Invalid Email'))
+        ]
+    )
+
+    notify_login = BooleanField(
+        _l('Notify login'),
+        description=_l(
+            'Receive an email notification each time a session is started'
+        )
+    )
+
     personal_bio = TextAreaField(
-        'Personal bio',
+        _l('Personal bio'),
         description='Markdown enabled'
     )
 
-
-class SettingsForm(FlaskForm):
-    """Form for showing application settings."""
-    # General settings
-    sitename = StringField('Site name', render_kw={'readonly': True})
-
-    social = TextAreaField(
-        'Social links',
-        description='format: "glyph-name:URL"',
-        render_kw={'readonly': True}
-    )
-
-    navbar = TextAreaField(
-        'Navigation bar',
-        description='format: "text:URL"',
-        render_kw={'readonly': True}
-    )
-
-    # Uploads
-    allowed_extensions = StringField(
-        'Allowed file extensions',
-        description='comma separated extensions',
-        render_kw={'readonly': True}
-    )
-
-    # Comment system to use
-    comment_system = StringField(
-        'Comment system',
-        description='"disqus" or "isso"',
-        render_kw={'readonly': True}
-    )
-
-    # Disqus shortname
-    disqus_shortname = StringField(
-        'Disqus shortname',
-        render_kw={'readonly': True}
-    )
-
-    # Isso comments
-    isso_url = StringField('Isso API location', render_kw={'readonly': True})
-    isso_reply_self = BooleanField(
-        'Allow replying to self in isso',
-        render_kw={'readonly': True}
-    )
-    isso_require_author = BooleanField(
-        'Require author name when writing a comment',
-        render_kw={'readonly': True}
-    )
-    isso_require_email = BooleanField(
-        'Require email when writing a comment',
-        render_kw={'readonly': True}
-    )
-    isso_voting = BooleanField(
-        'Allow voting in isso',
-        render_kw={'readonly': True}
-    )
-
-    # humans.txt and robots.txt
-    humans = TextAreaField(
-        'humans.txt content',
-        render_kw={'readonly': True}
-    )
-    robots = TextAreaField(
-        'robots.txt content',
-        render_kw={'readonly': True}
-    )
-
-    # Footer
-    footer_left = TextAreaField(
-        'Left footer',
-        description='HTML enabled',
-        render_kw={'readonly': True}
-    )
-    footer_right = TextAreaField(
-        'Right footer',
-        description='HTML enabled',
-        render_kw={'readonly': True}
-    )
-
-
-class UploadForm(FlaskForm):
-    """Form for uploading files."""
-    filename = StringField(
-        'Filename to use',
-        description='if empty, uploaded file name is used'
-    )
-
-    subdir = StringField(
-        'Subdir for the file',
-        description='relative to upload directory in server'
-    )
-
-    description = TextAreaField('File description')
-
-    upload = FileField(
-        'File to upload',
-        [FileRequired()]
-    )
-
-
-class UserForm(FlaskForm):
-    """Form for showing/editing users (administrator)."""
-    # Authentication
-    username = StringField(
-        'Username',
-        [validators.Length(max=50), validators.InputRequired()]
-    )
-
-    password = StringField(
-        'Password',
-        [validators.Length(max=255), validators.InputRequired()]
-    )
-
-    reset_password_token = StringField(
-        'Password reset token', [validators.Length(max=255)]
-    )
-
-    # Email information
-    email = StringField(
-        'Email',
-        [validators.Length(max=255), validators.InputRequired(),
-         validators.Email()]
-    )
-
-    confirmed_at = DateTimeField('Confirmed at')
-
-    # User information
-    is_enabled = BooleanField('Enabled')
-    first_name = StringField('Name',[validators.Length(max=50)])
-    last_name = StringField('Last name',[validators.Length(max=50)])
-
-    # Additional attributes
-    personal_bio = TextAreaField('Personal bio')
-    notify_login = BooleanField('Notify login')
-
-    # Relational info
-    role_list = StringField('Roles', description='comma separated role names')
+    submit = SubmitField(_l('Save changes'))

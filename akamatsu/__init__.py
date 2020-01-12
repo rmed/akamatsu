@@ -3,68 +3,154 @@
 # Akamatsu CMS
 # https://github.com/rmed/akamatsu
 #
-# Copyright (C) 2016 Rafael Medina García <rafamedgar@gmail.com>
+# MIT License
 #
-# This program is free software; you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; either version 2 of the License, or
-# (at your option) any later version.
+# Copyright (c) 2020 Rafael Medina García <rafamedgar@gmail.com>
 #
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
 #
-# You should have received a copy of the GNU General Public License along
-# with this program; if not, write to the Free Software Foundation, Inc.,
-# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
 
-"""This file contains initialization code for akamatsu."""
-
-from flask import Flask, render_template
-from flask_analytics import Analytics
-from flask_assets import Environment, Bundle
-from flask_mail import Mail, Message
-from flask_migrate import Migrate
-from flask_misaka import Misaka
-from flask_sqlalchemy import SQLAlchemy
-from flask_user import SQLAlchemyAdapter, UserManager, user_logged_in
-from flask_user.emails import send_email
-
-from akamatsu.bootstrap import BASE_CONFIG, CeleryWrapper
-from akamatsu.util import HighlighterRenderer
+"""This file contains initialization code."""
 
 import os
 
-__version__ = '1.0.0'
+from babel import dates as babel_dates
+from flask import Flask, request
+from flask_assets import Environment, Bundle
+from flask_babel import Babel, _
+from flask_discussion import Discussion
+from flask_login import LoginManager, current_user
+from flask_mail import Mail
+from flask_migrate import Migrate
+from flask_misaka import Misaka
+from flask_sqlalchemy import SQLAlchemy
+from flask_wtf.csrf import CSRFProtect
 
+import flask
+import pytz
+import webassets
+
+from akamatsu.bootstrap import BASE_CONFIG, LANGUAGES
+from akamatsu.errors import forbidden, page_not_found, server_error
+from akamatsu.util import CeleryWrapper, CryptoManager, HashidsWrapper
+
+__version__ = '2.0.0'
+
+
+# Debug toolbar (for development)
+try:
+    from flask_debugtoolbar import DebugToolbarExtension
+    toolbar = DebugToolbarExtension()
+
+    _USING_TOOLBAR = True
+
+except ImportError:
+    _USING_TOOLBAR = False
+
+
+# Crypto
+crypto_manager = CryptoManager()
+
+# Hashids
+hashids_hasher = HashidsWrapper()
+
+# Babel
+babel = Babel()
+
+# CSRF
+csrf = CSRFProtect()
 
 # SQLAlchemy
 db = SQLAlchemy()
+
 # Flask-Migrate
 migrate = Migrate()
+
 # Flask-Mail
 mail = Mail()
-# Celery (optional)
-celery = CeleryWrapper()
-# Flask-User
-user_manager = UserManager()
+
+# Flask-Login
+login_manager = LoginManager()
+
 # Flask-Misaka
 md = Misaka(
-    renderer=HighlighterRenderer(),
-    fenced_code=True,
+    fenced_code=False,
     underline=True,
     no_intra_emphasis=False,
     strikethrough=True,
     superscript=True,
-    tables=True
+    tables=True,
+    no_html=True,
+    escape=True
 )
+
 # Flask-Assets
 assets = Environment()
 
+# Celery
+celery = CeleryWrapper()
+
+# Flask-Discussion
+discussion = Discussion()
+
+
+@babel.localeselector
+def get_locale():
+    """Get locale from user record or from browser locale."""
+    if not current_user or not current_user.is_authenticated:
+        # Not logged in user
+        return request.accept_languages.best_match(LANGUAGES)
+
+    return current_user.locale or 'en'
+
+
+def url_for_self(**kwargs):
+    """Helper to return current endpoint in Jinja template."""
+    return flask.url_for(
+        flask.request.endpoint,
+        **dict(flask.request.view_args, **kwargs)
+    )
+
+
+def format_datetime(value):
+    """Jinja filter to format datetime using user defined timezone.
+
+    If not a valid timezone, defaults to UTC.
+
+    Args:
+        value (datetime): Datetime object to represent.
+    """
+    user_tz = current_user.timezone
+
+    if not user_tz or user_tz not in pytz.common_timezones:
+        user_tz = 'UTC'
+
+    tz = babel_dates.get_timezone(user_tz)
+
+    return babel_dates.format_datetime(
+        value,
+        'yyyy-MM-dd HH:mm:ss',
+        tzinfo=tz
+    )
+
 
 def init_app():
-    """Initialize akamatsu."""
+    """Initialize app."""
     app = Flask(__name__)
     app.config.update(BASE_CONFIG)
 
@@ -76,11 +162,39 @@ def init_app():
         app.config.from_envvar('AKAMATSU_CONFIG')
 
     else:
-        app.config.from_object('akamatsu.config.development')
+        # Development environment
+        from akamatsu.bootstrap import DEV_CONFIG
+        app.config.update(DEV_CONFIG)
+
+
+    # Custom jinja helpers
+    app.jinja_env.globals['url_for_self'] = url_for_self
+    app.jinja_env.filters['datetime'] = format_datetime
+
 
     # Whitespacing Jinja
     app.jinja_env.trim_blocks = True
     app.jinja_env.lstrip_blocks = True
+
+
+    # Setup debug toolbar in development
+    if app.config.get('DEBUG') and _USING_TOOLBAR:
+        toolbar.init_app(app)
+
+    # Setup cryptography (passlib)
+    crypto_manager.init_app(app)
+
+
+    # Setup Hashids
+    hashids_hasher.init_app(app)
+
+
+    # Setup localization
+    babel.init_app(app)
+
+
+    # Setup CSRF protection
+    csrf.init_app(app)
 
 
     # Setup database
@@ -97,36 +211,28 @@ def init_app():
     mail.init_app(app)
 
 
-    # Celery support (optional)
+    # Setup Flask-Login
+    login_manager.init_app(app)
+    login_manager.login_view = 'auth.login'
+    login_manager.login_message = _('Please login to continue')
+    login_manager.login_message_category = 'info'
+    login_manager.refresh_view = 'auth.reauthenticate'
+    login_manager.needs_refresh_message = (
+        _('To protect your account, please reauthenticate to access this page.')
+    )
+    login_manager.needs_refresh_message_category = 'info'
+
+    @login_manager.user_loader
+    def load_user(user_id):
+        return models.User.get_by_id(user_id)
+
+
+    # Enable Celery support (optional)
     if app.config.get('USE_CELERY', False):
-        celery.make_celery(app)
+        celery.init_app(app)
 
         # Import tasks
-        from akamatsu.tasks import async_user_mail, async_mail
-
-
-    # Setup Flask-User
-    def _send_user_mail(*args):
-        """Specify the function for sending mails in Flask-User.
-
-        If celery has been initialized, this will be asynchronous. Defaults to
-        the original one in Flask-User.
-        """
-        if app.config.get('USE_CELERY', False):
-            # Asynchronous
-            async_user_mail.delay(*args)
-
-        else:
-            # Synchronous
-            send_email(*args)
-
-
-    user_db_adapter = SQLAlchemyAdapter(db, models.User)
-    user_manager.init_app(
-        app,
-        db_adapter=user_db_adapter,
-        send_email_function=_send_user_mail
-    )
+        from akamatsu.async_tasks import async_mail
 
 
     # Setup Flask-Misaka
@@ -135,85 +241,61 @@ def init_app():
 
     # Setup Flask-Assets and bundles
     assets.init_app(app)
+    libsass = webassets.filter.get_filter(
+        'libsass',
+        style='compressed'
+    )
+
+    scss_bundle = Bundle(
+        'app.scss',
+        depends='scss/custom.scss',
+        filters=libsass
+    )
 
     css_bundle = Bundle(
-        'css/fira.css',
-        'css/font-awesome.min.css',
-        'css/highlight.css',
-        'css/normalize.css',
-        'css/simplegrid.css',
-        'css/akamatsu.css',
+        scss_bundle,
         filters='cssmin',
         output='gen/packed.css'
     )
 
-    # Cannot include zepto, throws errors
     js_bundle = Bundle(
-        'js/akamatsu.js',
+        'js/vendor/zepto.min.js',
+        'js/vendor/noty.min.js',
+        'js/vendor/bulma-tagsinput.min.js',
+        'js/navigation.js',
+        'js/init.js',
         filters='rjsmin',
         output='gen/packed.js'
     )
 
-    db_js_bundle = Bundle(
-        'js/dashboard.js',
-        filters='rjsmin',
-        output='gen/packed_db.js'
-    )
-
     assets.register('css_pack', css_bundle)
     assets.register('js_pack', js_bundle)
-    assets.register('db_js_pack', db_js_bundle)
 
 
-    # Setup Flask-Analytics (does not need to be global)
-    analytics = Analytics(app)
+    # Setup Flask-Discussion
+    discussion.init_app(app)
 
 
     # Register blueprints
-    from akamatsu.views.blog import bp_blog
+    from akamatsu.views.auth import bp_auth
     from akamatsu.views.dashboard import bp_dashboard
-    from akamatsu.views.misc import bp_misc
-    from akamatsu.views.page import bp_page
-    from akamatsu.util import render_theme
+    from akamatsu.views.blog import bp_blog
+    from akamatsu.views.pages import bp_pages
 
-    app.register_blueprint(bp_misc)
-    app.register_blueprint(bp_dashboard, url_prefix='/dashboard')
-    app.register_blueprint(bp_blog, url_prefix='/blog')
-    app.register_blueprint(bp_page)
+    app.register_blueprint(bp_auth)
+    app.register_blueprint(bp_dashboard, prefix='/dashboard')
+    app.register_blueprint(bp_blog, prefix='/blog')
+    app.register_blueprint(bp_pages)
 
 
     # Custom commands
     from akamatsu import commands
 
 
-    # 404
-    @app.errorhandler(404)
-    def not_found(e):
-        msg = "It's gone! Poof! Magic!"
-        return render_theme('error.html', error_code=404, error_msg=msg)
-
-
-    # Signals
-    @user_logged_in.connect_via(app)
-    def _do_on_login(sender, user, **extra):
-        """Notify the user of a new login.
-
-        This is only done if the ``notify_login`` attribute is set to ``True``.
-
-        If Celery is enabled, the message will be sent asynchronously.
-        """
-        if user.notify_login:
-            notify_args = ('akamatsu - New session started',)
-            notify_kwargs = {
-                'recipients': [user.email],
-                'body': render_template('mail/login.txt', user=user),
-                'html': render_template('mail/login.html', user=user)
-            }
-
-            if app.config.get('USE_CELERY', False):
-                async_mail.delay(*notify_args, **notify_kwargs)
-            else:
-                mail.send(Message(*notify_args, **notify_kwargs))
+    # Custom error handlers
+    app.register_error_handler(403, forbidden)
+    app.register_error_handler(404, page_not_found)
+    app.register_error_handler(500, server_error)
 
 
     return app

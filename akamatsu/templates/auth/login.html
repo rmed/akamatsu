@@ -1,0 +1,51 @@
+{% import "macros.html" as macros %}
+{% extends "layout.html" %}
+
+{% block title %}{{ _('Login') }}{% endblock %}
+
+{% block html_body %}
+<body>
+    <section class="hero is-light is-fullheight">
+        <div class="hero-body">
+            <div class="container">
+                <div class="column is-4 is-offset-4">
+                    <h2 class="title is-2 has-text-grey has-text-centered"><a href="{{ url_for('auth.login') }}">{{ config['SITENAME'] }}</a></h2>
+                    <h3 class="subtitle is-3 has-text-grey has-text-centered">{{ _('Login') }}</h3>
+
+                    {{ macros.render_flash_messages() }}
+
+                    <div class="box">
+                        <form action="" method="POST" role="form">
+                            {{ form.hidden_tag() }}
+
+                            {# Username or Email field #}
+                            {{ macros.render_input(identity, icon='user') }}
+
+                            {% if form.errors.identity %}
+                                {{ macros.render_messages(form.errors.identity, size='') }}
+                            {% endif %}
+
+                            {# Password #}
+                            {{ macros.render_input(form.password, icon='key') }}
+
+                            {% if form.errors.password %}
+                                {{ macros.render_messages(form.errors.password, size='' }}
+                            {% endif %}
+
+                            {# Remember #}
+                            {{ macros.render_switch(form.remember_me, color='info') }}
+
+                            {# Submit #}
+                            {{ macros.render_submit(form.submit) }}
+                        </form>
+                    </div>
+
+                    <p class="has-text-centered has-text-grey">
+                        <a href="{{ url_for('auth.forgot_password') }}">{{ _('Forgot your password?') }}</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+{% endblock %}

@@ -1,0 +1,4 @@
+{{ _('Hello %(username)s,', username=user.username) }}
+
+{% block message %}
+{% endblock %}

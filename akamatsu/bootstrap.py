@@ -3,98 +3,96 @@
 # Akamatsu CMS
 # https://github.com/rmed/akamatsu
 #
-# Copyright (C) 2016 Rafael Medina García <rafamedgar@gmail.com>
+# MIT License
 #
-# This program is free software; you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; either version 2 of the License, or
-# (at your option) any later version.
+# Copyright (c) 2020 Rafael Medina García <rafamedgar@gmail.com>
 #
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
 #
-# You should have received a copy of the GNU General Public License along
-# with this program; if not, write to the Free Software Foundation, Inc.,
-# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
 
-"""This file contains miscelaneous bootstrap code for akamatsu."""
+"""This file contains miscelaneous bootstrapping code."""
+
+import os
+
+from flask_babel import lazy_gettext as _l
+
+
+# Available locales
+LANGUAGES = ('en', 'es')
+LANGUAGES_LOCALIZED = (_l('English'), _l('Spanish'))
 
 
 # Static configuration values
 BASE_CONFIG = {
+    # Localization
+    'BABEL_DEFAULT_LOCALE': 'en',
+    'BABEL_DEFAULT_TIMEZONE': 'UTC',
+
     # Flask-SQLAlchemy
     'SQLALCHEMY_TRACK_MODIFICATIONS': False,
 
-    # Flask-User
-    'USER_ENABLE_EMAIL': True,
-    'USER_ENABLE_REGISTRATION': False,
-    'USER_ENABLE_FORGOT_PASSWORD': True,
+    # Flask-Login
+    'SESSION_PROTECTION': 'strong',
 
-    'USER_CHANGE_PASSWORD_TEMPLATE': 'akamatsu/dashboard/flask_user/change_password.html',
-    'USER_FORGOT_PASSWORD_TEMPLATE': 'akamatsu/dashboard/flask_user/forgot_password.html',
-    'USER_LOGIN_TEMPLATE': 'akamatsu/dashboard/flask_user/login.html',
-    'USER_RESET_PASSWORD_TEMPLATE': 'akamatsu/dashboard/flask_user/reset_password.html',
+    # Passlib
+    'PASSLIB_SCHEMES': ['bcrypt'],
+    'PASSLIB_ALG_BCRYPT_ROUNDS': 14,
 
-    'USER_CHANGE_PASSWORD_URL': '/dashboard/profile/change-password',
-    'USER_EMAIL_ACTION_URL': '/dashboard/users/email/<id>/<action>',
-    'USER_FORGOT_PASSWORD_URL': '/dashboard/forgot-password',
-    'USER_LOGIN_URL': '/dashboard/login',
-    'USER_LOGOUT_URL': '/dashboard/logout',
-    'USER_RESET_PASSWORD_URL': '/dashboard/reset-password/<token>',
-
-    'USER_AFTER_CHANGE_PASSWORD_ENDPOINT': 'dashboard.profile_edit',
-    'USER_AFTER_FORGOT_PASSWORD_ENDPOINT': 'user.login',
-    'USER_AFTER_LOGIN_ENDPOINT': 'dashboard.home',
-    'USER_AFTER_RESET_PASSWORD_ENDPOINT': 'dashboard.home',
-    'USER_UNAUTHORIZED_ENDPOINT': 'dashboard.home',
-
-    'USER_PASSWORD_HASH': 'sha512_crypt',
-
-    # Cookie notice
-    'COOKIE_NOTICE': True,
+    'PAGE_ITEMS': 10,
+    'LANGUAGES': LANGUAGES
 }
 
-class CeleryWrapper(object):
-    """Wrapper for deferred initialization of Celery."""
 
-    def __init__(self):
-        self._celery = None
-        self.task = None
+# Development defaults applied on top of BASE_CONFIG if no configuration
+# is specified
+DEV_CONFIG = {
+    'SECRET_KEY': 'potato',
+    'DEBUG': True,
+    'TESTING': True,
 
-    def __getattr__(self, attr):
-        """Wrap internal celery attributes."""
-        if attr == 'make_celery':
-            return getattr(self, attr)
+    # Database path
+    'SQLALCHEMY_DATABASE_URI': 'sqlite:////{}'.format(os.path.join(os.getcwd(), "testdb.sqlite")),
 
-        return getattr(self._celery, attr)
+    # Debug toolbar
+    'DEBUG_TB_INTERCEPT_REDIRECTS': False,
 
-    def make_celery(self, app):
-        """Create a celery instance for the application.
+    # Site name
+    'SITENAME': 'akamatsu',
 
-        Args:
-            app: Application instance
-        """
-        # Celery is optional, import it here rather than globally
-        from celery import Celery
+    # Items per page in pagination
+    'PAGE_ITEMS': 10,
 
-        celery_instance = Celery(
-            app.import_name,
-            backend=app.config['CELERY_RESULT_BACKEND'],
-            broker=app.config['CELERY_BROKER_URL']
-        )
+    # Hashids
+    'HASHIDS_SALT': 'hashedpotatoes',
+    # Minimum length
+    'HASHIDS_LENGTH': 8,
 
-        celery_instance.conf.update(app.config)
-        TaskBase = celery_instance.Task
+    # Flask-Mail
+    'MAIL_SERVER': 'localhost',
+    'MAIL_PORT': 25,
+    'MAIL_USE_SSL': False,
+    'MAIL_USE_TLS': False,
+    'MAIL_DEFAULT_SENDER': '',
+    'MAIL_USERNAME': '',
+    'MAIL_PASSWORD': '',
 
-        class ContextTask(TaskBase):
-            abstract = True
-            def __call__(self, *args, **kwargs):
-                with app.app_context():
-                    return TaskBase.__call__(self, *args, **kwargs)
-
-        celery_instance.Task = ContextTask
-
-        self._celery = celery_instance
-        self.task = self._celery.task
+    # Celery
+    'USE_CELERY': False,
+    'CELERY_BROKER_URL': 'redis://localhost:6379/1',
+    'CELERY_RESULT_BACKEND': 'redis://localhost:6379/1'
+}

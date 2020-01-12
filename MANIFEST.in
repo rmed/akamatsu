@@ -1,0 +1,9 @@
+recursive-include akamatsu/migrations *
+recursive-include akamatsu/templates *
+recursive-include akamatsu/translations *
+recursive-include akamatsu/static *
+
+recursive-exclude * __pycache__
+recursive-exclude * *.swp
+recursive-exclude * *.py[co]
+recursive-exclude * *.orig

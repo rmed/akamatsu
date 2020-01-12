@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+
+{% block title %}{{ _('Home') }}{% endblock %}
+
+{% block breadcrumbs %}
+<nav class="breadcrumb is-centered" aria-label="breadcrumbs">
+    <ul>
+        <li class="is-active"><a href="#" aria-current="page">{{ _('Home') }}</a></li>
+    </ul>
+</nav>
+{% endblock %}
+
+{% block content %}
+    <h3 class="subtitle is-3">{{ _('Home') }}</h3>
+{% endblock %}

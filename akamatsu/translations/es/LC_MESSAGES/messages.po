@@ -1,0 +1,330 @@
+# Spanish translations for akamatsu.
+# Copyright (C) 2019 Rafael Medina
+# This file is distributed under the same license as the akamatsu project.
+# Rafael Medina García <rafamedgar@gmail.com>, 2019.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: 0.1.0\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2019-04-19 12:03+0200\n"
+"PO-Revision-Date: 2019-04-19 11:57+0200\n"
+"Last-Translator: Rafael Medina García <rafamedgar@gmail.com>\n"
+"Language: es\n"
+"Language-Team: es <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.6.0\n"
+
+#: akamatsu/bootstrap.py:11
+msgid "English"
+msgstr "Inglés"
+
+#: akamatsu/bootstrap.py:11
+msgid "Spanish"
+msgstr "Español"
+
+#: akamatsu/templates/macros.html:311
+msgid "Previous"
+msgstr "Anterior"
+
+#: akamatsu/templates/macros.html:315
+msgid "Next"
+msgstr "Siguiente"
+
+#: akamatsu/templates/errors/403.html:3
+#: akamatsu/templates/errors/403.html:6
+msgid "Forbidden"
+msgstr "Prohibido"
+
+#: akamatsu/templates/errors/403.html:9
+msgid "You do not have the required permissions to access that page"
+msgstr "No tienes los permisos necesarios para acceder a esa página"
+
+#: akamatsu/templates/errors/404.html:3
+#: akamatsu/templates/errors/404.html:6
+msgid "Page not found"
+msgstr "Página no encontrada"
+
+#: akamatsu/templates/errors/404.html:9
+msgid "The page you were looking for was not found"
+msgstr "La página que buscabas no ha sido encontrada"
+
+#: akamatsu/templates/errors/500.html:3
+#: akamatsu/templates/errors/500.html:6
+msgid "Internal server error"
+msgstr "Error interno del servidor"
+
+#: akamatsu/templates/errors/500.html:9
+msgid ""
+"Ooops, something happening while processing your request. Please contact "
+"an administrator"
+msgstr ""
+"Uuups, ha ocurrido algo mientras se procesaba tu solicitud. Por favor "
+"contacta con un administrador"
+
+#: akamatsu/templates/extensions/flask_user/change_password.html:4
+#: akamatsu/templates/extensions/flask_user/change_password.html:10
+#: akamatsu/templates/extensions/flask_user/change_password.html:45
+#: akamatsu/templates/extensions/flask_user/reset_password.html:41
+msgid "Change password"
+msgstr "Cambiar contraseña"
+
+#: akamatsu/templates/extensions/flask_user/change_password.html:9
+#: akamatsu/templates/extensions/flask_user/invite.html:10
+#: akamatsu/templates/general/home.html:3
+#: akamatsu/templates/general/home.html:8
+#: akamatsu/templates/general/home.html:14
+msgid "Home"
+msgstr "Inicio"
+
+#: akamatsu/templates/extensions/flask_user/change_password.html:21
+msgid "Old Password"
+msgstr "Antigua contraseña"
+
+#: akamatsu/templates/extensions/flask_user/change_password.html:28
+#: akamatsu/templates/extensions/flask_user/reset_password.html:25
+msgid "New Password"
+msgstr "Nueva contraseña"
+
+#: akamatsu/templates/extensions/flask_user/change_password.html:36
+#: akamatsu/templates/extensions/flask_user/reset_password.html:33
+msgid "Retype New Password"
+msgstr "Confirmar nueva contraseña"
+
+#: akamatsu/templates/extensions/flask_user/forgot_password.html:4
+#: akamatsu/templates/extensions/flask_user/forgot_password.html:13
+msgid "Forgot password"
+msgstr "Contraseña olvidada"
+
+#: akamatsu/templates/extensions/flask_user/forgot_password.html:25
+msgid "Your email address"
+msgstr "Tu dirección de correo"
+
+#: akamatsu/templates/extensions/flask_user/forgot_password.html:32
+msgid "Send reset password email"
+msgstr "Enviar email para restablecer contraseña"
+
+#: akamatsu/templates/extensions/flask_user/invite.html:5
+#: akamatsu/templates/extensions/flask_user/invite.html:11
+#: akamatsu/templates/extensions/flask_user/invite.html:17
+msgid "Invite a friend"
+msgstr "Invitar a un amigo"
+
+#: akamatsu/templates/extensions/flask_user/invite.html:24
+#: akamatsu/templates/extensions/flask_user/register.html:34
+msgid "Email"
+msgstr "Email"
+
+#: akamatsu/templates/extensions/flask_user/invite.html:32
+msgid "Invite!"
+msgstr "¡Invitar!"
+
+#: akamatsu/templates/extensions/flask_user/login.html:4
+msgid "Login"
+msgstr "Login"
+
+#: akamatsu/templates/extensions/flask_user/login.html:23
+msgid "Username or Email"
+msgstr "Nombre de usuario o Email"
+
+#: akamatsu/templates/extensions/flask_user/login.html:30
+#: akamatsu/templates/extensions/flask_user/register.html:42
+msgid "Password"
+msgstr "Contraseña"
+
+#: akamatsu/templates/extensions/flask_user/login.html:38
+msgid "Remember me"
+msgstr "Recordarme"
+
+#: akamatsu/templates/extensions/flask_user/login.html:42
+msgid "Sign in"
+msgstr "Iniciar sesión"
+
+#: akamatsu/templates/extensions/flask_user/login.html:48
+msgid "Forgot your password?"
+msgstr "¿Has olvidado tu contraseña?"
+
+#: akamatsu/templates/extensions/flask_user/register.html:4
+#: akamatsu/templates/extensions/flask_user/register.html:13
+#: akamatsu/templates/extensions/flask_user/register.html:58
+msgid "Register"
+msgstr "Registrarse"
+
+#: akamatsu/templates/extensions/flask_user/register.html:26
+msgid "Username"
+msgstr "Nombre de usuario"
+
+#: akamatsu/templates/extensions/flask_user/register.html:50
+msgid "Retype Password"
+msgstr "Confirmar contraseña"
+
+#: akamatsu/templates/extensions/flask_user/emails/forgot_password_message.html:8
+#: akamatsu/templates/extensions/flask_user/emails/forgot_password_subject.txt:3
+#: akamatsu/templates/extensions/flask_user/reset_password.html:4
+#: akamatsu/templates/extensions/flask_user/reset_password.html:13
+msgid "Reset password"
+msgstr "Restablecer contraseña"
+
+#: akamatsu/templates/extensions/flask_user/emails/base_message.html:1
+#: akamatsu/templates/extensions/flask_user/emails/base_message.txt:1
+#, python-format
+msgid "Hello %(email)s,"
+msgstr "Hola %(email)s,"
+
+#: akamatsu/templates/extensions/flask_user/emails/base_message.html:6
+#: akamatsu/templates/extensions/flask_user/emails/base_message.txt:6
+msgid "Sincerely,"
+msgstr "Un saludo,"
+
+#: akamatsu/templates/extensions/flask_user/emails/confirm_email_message.html:4
+#: akamatsu/templates/extensions/flask_user/emails/confirm_email_message.txt:4
+#, python-format
+msgid "You will need to confirm your email before joining the %(app)s community."
+msgstr "Necesitarás confirmar to email antes de unirte a la comunidad de %(app)s."
+
+#: akamatsu/templates/extensions/flask_user/emails/confirm_email_message.html:6
+#: akamatsu/templates/extensions/flask_user/emails/confirm_email_message.txt:6
+msgid "If you initiated this confirmation, please click on the link below:"
+msgstr "Si has iniciado esta confirmación, por favor haz click en el siguiente enlace:"
+
+#: akamatsu/templates/extensions/flask_user/emails/confirm_email_message.html:7
+#: akamatsu/templates/extensions/flask_user/emails/registered_message.html:11
+#: akamatsu/templates/extensions/flask_user/emails/registered_subject.txt:3
+msgid "Confirm your email"
+msgstr "Confirma tu email"
+
+#: akamatsu/templates/extensions/flask_user/emails/confirm_email_message.html:9
+#: akamatsu/templates/extensions/flask_user/emails/confirm_email_message.txt:9
+msgid ""
+"If you did not initiate this confirmation, you may safely ignore this "
+"email."
+msgstr ""
+"Si no has iniciado esta confirmación, puedes ignorar este correo."
+
+#: akamatsu/templates/extensions/flask_user/emails/confirm_email_subject.txt:3
+msgid "Email Confirmation"
+msgstr "Confirmación de email"
+
+#: akamatsu/templates/extensions/flask_user/emails/forgot_password_message.html:5
+#: akamatsu/templates/extensions/flask_user/emails/forgot_password_message.txt:4
+msgid "We have received a password reset request for your account."
+msgstr "Hemos recibido una solicitud para restablecer la contraseña de tu cuenta."
+
+#: akamatsu/templates/extensions/flask_user/emails/forgot_password_message.html:7
+#: akamatsu/templates/extensions/flask_user/emails/forgot_password_message.txt:6
+msgid "If you initiated this request, please click on the link below:"
+msgstr "Si has iniciado esta solicitud, por favor haz click en el siguiente enlace:"
+
+#: akamatsu/templates/extensions/flask_user/emails/forgot_password_message.html:10
+#: akamatsu/templates/extensions/flask_user/emails/forgot_password_message.txt:9
+msgid ""
+"If you did not initiate this password reset, you may safely ignore this "
+"email."
+msgstr ""
+"Si no has iniciado este proceso, puedes ignorar este correo."
+
+#: akamatsu/templates/extensions/flask_user/emails/invite_message.html:5
+#: akamatsu/templates/extensions/flask_user/emails/invite_message.txt:4
+#, python-format
+msgid "You have been invited to join the %(app)s community!"
+msgstr "¡Te han invitado a unirte a la comunidad de %(app)s!"
+
+#: akamatsu/templates/extensions/flask_user/emails/invite_message.html:7
+#: akamatsu/templates/extensions/flask_user/emails/invite_message.txt:6
+msgid "To register an account, please click on the link below:"
+msgstr "Para registrar una cuenta, por favor haz click en el siguiente enlace:"
+
+#: akamatsu/templates/extensions/flask_user/emails/invite_message.html:8
+#, python-format
+msgid "Join %(app)s"
+msgstr "Únete a %(app)s"
+
+#: akamatsu/templates/extensions/flask_user/emails/invite_subject.txt:3
+msgid "Invitation"
+msgstr "Invitación"
+
+#: akamatsu/templates/extensions/flask_user/emails/password_changed_message.html:4
+#: akamatsu/templates/extensions/flask_user/emails/password_changed_message.txt:4
+msgid "Your password has been changed."
+msgstr "Tu contraseña ha sido cambiada."
+
+#: akamatsu/templates/extensions/flask_user/emails/password_changed_message.html:6
+msgid "If you did not initiate this password change,"
+msgstr "Si no has iniciado este cambio de contraseña,"
+
+#: akamatsu/templates/extensions/flask_user/emails/password_changed_message.html:6
+msgid "click here to reset it"
+msgstr "haz click aquí para restablecerla"
+
+#: akamatsu/templates/extensions/flask_user/emails/password_changed_message.txt:7
+msgid ""
+"If you did not initiate this password change, click the link below to "
+"reset it."
+msgstr ""
+"Si no has iniciado este cambio de contraseña, haz click en el siguiente enlace "
+"para restablecerla."
+
+#: akamatsu/templates/extensions/flask_user/emails/password_changed_subject.txt:3
+msgid "Your password has been changed"
+msgstr "Tu contraseña ha sido cambiada"
+
+#: akamatsu/templates/extensions/flask_user/emails/registered_message.html:5
+#: akamatsu/templates/extensions/flask_user/emails/registered_message.txt:4
+#, python-format
+msgid "Thank you for registering with the %(app)s community."
+msgstr "Gracias por registrarte en la comunidad de %(app)s."
+
+#: akamatsu/templates/extensions/flask_user/emails/registered_message.html:8
+#: akamatsu/templates/extensions/flask_user/emails/registered_message.txt:7
+msgid "You will need to confirm your email next."
+msgstr "A continuación necesitarás confirmar tu email."
+
+#: akamatsu/templates/extensions/flask_user/emails/registered_message.html:10
+#: akamatsu/templates/extensions/flask_user/emails/registered_message.txt:9
+msgid "If you initiated this registration, please click on the link below:"
+msgstr "Si has iniciado este registro, por favor haz click en el siguiente enlace:"
+
+#: akamatsu/templates/extensions/flask_user/emails/registered_message.html:13
+#: akamatsu/templates/extensions/flask_user/emails/registered_message.txt:12
+msgid ""
+"If you did not initiate this registration, you may safely ignore this "
+"email."
+msgstr ""
+"Si no has iniciado este registro, puedes ignorar este correo."
+
+#: akamatsu/templates/extensions/flask_user/emails/registered_subject.txt:3
+msgid "Thank you for registering"
+msgstr "Gracias por registrarte"
+
+#: akamatsu/templates/extensions/flask_user/emails/username_changed_message.html:4
+#: akamatsu/templates/extensions/flask_user/emails/username_changed_message.txt:4
+msgid "Your username has been changed."
+msgstr "Tu nombre de usuario ha cambiado."
+
+#: akamatsu/templates/extensions/flask_user/emails/username_changed_message.html:5
+msgid "If you did not initiate this username change, please"
+msgstr "Si no has iniciado este cambio de usuario, por favor"
+
+#: akamatsu/templates/extensions/flask_user/emails/username_changed_message.html:5
+msgid "sign in"
+msgstr "inicia sesión"
+
+#: akamatsu/templates/extensions/flask_user/emails/username_changed_message.html:5
+msgid "(using your email address) and change your password."
+msgstr "(utilizando tu dirección de email) y cambia tu contraseña."
+
+#: akamatsu/templates/extensions/flask_user/emails/username_changed_message.txt:6
+msgid ""
+"If you did not initiate this username change, please sign in (using your "
+"email address) and change your password."
+msgstr ""
+"Si no has iniciado este cambio de nombre de usuario, por favor inicia sesión "
+"(usando tu dirección de email) y cambia tu contraseña."
+
+#: akamatsu/templates/extensions/flask_user/emails/username_changed_subject.txt:3
+msgid "Your username has been changed"
+msgstr "Tu nombre de usuario ha sido cambiado"
+
