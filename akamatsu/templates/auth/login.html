@@ -19,7 +19,7 @@
                             {{ form.hidden_tag() }}
 
                             {# Username or Email field #}
-                            {{ macros.render_input(identity, icon='user') }}
+                            {{ macros.render_input(form.identity, icon='user') }}
 
                             {% if form.errors.identity %}
                                 {{ macros.render_messages(form.errors.identity, size='') }}
@@ -29,7 +29,7 @@
                             {{ macros.render_input(form.password, icon='key') }}
 
                             {% if form.errors.password %}
-                                {{ macros.render_messages(form.errors.password, size='' }}
+                                {{ macros.render_messages(form.errors.password, size='') }}
                             {% endif %}
 
                             {# Remember #}

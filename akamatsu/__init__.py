@@ -247,6 +247,11 @@ def init_app():
     )
 
     scss_bundle = Bundle(
+        # Bulma 0.8.0
+        # Builma-Divider 0.2.0
+        # Bulma-Switch 1.0.2
+        # Bulma-Tagsinput 1.0.11
+        # Font Awesome 5.12.0
         'app.scss',
         depends='scss/custom.scss',
         filters=libsass
@@ -259,8 +264,8 @@ def init_app():
     )
 
     js_bundle = Bundle(
-        'js/vendor/zepto.min.js',
-        'js/vendor/noty.min.js',
+        'js/vendor/zepto.min.js', # 1.2.0
+        'js/vendor/noty.min.js', # 3.2.0-beta
         'js/vendor/bulma-tagsinput.min.js',
         'js/navigation.js',
         'js/init.js',
