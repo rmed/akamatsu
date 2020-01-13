@@ -44,12 +44,14 @@ user_roles = db.Table(
     db.Column(
         'user_id',
         db.Integer,
-        db.ForeignKey('users.id', name='fk_user_roles_user')
+        db.ForeignKey('users.id', name='fk_user_roles_user'),
+        primary_key=True
     ),
     db.Column(
         'role_id',
         db.Integer,
-        db.ForeignKey('roles.id', name='fk_user_roles_role')
+        db.ForeignKey('roles.id', name='fk_user_roles_role'),
+        primary_key=True
     )
 )
 
@@ -60,12 +62,14 @@ user_posts = db.Table(
     db.Column(
         'user_id',
         db.Integer,
-        db.ForeignKey('users.id', name='fk_user_posts_user')
+        db.ForeignKey('users.id', name='fk_user_posts_user'),
+        primary_key=True
     ),
     db.Column(
         'post_id',
         db.Integer,
-        db.ForeignKey('posts.id', name='fk_user_posts_post')
+        db.ForeignKey('posts.id', name='fk_user_posts_post'),
+        primary_key=True
     )
 )
 
@@ -76,12 +80,14 @@ post_tags = db.Table(
     db.Column(
         'post_id',
         db.Integer,
-        db.ForeignKey('posts.id', name='fk_post_tags_post')
+        db.ForeignKey('posts.id', name='fk_post_tags_post'),
+        primary_key=True
     ),
     db.Column(
         'tag_id',
         db.Integer,
-        db.ForeignKey('tags.id', name='fk_post_tags_tag')
+        db.ForeignKey('tags.id', name='fk_post_tags_tag'),
+        primary_key=True
     )
 )
 
@@ -212,7 +218,6 @@ class Page(BaseModel):
     ghosted = db.relationship(
         'Page',
         primaryjoin='Page.ghosted_id == Page.id',
-        backref=db.backref('ghosts', lazy='dynamic')
     )
 
 
@@ -251,8 +256,7 @@ class Post(BaseModel):
     # Relationships
     ghosted = db.relationship(
         'Post',
-        primaryjoin='Post.ghosted_id == Post.id',
-        backref=db.backref('ghosts', lazy='dynamic')
+        primaryjoin='Post.ghosted_id == Post.id'
     )
 
     authors = db.relationship(
@@ -360,11 +364,11 @@ class User(BaseModel, UserMixin):
 
     # User information
     is_active = db.Column(db.Boolean, nullable=False, default=False)
-    fist_name = db.Column(db.String(50), nullable=False, default='')
+    first_name = db.Column(db.String(50), nullable=False, default='')
     last_name = db.Column(db.String(50), nullable=False, default='')
 
     # Additional attributes
-    notify_login = db.Column(db.String(1024), nullable=True)
+    personal_bio = db.Column(db.String(1024), nullable=True)
     notify_login = db.Column(db.Boolean, nullable=False, default=True)
 
     # Relationships
