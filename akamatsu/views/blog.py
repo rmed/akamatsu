@@ -71,13 +71,14 @@ def feed():
 
 
 @bp_blog.route('/')
-@bp_blog.route('/<int:page>')
-def index(page=1):
+def index():
     """Show the list of published posts.
 
     Args:
         page (int): Page to show.
     """
+    page = request.args.get('page', 1, int)
+
     posts = (
         Post.query
         .filter_by(is_published=True)
@@ -95,14 +96,15 @@ def index(page=1):
 
 
 @bp_blog.route('/tagged/<tag>')
-@bp_blog.route('/tagged/<tag>/<int:page>')
-def tagged(tag, page=1):
+def tagged(tag):
     """Display posts tagged with the given tag.
 
     Args:
         tag (str): Tag name.
         page (int): Page to show.
     """
+    page = request.args.get('page', 1, int)
+
     posts = (
         Post.query
         .filter(Post.tags.any(name=tag))
@@ -121,8 +123,7 @@ def tagged(tag, page=1):
 
 
 @bp_blog.route('/by/<username>')
-@bp_blog.route('/by/<username>/<int:page>')
-def by_user(username, page=1):
+def by_user(username):
     """Display posts written by the given user.
 
     This includes collaboration posts.
@@ -131,6 +132,8 @@ def by_user(username, page=1):
         username (str): Username of the author.
         page (int): Page to show.
     """
+    page = request.args.get('page', 1, int)
+
     posts = (
         Post.query
         .join(user_posts)

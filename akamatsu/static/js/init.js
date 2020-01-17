@@ -9,21 +9,9 @@ $(document).ready(function() {
     // Toggle burger
     $('.navbar-burger').click(toggleBurger);
 
-    // Pagination
-    $('.pagination-previous').click(handlePagination);
-    $('.pagination-next').click(handlePagination);
-    $('.pagination-link').click(handlePagination);
-
-    // Table sorting
-    $('.sortable-header').click(handleTableSorting);
-
     // Dropdown toggling
     $(document).click(closeDropdowns);
     $('.dropdown-trigger').click(toggleDropdown);
-
-    // Listing sorting
-    $('.sort-attribute').click(setOrderingAttribute);
-    $('.sort-order').click(setOrderingOrder);
 });
 
 
