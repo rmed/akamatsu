@@ -20,6 +20,9 @@ $fa-font-path: "../fonts/fontawesome";
 @import "css/vendor/noty";
 @import "css/vendor/noty-mint";
 
+// Pygments styling (GitHub)
+@import "css/vendor/highlight";
+
 
 html, body {
     background-color: #FBFBFB;

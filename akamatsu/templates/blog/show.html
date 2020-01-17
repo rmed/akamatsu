@@ -1,0 +1,78 @@
+{% import "flask_discussion/helper.html" as discussion %}
+{% extends "layout.html" %}
+
+{% block title %}{{ post.title }}{% endblock %}
+
+{% block mini %}blog{% endblock %}
+
+{% block content %}
+<div class="container">
+    <article class="post">
+        {# Title #}
+        <h2 class="title is-2">
+            <a href="{{ url_for('blog.show', slug=post.slug) }}">{{ post.title }}</a>
+        </h2>
+
+        <div class="columns">
+            {# Authors #}
+            <div class="column is-4">
+                {% for author in post.authors|sort(attribute='username') %}
+                    <span>
+                        <a href="{{ url_for('blog.by_user', username=author.username) }}">
+                            {{ author.username }}
+                        </a>
+                        {% if not loop.last %},{% endif %}
+                    </span>
+                {% else %}
+                    <span>
+                        {{ _('Anonymous') }}
+                    </span>
+                {% endfor %}
+            </div>
+            {# Date #}
+            <div class="column is-4 is-offset-4 has-text-right">
+                <span><i>{{ post.last_updated|datetime }}</i></span>
+            </div>
+        </div>
+
+        {# Content #}
+        <div class="content">
+            {{ post.content|markdown }}
+        </div>
+
+        {# Taggings #}
+        <div class="is-divider"></div>
+        <div class="tags are-normal">
+            {% for tag in post.tag_names|sort %}
+                <span class="tag is-info is-light is">
+                    <a href="{{ url_for('blog.tagged', tag=tag) }}">{{ tag }}</a>
+                </span>
+            {% endfor %}
+        </div>
+
+        {# Bio #}
+        <div class="has-margin-top">
+            <h4 class="subtitle is-4">{{ ngettext('About the author', 'About the authors', post.authors|count) }}</h4>
+
+            {% for author in post.authors|sort(attribute='username') %}
+                <div class="content">
+                    <h5 class="subtitle is-5">{{ author.username }}</h5>
+                    {% if author.personal_bio %}
+                        {{ author.personal_bio|markdown }}
+                    {% endif %}
+                </div>
+                {% if not loop.last %}
+                    <div class="is-divider"></div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </article>
+
+    {# Comments #}
+    {% if post.comments_enabled %}
+        <div id="comments" class="has-margin-top">
+            {{ discussion.render_comments(identifier='post_' + post.hashid, url=url_for('blog.show', slug=post.slug, _external=True, title=post.title))}}
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

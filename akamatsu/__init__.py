@@ -47,7 +47,8 @@ import webassets
 
 from akamatsu.bootstrap import BASE_CONFIG
 from akamatsu.errors import forbidden, page_not_found, server_error
-from akamatsu.util import CeleryWrapper, CryptoManager, HashidsWrapper
+from akamatsu.util import CeleryWrapper, CryptoManager, HashidsWrapper, \
+        HighlighterRenderer
 
 __version__ = '2.0.0'
 
@@ -89,14 +90,13 @@ login_manager = LoginManager()
 
 # Flask-Misaka
 md = Misaka(
-    fenced_code=False,
+    renderer=HighlighterRenderer(),
+    fenced_code=True,
     underline=True,
     no_intra_emphasis=False,
     strikethrough=True,
     superscript=True,
-    tables=True,
-    no_html=True,
-    escape=True
+    tables=True
 )
 
 # Flask-Assets

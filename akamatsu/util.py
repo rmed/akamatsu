@@ -29,8 +29,13 @@
 
 from urllib.parse import urlparse, urljoin
 
+import misaka
+
 from flask import current_app, request
 from flask_mail import Message
+from pygments import highlight
+from pygments.formatters.html import HtmlFormatter
+from pygments.lexers import get_lexer_by_name
 
 
 class CeleryWrapper(object):
@@ -170,7 +175,6 @@ class HashidsWrapper(object):
 
     def __init__(self):
         self._hasher = None
-        self._initialized = False
 
     def __getattr__(self, attr):
         """Wrap internal Hashids attributes."""
@@ -178,26 +182,7 @@ class HashidsWrapper(object):
             return getattr(self, attr)
 
         # Calling hasher methods
-        if self._initialized:
-            return getattr(self._hasher, attr)
-
-        return getattr(self, attr)
-
-    def decode(self, id):
-        """Fallback in case the wrapper was not initialized.
-
-        Returns:
-            `None`
-        """
-        return None
-
-    def encode(self, id):
-        """Fallback in case the wrapper was not initialized.
-
-        Returns:
-            `None`
-        """
-        return None
+        return getattr(self._hasher, attr)
 
     def init_app(self, app):
         """Create a Hashids instance for the application.
@@ -209,13 +194,25 @@ class HashidsWrapper(object):
             `ModuleNotFoundError` in case `hashids` is not installed or
             `KeyError` if a configuration variable is missing.
         """
-        if app.config.get('USE_HASHIDS', False):
-            from hashids import Hashids
+        from hashids import Hashids
 
-            self._hasher = Hashids(
-                salt=app.config['HASHIDS_SALT'],
-                min_length=app.config.get('HASHIDS_LENGTH', 8)
-            )
+        self._hasher = Hashids(
+            salt=app.config['HASHIDS_SALT'],
+            min_length=app.config.get('HASHIDS_LENGTH', 8)
+        )
+
+
+class HighlighterRenderer(misaka.HtmlRenderer):
+    """Custom renderer to use with Misaka and pygments."""
+
+    def blockcode(self, text, lang):
+        if not lang:
+            return '\n<pre><code>{}</code></pre>\n'.format(text.strip())
+
+        lexer = get_lexer_by_name(lang, stripall=True)
+        formatter = HtmlFormatter()
+
+        return highlight(code=text, lexer=lexer, formatter=formatter)
 
 
 def is_safe_url(target):
