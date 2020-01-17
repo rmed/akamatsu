@@ -272,7 +272,7 @@ class Post(BaseModel):
     )
 
     # Proxies
-    tab_names = association_proxy(
+    tag_names = association_proxy(
         'tags',
         'name',
         creator=lambda n: Tag.get_or_new(n)

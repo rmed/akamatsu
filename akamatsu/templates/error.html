@@ -1,0 +1,14 @@
+{% import "macros.html" as macros %}
+{% extends "layout.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+{% block mini %}{{ _('error') }}{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1 class="title is-1">{{ title }}</h1>
+    <h2 class="subtitle is-2">{{ error_msg }}</h2>
+
+    <div class="is-divider"></div>
+</div>
+{% endblock %}

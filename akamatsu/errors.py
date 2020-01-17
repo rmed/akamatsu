@@ -34,6 +34,7 @@ from flask_babel import _
 def forbidden(e):
     return render_template(
         'error.html',
+        title=_('Forbidden'),
         error_msg=_('You do not have permissions to access this page')
     ), 403
 
@@ -41,6 +42,7 @@ def forbidden(e):
 def page_not_found(e):
     return render_template(
         'error.html',
+        title=_('Not Found'),
         error_msg=_('It\'s gone! Poof! Magic!')
     ), 404
 
@@ -48,5 +50,6 @@ def page_not_found(e):
 def server_error(e):
     return render_template(
         'error.html',
+        title=('Server Error'),
         error_msg=_('That was our mistake... Please try again or contact an admin')
     ), 500

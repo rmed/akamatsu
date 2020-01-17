@@ -47,7 +47,7 @@ from akamatsu.util import is_safe_url, send_email
 bp_auth = Blueprint('auth', __name__)
 
 
-@bp_auth.route('/dashboard/login', methods=['GET', 'POST'])
+@bp_auth.route('/auth/login', methods=['GET', 'POST'])
 def login():
     """Log the user in."""
     form = LoginForm()
@@ -99,7 +99,7 @@ def login():
     return render_template('auth/login.html', form=form)
 
 
-@bp_auth.route("/dashboard/logout")
+@bp_auth.route('/auth/logout')
 @login_required
 def logout():
     """Log the user out."""
@@ -108,7 +108,7 @@ def logout():
     return redirect(url_for('auth.login'))
 
 
-@bp_auth.route('/dashboard/reauthenticate', methods=['GET', 'POST'])
+@bp_auth.route('/auth/reauthenticate', methods=['GET', 'POST'])
 @login_required
 def reauthenticate():
     """Ask the user to confirm their password."""

@@ -1,0 +1,107 @@
+{% import "macros.html" as macros %}
+{% extends "layout.html" %}
+
+{% block title %}{{ _('Blog index') }}{% endblock %}
+
+{# Include blog atom feed #}
+{% block head_extend %}
+{% if request.endpoint == 'blog.index' %}
+    <link href="{{ url_for('blog.feed') }}" type="application/atom+xml" rel="alternate" title="{{ _('Recent Posts') }}" />
+{% endif %}
+{% endblock %}
+
+{% block mini %}blog{% endblock %}
+
+{% block content %}
+<div class="container">
+    {% if request.endpoint == 'blog.index' %}
+        {# Link to feed #}
+        <div class="has-text-right">
+            <a class="button" href="{{ url_for('blog.feed') }}">
+                <span class="icon"><i class="fas fa-rss"></i></span>
+                <span>{{ _('Blog feed') }}</span>
+            </a>
+        </div>
+
+    {% elif request.endpoint == 'blog.by_user' %}
+        <h2 class="subtitle is-2">{{ _('Posts by: %(username)s', username=username) }}</h2>
+
+    {% elif request.endpoint == 'blog.tagged' %}
+        <h2 class="subtitle is-2">{{ _('Posts tagged: "%(tag)s"', tag=tag) }}</h2>
+    {% endif %}
+
+    {% for post in posts.items %}
+        <article class="post">
+            {# Title #}
+            <h2 class="title is-2">
+                <a href="{{ url_for('blog.show', slug=post.slug) }}">{{ post.title }}</a>
+            </h2>
+
+            <div class="columns">
+                {# Authors #}
+                <div class="column is-4">
+                    {% for author in post.authors|sort(attribute='username') %}
+                        <span>
+                            <a href="{{ url_for('blog.by_user', username=author.username) }}">
+                                {{ author.username }}
+                            </a>
+                            {% if not loop.last %},{% endif %}
+                        </span>
+                    {% else %}
+                        <span>
+                            {{ _('Anonymous') }}
+                        </span>
+                    {% endfor %}
+                </div>
+                {# Date #}
+                <div class="column is-4 is-offset-4 has-text-right">
+                    <span><i>{{ post.last_updated|datetime }}</i></span>
+                </div>
+            </div>
+
+            {# Content #}
+            <div class="content">
+                {% set summary = post.content.split('<!--aka-break-->')[0].strip() %}
+                {{ summary|markdown }}
+            </div>
+
+            {# Actions #}
+            <div class="tabs is-right">
+                <ul>
+                    <li>
+                        <a href="{{ url_for('blog.show', slug=post.slug) }}">
+                            <span class="icon is-small"><i class="fas fa-book-open"></i></span>
+                            <span>{{ _('Read more') }}</span>
+                        </a>
+                    </li>
+                    {% if post.comments_enabled %}
+                        <li>
+                            <a href="{{ url_for('blog.show', slug=post.slug) }}#comments">
+                                <span class="icon is-small"><i class="fas fa-comments"></i></span>
+                                <span>{{ _('Comments') }}</span>
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+
+            {# Taggings #}
+            <div class="tags are-normal">
+                {% for tag in post.tag_names|sort %}
+                    <span class="tag is-info is-light is">
+                        <a href="{{ url_for('blog.tagged', tag=tag) }}">{{ tag }}</a>
+                    </span>
+                {% endfor %}
+            </div>
+        </article>
+
+    {% else %}
+        <article>
+            <h2>{{ _('No posts found') }}</h2>
+            <div class="is-divider"></div>
+        </article>
+    {% endfor %}
+
+    {{ macros.render_pagination(posts) }}
+</div>
+{% endblock %}

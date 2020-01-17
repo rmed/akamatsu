@@ -12,6 +12,8 @@
 // Font awesome
 $fa-font-path: "../fonts/fontawesome";
 @import "scss/vendor/fontawesome/fontawesome.scss";
+@import "scss/vendor/fontawesome/brands.scss";
+@import "scss/vendor/fontawesome/regular.scss";
 @import "scss/vendor/fontawesome/solid.scss";
 
 // Noty
@@ -20,7 +22,7 @@ $fa-font-path: "../fonts/fontawesome";
 
 
 html, body {
-    background-color: $light;
+    background-color: #FBFBFB;
     height: 100%;
 }
 
@@ -39,4 +41,76 @@ html, body {
 
 .has-margin-bottom {
     margin-bottom: 20px;
+}
+
+// Social links
+#social-links {
+    float: right;
+
+    a, a:link, a:visited {
+        color: #FFFFFF;
+        opacity: 0.7;
+        text-decoration: none;
+        transition: all 300ms ease-in-out 0s;
+    }
+
+    a:hover {
+        opacity: 1;
+        transition: all 300ms ease-in-out 0s;
+    }
+
+    @include mobile {
+        display: block;
+        float: none;
+        margin-bottom: 10px;
+    }
+}
+
+// Posts
+.post {
+    margin-bottom: 75px;
+
+    .title {
+        a, a:link, a:visited {
+            color: $dark;
+            text-decoration: none;
+            transition: all 300ms ease-in-out 0s;
+        }
+
+        a:hover {
+            color: $link;
+            transition: all 300ms ease-in-out 0s;
+        }
+    }
+
+    .tabs {
+        a, a:link, a:visited {
+            opacity: 0.7;
+            transition: all 300ms ease-in-out 0s;
+        }
+
+        a:hover {
+            border-bottom-color: $link;
+            color: $link;
+            opacity: 1;
+            transition: all 300ms ease-in-out 0s;
+        }
+    }
+}
+
+// Footers
+#left-footer {
+    text-align: left;
+
+    @include mobile {
+        text-align: center;
+    }
+}
+
+#right-footer {
+    text-align: right;
+
+    @include mobile {
+        text-align: center;
+    }
 }

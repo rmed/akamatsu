@@ -33,7 +33,7 @@ from werkzeug.contrib.atom import AtomFeed
 from werkzeug.exceptions import NotFound
 
 from akamatsu import md as markdown
-from akamatsu.models import Post, User
+from akamatsu.models import Post, User, user_posts
 
 
 bp_blog = Blueprint('blog', __name__)
@@ -63,7 +63,7 @@ def feed():
             markdown.render(post.content).unescape(),
             content_type='html',
             author=[a.username for a in post.authors],
-            url=url_for('blog.show', slug=post.slog, _external=True),
+            url=url_for('blog.show', slug=post.slug, _external=True),
             updated=post.last_updated
         )
 
@@ -94,8 +94,8 @@ def index(page=1):
         return render_template('blog/index.html')
 
 
-@bp_blog.route('/tag/<tag>')
-@bp_blog.route('/tag/<tag>/<int:page>')
+@bp_blog.route('/tagged/<tag>')
+@bp_blog.route('/tagged/<tag>/<int:page>')
 def tagged(tag, page=1):
     """Display posts tagged with the given tag.
 
@@ -113,11 +113,11 @@ def tagged(tag, page=1):
     )
 
     try:
-        return render_template('blog/tagged.html', posts=posts)
+        return render_template('blog/index.html', posts=posts, tag=tag)
 
     except NotFound:
         # Show a 'no posts found' notice instead of a 404 error
-        return render_template('blog/tagged.html')
+        return render_template('blog/index.html', tag=tag)
 
 
 @bp_blog.route('/by/<username>')
@@ -133,6 +133,7 @@ def by_user(username, page=1):
     """
     posts = (
         Post.query
+        .join(user_posts)
         .join(User)
         .filter(Post.is_published==True)
         .filter(Post.ghosted_id==None)
@@ -142,11 +143,11 @@ def by_user(username, page=1):
     )
 
     try:
-        return render_template('blog/by_user.html', posts=posts)
+        return render_template('blog/index.html', posts=posts, username=username)
 
     except NotFound:
         # Show a 'no posts found' notice instead of a 404 error
-        return render_template('blog/by_user.html')
+        return render_template('blog/index.html', username=username)
 
 
 @bp_blog.route('/<slug>')

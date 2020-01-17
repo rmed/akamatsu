@@ -305,7 +305,7 @@ Use kwargs for additional arguments for the URL. For instance:
 Would render a link to the next page taking into account search arguments, sorting and ordering of a table.
 #}
 {% macro render_pagination(pagination) %}
-    <nav class="pagination" role="navigation" aria-label="pagination" data-target="{{ target }}">
+    <nav class="pagination is-centered" role="navigation" aria-label="pagination" data-target="{{ target }}">
         <a {% if pagination.has_prev %}href="{{ url_for_self(page=pagination.page-1) }}"{% else %}disabled{% endif %} class="pagination-previous">
             <span class="icon"><i class="fas fa-chevron-left"></i></span>
             <span>{{ _('Previous') }}</span>

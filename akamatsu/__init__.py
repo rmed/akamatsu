@@ -30,7 +30,7 @@
 import os
 
 from babel import dates as babel_dates
-from flask import Flask, request
+from flask import Flask, current_app, request
 from flask_assets import Environment, Bundle
 from flask_babel import Babel, _
 from flask_discussion import Discussion
@@ -45,7 +45,7 @@ import flask
 import pytz
 import webassets
 
-from akamatsu.bootstrap import BASE_CONFIG, LANGUAGES
+from akamatsu.bootstrap import BASE_CONFIG
 from akamatsu.errors import forbidden, page_not_found, server_error
 from akamatsu.util import CeleryWrapper, CryptoManager, HashidsWrapper
 
@@ -111,12 +111,8 @@ discussion = Discussion()
 
 @babel.localeselector
 def get_locale():
-    """Get locale from user record or from browser locale."""
-    if not current_user or not current_user.is_authenticated:
-        # Not logged in user
-        return request.accept_languages.best_match(LANGUAGES)
-
-    return current_user.locale or 'en'
+    """Get locale from config."""
+    return current_app.config.get('LOCALE', 'en')
 
 
 def url_for_self(**kwargs):
@@ -128,23 +124,23 @@ def url_for_self(**kwargs):
 
 
 def format_datetime(value):
-    """Jinja filter to format datetime using user defined timezone.
+    """Jinja filter to format datetime using app defined timezone.
 
     If not a valid timezone, defaults to UTC.
 
     Args:
         value (datetime): Datetime object to represent.
     """
-    user_tz = current_user.timezone
+    app_tz = current_app.config.get('TIMEZONE', 'UTC')
 
-    if not user_tz or user_tz not in pytz.common_timezones:
-        user_tz = 'UTC'
+    if not app_tz in pytz.common_timezones:
+        app_tz = 'UTC'
 
-    tz = babel_dates.get_timezone(user_tz)
+    tz = babel_dates.get_timezone(app_tz)
 
     return babel_dates.format_datetime(
         value,
-        'yyyy-MM-dd HH:mm:ss',
+        'yyyy-MM-dd HH:mm:ss z',
         tzinfo=tz
     )
 
@@ -288,8 +284,8 @@ def init_app():
     from akamatsu.views.pages import bp_pages
 
     app.register_blueprint(bp_auth)
-    app.register_blueprint(bp_dashboard, prefix='/dashboard')
-    app.register_blueprint(bp_blog, prefix='/blog')
+    app.register_blueprint(bp_dashboard, url_prefix='/dashboard')
+    app.register_blueprint(bp_blog, url_prefix='/blog')
     app.register_blueprint(bp_pages)
 
 

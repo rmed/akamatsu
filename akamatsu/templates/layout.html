@@ -6,7 +6,7 @@
 <head>
     {# Favicon #}
 
-    <title>{% block title %}{% endblock %} | {{ config['SITENAME'] }}e</title>
+    <title>{% block title %}{% endblock %} | {{ config['SITENAME'] }}</title>
 
     {# Minified CSS #}
     {% assets "css_pack" %}
@@ -39,12 +39,28 @@
 
 {% block html_body %}
 <body>
+    {# Hero #}
+    <section class="hero is-dark with-navbar">
+        <div class="hero-body">
+            <div class="container">
+                {# Social links #}
+                <div id="social-links">
+                    {% for item in config.get('SOCIAL', []) %}
+                        <a class="is-size-3" href="{{ item['link'] }}" target="_blank">
+                            <i class="{{ item['glyph'] }}"></i>
+                        </a>
+                    {% endfor %}
+                </div>
+                <h1 class="title">{{ config['SITENAME'] }}</h1>
+                <h2 class="subtitle">{% block mini %}mini{% endblock %}</h2>
+            </div>
+        </div>
+    </section>
+
     {# Top navbar #}
-    <nav class="navbar has-shadow">
+    <nav class="navbar is-primary has-margin-bottom" role="navigation" aria-label="main navigation">
         <div class="container">
             <div class="navbar-brand">
-                <a href="{{ url_for('general.home') }}" class="navbar-item">{{ _('Home') }}</a>
-
                 <a id="sidebar-toggle" role="button" class="navbar-burger" data-target="nav-menu">
                     <span></span>
                     <span></span>
@@ -52,29 +68,40 @@
                 </a>
             </div>
 
-            {% if current_user.is_authenticated %}
-                <div id="nav-menu" class="navbar-menu">
-                    <div class="navbar-end">
-                        <a href="{{ url_for('auth.logout') }}" class="navbar-item is-tab">
-                            <span class="icon"><i class="fas fa-sign-out-alt"></i></span>
-                            <span>{{ _('Logout') }}</span>
-                        </a>
-                    </div>
+            <div class="navbar-menu">
+                <div class="navbar-start">
+                    {% for item in config.get('NAVBAR', []) %}
+                        <a class="navbar-item" href="{{ item['link'] }}">{{ item['text'] }}</a>
+                    {% else %}
+                        <a class="navbar-item" href="/">{{ _('Home') }}</a>
+                        <a class="navbar-item" href="{{ url_for('blog.index') }}">{{ _('Blog') }}</a>
+                    {% endfor %}
                 </div>
-            {% endif %}
+            </div>
         </div>
     </nav>
 
-    {# Breadcrumbs #}
-    {% block breadcrumbs %}{% endblock %}
-
     {# Main content #}
-    <section class="container">
+    <section class="section">
         {% block content %}{% endblock %}
     </section>
 
     {# Show flash messages #}
     {{ macros.render_flash_messages() }}
+
+    {# Footer #}
+    <footer class="footer">
+        <div class="container">
+            <div class="columns">
+                <div id="left-footer" class="column is-4">
+                    {{ config.get('FOOTER_LEFT', '')|safe }}
+                </div>
+                <div id="right-footer" class="column is-4 is-offset-4">
+                    {{ config.get('FOOTER_RIGHT', '')|safe }}
+                </div>
+            </div>
+        </div>
+    </footer>
 </body>
 {% endblock %}
 </html>

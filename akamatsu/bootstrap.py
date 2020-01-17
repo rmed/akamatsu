@@ -32,10 +32,6 @@ import os
 from flask_babel import lazy_gettext as _l
 
 
-# Available locales
-LANGUAGES = ('en', 'es')
-LANGUAGES_LOCALIZED = (_l('English'), _l('Spanish'))
-
 
 # Static configuration values
 BASE_CONFIG = {
@@ -54,7 +50,8 @@ BASE_CONFIG = {
     'PASSLIB_ALG_BCRYPT_ROUNDS': 14,
 
     'PAGE_ITEMS': 10,
-    'LANGUAGES': LANGUAGES
+    'LOCALE': 'en',
+    'TIMEZONE': 'UTC'
 }
 
 
@@ -73,6 +70,9 @@ DEV_CONFIG = {
 
     # Site name
     'SITENAME': 'akamatsu',
+
+    # Site language
+    'LOCALE': 'en',
 
     # Items per page in pagination
     'PAGE_ITEMS': 10,
@@ -94,5 +94,29 @@ DEV_CONFIG = {
     # Celery
     'USE_CELERY': False,
     'CELERY_BROKER_URL': 'redis://localhost:6379/1',
-    'CELERY_RESULT_BACKEND': 'redis://localhost:6379/1'
+    'CELERY_RESULT_BACKEND': 'redis://localhost:6379/1',
+
+    # Social links
+    'SOCIAL': [
+        {
+            'link': 'https://github.com/rmed/akamatsu',
+            'glyph': 'fab fa-github'
+        },
+    ],
+
+    # Navigation bar
+    'NAVBAR': [
+        {
+            'link': '/',
+            'text': 'Home'
+        },
+        {
+            'link': '/blog',
+            'text': 'Blog'
+        },
+    ],
+
+    # Footer
+    'FOOTER_LEFT': 'Left footer',
+    'FOOTER_RIGHT': 'Right footer'
 }
