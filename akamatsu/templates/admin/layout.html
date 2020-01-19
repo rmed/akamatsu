@@ -1,0 +1,151 @@
+{% extends "layout.html" %}
+
+{% block head_extend %}
+{# Minified admin CSS #}
+{% assets "admin_css_pack" %}
+    <link rel="stylesheet" type="text/css" href="{{ ASSET_URL }}"/>
+{% endassets %}
+
+{# Minified admin JS #}
+{% assets "admin_js_pack" %}
+    <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+{% endassets %}
+{% endblock %}
+
+{% block html_body %}
+<body>
+    {# Sidebar #}
+    <aside id="admin-sidebar" class="menu">
+        <p class="menu-label">{{ _('General') }}</p>
+        <ul class="menu-list">
+            <li>
+                <a href="{{ url_for('admin.home') }}" {% if request.endpoint == 'admin.home' %}class="is-active"{% endif %}>
+                    <span class="icon"><i class="fas fa-book"></i></span>
+                    <span>{{ _('Dashboard') }}</span>
+                </a>
+            </li>
+        </ul>
+
+        {% if current_user.has_role('blogger') or current_user.has_role('administrator') %}
+            <p class="menu-label">{{ _('Blog') }}</p>
+            <ul class="menu-list">
+                <li>
+                    <a href="" {% if request.endpoint == 'admin.new_post' %}class="is-active"{% endif %}>
+                        <span class="icon"><i class="fas fa-plus"></i></span>
+                        <span>{{ _('New post') }}</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="" {% if request.endpoint == 'admin.post_index' %}class="is-active"{% endif %}>
+                        <span class="icon"><i class="fas fa-clipboard-list"></i></span>
+                        <span>{{ _('Manage posts') }}</span>
+                    </a>
+                </li>
+            </ul>
+        {% endif %}
+
+        {% if current_user.has_role('editor') or current_user.has_role('administrator') %}
+            <p class="menu-label">{{ _('Pages') }}</p>
+            <ul class="menu-list">
+                <li>
+                    <a href="" {% if request.endpoint == 'admin.new_page' %}class="is-active"{% endif %}>
+                        <span class="icon"><i class="fas fa-plus"></i></span>
+                        <span>{{ _('New page') }}</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="" {% if request.endpoint == 'admin.page_index' %}class="is-active"{% endif %}>
+                        <span class="icon"><i class="fas fa-layer-group"></i></span>
+                        <span>{{ _('Manage pages') }}</span>
+                    </a>
+                </li>
+            </ul>
+        {% endif %}
+
+        <p class="menu-label">{{ _('Files') }}</p>
+        <ul class="menu-list">
+            <li>
+                <a href="" {% if request.endpoint == 'admin.new_file' %}class="is-active"{% endif %}>
+                    <span class="icon"><i class="fas fa-plus"></i></span>
+                    <span>{{ _('New file') }}</span>
+                </a>
+            </li>
+            <li>
+                <a href="" {% if request.endpoint == 'admin.file_index' %}class="is-active"{% endif %}>
+                    <span class="icon"><i class="fas fa-file"></i></span>
+                    <span>{{ _('Manage files') }}</span>
+                </a>
+            </li>
+        </ul>
+
+        {% if current_user.has_role('administrator') %}
+            <p class="menu-label">{{ _('Users') }}</p>
+            <ul class="menu-list">
+                <li>
+                    <a href="" {% if request.endpoint == 'admin.new_user' %}class="is-active"{% endif %}>
+                        <span class="icon"><i class="fas fa-plus"></i></span>
+                        <span>{{ _('New user') }}</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="" {% if request.endpoint == 'admin.user_index' %}class="is-active"{% endif %}>
+                        <span class="icon"><i class="fas fa-users"></i></span>
+                        <span>{{ _('Manage users') }}</span>
+                    </a>
+                </li>
+            </ul>
+        {% endif %}
+
+        <p class="menu-label">{{ _('Profile') }}</p>
+        <ul class="menu-list">
+            <li>
+                <a href="{{ url_for('admin.profile_edit') }}" {% if request.endpoint == 'admin.edit_profile' %}class="is-active"{% endif %}>
+                    <span class="icon"><i class="fas fa-user"></i></span>
+                    <span>{{ _('Edit profile') }}</span>
+                </a>
+            </li>
+            <li>
+                <a href="{{ url_for('auth.logout') }}">
+                    <span class="icon"><i class="fas fa-sign-out-alt"></i></span>
+                    <span>{{ _('Logout') }}</span>
+                </a>
+            </li>
+        </ul>
+    </aside>
+
+    {# Content with sidebar gap #}
+    <div class="columns">
+        <div id="admin-sidebar-gap" class="column is-narrow is-hidden-mobile">
+            {# Only present to allow the sidebar to float without covering content #}
+        </div>
+
+        <div class="column">
+            {# Sidebar toggle for mobile #}
+            <a id="admin-sidebar-toggle" class="is-block-mobile is-size-4" data-target="admin-sidebar">
+                <span class="icon"><i class="fas fa-bars"></i></span>
+            </a>
+
+            {# Main content #}
+            <section class="section">
+                <div class="columns">
+                    <div class="column is-4 is-offset-8 has-text-right">
+                        <span class="icon"><i class="fas fa-user"></i></span>
+                        <span>{{ current_user.username }}</span>
+                    </div>
+                </div>
+
+                <nav class="breadcrumb is-centered" aria-label="breadcrumbs">
+                    <ul>
+                        {% block breadcrumbs %}{% endblock %}
+                  </ul>
+                </nav>
+
+                {% block content %}{% endblock %}
+            </section>
+        </div>
+    </div>
+
+    {# Show flash messages #}
+    {{ macros.render_flash_messages() }}
+</body>
+{% endblock %}

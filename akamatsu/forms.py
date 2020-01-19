@@ -240,6 +240,7 @@ class ProfileForm(FlaskForm):
 
     email = StringField(
         _l('Email'),
+        description=_l('Must be unique'),
         validators=[
             validators.InputRequired(_l('Email is required')),
             validators.Email(_l('Invalid Email'))

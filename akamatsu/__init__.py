@@ -259,6 +259,11 @@ def init_app():
         output='gen/packed.css'
     )
 
+    admin_css_bundle = Bundle(
+        'css/vendor/easymde.css',
+        output='gen/packed_admin.css'
+    )
+
     js_bundle = Bundle(
         'js/vendor/zepto.min.js', # 1.2.0
         'js/vendor/noty.min.js', # 3.2.0-beta
@@ -269,8 +274,19 @@ def init_app():
         output='gen/packed.js'
     )
 
+    # FIXME cannot minify easymde
+    admin_js_bundle = Bundle(
+        'js/vendor/easymde.min.js', # 2.9.0,
+        'js/admin/navigation.js',
+        'js/admin/init.js',
+        output='gen/packed_admin.js'
+    )
+
+
     assets.register('css_pack', css_bundle)
     assets.register('js_pack', js_bundle)
+    assets.register('admin_css_pack', admin_css_bundle)
+    assets.register('admin_js_pack', admin_js_bundle)
 
 
     # Setup Flask-Discussion
@@ -279,12 +295,12 @@ def init_app():
 
     # Register blueprints
     from akamatsu.views.auth import bp_auth
-    from akamatsu.views.dashboard import bp_dashboard
+    from akamatsu.views.admin import bp_admin
     from akamatsu.views.blog import bp_blog
     from akamatsu.views.pages import bp_pages
 
     app.register_blueprint(bp_auth)
-    app.register_blueprint(bp_dashboard, url_prefix='/dashboard')
+    app.register_blueprint(bp_admin, url_prefix='/admin')
     app.register_blueprint(bp_blog, url_prefix='/blog')
     app.register_blueprint(bp_pages)
 

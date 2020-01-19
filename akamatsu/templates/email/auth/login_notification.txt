@@ -3,7 +3,7 @@
 
 {{ _('To stop receiving these messages, change your profile settings in the following link: ') }}
 
-{{ url_for('dashboard.profile_edit', _external=True) }}
+{{ url_for('admin.profile_edit', _external=True) }}
 
 {{ _('Sincerely,') }}
 akamatsu

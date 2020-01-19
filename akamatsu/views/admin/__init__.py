@@ -25,31 +25,32 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""This module contains dashboard views."""
+"""This module contains administration views."""
 
 from flask import Blueprint, render_template
 from flask_babel import _
 from flask_login import login_required
 
 
-bp_dashboard = Blueprint('dashboard', __name__)
+bp_admin = Blueprint('admin', __name__)
 
 
-@bp_dashboard.route('/')
+@bp_admin.route('/')
 @login_required
 def home():
-    """Show dashboard home."""
-    return render_template('dashboard/index.html')
+    """Show admin dashboard."""
+    return render_template('admin/index.html')
 
 
 # Import subviews
-# from akamatsu.views.dashboard import blog
+from akamatsu.views.admin import profile
+# from akamatsu.views.admin import blog
 
 
-@bp_dashboard.errorhandler(404)
+@bp_admin.errorhandler(404)
 @login_required
 def dashboard_not_found(e):
     return render_template(
-        'dashboard/error.html',
+        'admin/error.html',
         error_msg=_('It\'s gone! Poof! Magic!')
     ), 404

@@ -24,7 +24,19 @@ $fa-font-path: "../fonts/fontawesome";
 @import "css/vendor/highlight";
 
 
-html, body {
+// Variables
+$admin-sidebar-width: 300px;
+$admin-sidebar-gap-width: 325px;
+
+
+html {
+    background-color: #FBFBFB;
+    min-height: 100%;
+    position: relative;
+
+}
+
+body {
     background-color: #FBFBFB;
     height: 100%;
 }
@@ -120,5 +132,62 @@ html, body {
 
     @include mobile {
         text-align: center;
+    }
+}
+
+// Admin panel
+#admin-sidebar {
+    background-color: $dark;
+    bottom: 0;
+    // height: 100%;
+    left: 0;
+    padding: 10px;
+    position: absolute;
+    top: 0;
+    width: $admin-sidebar-width;
+
+    @include mobile {
+        left: -$admin-sidebar-width;
+        visibility: hidden;
+        transition: all 200ms ease-in-out 0s;
+    }
+
+    &.is-active {
+        left: 0;
+        visibility: visible;
+        transition: all 200ms ease-in-out 0s;
+    }
+
+    // Override Bulma .menu
+    .menu-list {
+        a {
+            color: $light;
+
+            &:hover {
+                background-color: $primary;
+            }
+
+            &.is-active {
+                background-color: $primary;
+            }
+        }
+    }
+
+}
+
+#admin-sidebar-gap {
+    width: $admin-sidebar-gap-width;
+}
+
+#admin-sidebar-toggle {
+    display: none;
+    float: left;
+    margin-left: 10px;
+    margin-top: 10px;
+    transition: all 200ms ease-in-out 0s;
+
+    &.is-active {
+        margin-left: $admin-sidebar-gap-width;
+        transition: all 200ms ease-in-out 0s;
     }
 }

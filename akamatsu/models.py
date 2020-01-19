@@ -381,6 +381,18 @@ class User(BaseModel, UserMixin):
         creator=lambda n: Role.get_role(n)
     )
 
+    def has_role(self, role):
+        """Check whether the user has the specified role.
+
+        Args:
+            role (str): Role to check.
+
+        Returns:
+            `True` if the user has been assigned the specified role, otherwise
+            `False`.
+        """
+        return role in self.role_names
+
     @classmethod
     def get_by_username(self, username):
         """Obtain an already existing user by username.

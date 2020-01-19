@@ -1,0 +1,77 @@
+{% import "macros.html" as macros %}
+{% extends "admin/layout.html" %}
+
+{% block title %}{{ _('Edit profile') }}{% endblock %}
+
+{% block breadcrumbs %}
+<li><a href="{{ url_for('admin.home') }}">{{ _('Dashboard') }}</a></li>
+<li class="is-active"><a href="#" aria-current="page">{{ _('Edit profile') }}</a></li>
+{% endblock %}
+
+{% block content %}
+<div class="columns">
+    <div class="column">
+        <h3 class="subtitle is-3">{{ _('Edit profile') }}</h3>
+    </div>
+
+    <div class="column is-2 has-text-right">
+        <a class="button" href="{{ url_for('admin.change_password') }}">
+            <span class="icon"><i class="fas fa-key"></i></span>
+            <span>{{ _('Change password') }}</span>
+        </a>
+    </div>
+</div>
+
+<div class="box">
+    <form action="" method="POST" role="form">
+        {{ form.hidden_tag() }}
+
+        <div class="columns">
+            <div class="column is-3 is-offset-9 has-text-right">
+                {# Notify login #}
+                {{ macros.render_switch(form.notify_login) }}
+
+                {% if form.errors.notify_login %}
+                    {{ macros.render_messages(form.errors.notify_login, size='') }}
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="columns">
+            <div class="column">
+                {# First name #}
+                {{ macros.render_input(form.first_name) }}
+
+                {% if form.errors.first_name %}
+                    {{ macros.render_messages(form.errors.first_name, size='') }}
+                {% endif %}
+            </div>
+            <div class="column">
+                {# Last name #}
+                {{ macros.render_input(form.last_name) }}
+
+                {% if form.errors.last_name %}
+                    {{ macros.render_messages(form.errors.last_name, size='') }}
+                {% endif %}
+            </div>
+        </div>
+
+        {# Email #}
+        {{ macros.render_input(form.email) }}
+
+        {% if form.errors.email %}
+            {{ macros.render_messages(form.errors.email, size='') }}
+        {% endif %}
+
+        {# Bio #}
+        {{ macros.render_input(form.personal_bio) }}
+
+        {% if form.errors.personal_bio %}
+            {{ macros.render_messages(form.errors.personal_bio, size='') }}
+        {% endif %}
+
+        {# Submit #}
+        {{ macros.render_submit(form.submit) }}
+    </form>
+</div>
+{% endblock %}
