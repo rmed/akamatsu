@@ -174,10 +174,6 @@ class Page(BaseModel):
     The `<head>` can be extended (e.g. to add some custom JS scripts) when
     writing pages in html.
 
-    The flag `is_root` determines whether the page is the root of the website
-    ('/'), there can only be one. If there are more records with this tag,
-    the first one found will be used.
-
     Pages can "ghost" other pages, meaning that accessing a ghost page will
     redirect to the page being ghosted.
 

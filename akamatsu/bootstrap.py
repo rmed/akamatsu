@@ -75,7 +75,7 @@ DEV_CONFIG = {
     'LOCALE': 'en',
 
     # Items per page in pagination
-    'PAGE_ITEMS': 10,
+    'PAGE_ITEMS': 1,
 
     # Hashids
     'HASHIDS_SALT': 'hashedpotatoes',

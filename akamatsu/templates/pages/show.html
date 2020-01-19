@@ -1,0 +1,32 @@
+{% import "flask_discussion/helper.html" as discussion %}
+{% extends "layout.html" %}
+
+{# Custom head extension #}
+{% block head_extend %}{{ page.custom_head|safe if page.custom_head }}{% endblock %}
+
+{% block title %}{{ page.title }}{% endblock %}
+{% block mini %}{{ page.mini if page.mini }}{% endblock %}
+
+{% block content %}
+<div class="container">
+    <article class="page">
+        <div class="columns">
+            {# Date #}
+            <div class="column is-4 is-offset-8 has-text-right">
+                <span><i>{{ _('Last updated: %(date)s', date=page.last_updated|datetime) }}</i></span>
+            </div>
+        </div>
+
+        <div class="content">
+            {{ page.content|markdown }}
+        </div>
+    </article>
+
+    {# Comments #}
+    {% if page.comments_enabled %}
+        <div id="comments" class="has-margin-top">
+            {{ discussion.render_comments(identifier='page_' + page.hashid, url=url_for('pages.show', route=page.route, _external=True, title=page.title))}}
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
