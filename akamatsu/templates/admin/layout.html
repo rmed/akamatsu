@@ -16,6 +16,11 @@
 <body>
     {# Sidebar #}
     <aside id="admin-sidebar" class="menu">
+        <p class="menu-label has-text-right">
+            <span class="icon"><i class="fas fa-user"></i></span>
+            <span>{{ current_user.username }}</span>
+        </p>
+
         <p class="menu-label">{{ _('General') }}</p>
         <ul class="menu-list">
             <li>
@@ -122,18 +127,12 @@
         <div class="column">
             {# Sidebar toggle for mobile #}
             <a id="admin-sidebar-toggle" class="is-block-mobile is-size-4" data-target="admin-sidebar">
-                <span class="icon"><i class="fas fa-bars"></i></span>
+                <span class="icon open"><i class="fas fa-bars"></i></span>
+                <span class="icon close"><i class="fas fa-times"></i></span>
             </a>
 
             {# Main content #}
             <section class="section">
-                <div class="columns">
-                    <div class="column is-4 is-offset-8 has-text-right">
-                        <span class="icon"><i class="fas fa-user"></i></span>
-                        <span>{{ current_user.username }}</span>
-                    </div>
-                </div>
-
                 <nav class="breadcrumb is-centered" aria-label="breadcrumbs">
                     <ul>
                         {% block breadcrumbs %}{% endblock %}

@@ -139,12 +139,12 @@ body {
 #admin-sidebar {
     background-color: $dark;
     bottom: 0;
-    // height: 100%;
     left: 0;
     padding: 10px;
     position: absolute;
     top: 0;
     width: $admin-sidebar-width;
+    z-index: 2;
 
     @include mobile {
         left: -$admin-sidebar-width;
@@ -180,14 +180,35 @@ body {
 }
 
 #admin-sidebar-toggle {
+    color: $dark;
     display: none;
     float: left;
     margin-left: 10px;
     margin-top: 10px;
     transition: all 200ms ease-in-out 0s;
 
+    .open {
+        display: block;
+    }
+
+    .close {
+        display: none;
+    }
+
+    &:hover {
+        color: #000000;
+    }
+
     &.is-active {
         margin-left: $admin-sidebar-gap-width;
         transition: all 200ms ease-in-out 0s;
+
+        .open {
+            display: none;
+        }
+
+        .close {
+            display: block;
+        }
     }
 }
