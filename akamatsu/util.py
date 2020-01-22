@@ -27,11 +27,14 @@
 
 """This file contains utility code."""
 
+from functools import wraps
 from urllib.parse import urlparse, urljoin
 
 import misaka
 
-from flask import current_app, request
+from flask import current_app, flash, redirect, request, url_for
+from flask_babel import _
+from flask_login import current_user
 from flask_mail import Message
 from pygments import highlight
 from pygments.formatters.html import HtmlFormatter
@@ -214,6 +217,30 @@ class HighlighterRenderer(misaka.HtmlRenderer):
 
         return highlight(code=text, lexer=lexer, formatter=formatter)
 
+
+def allowed_roles(*roles):
+    """Decorator to allow only specific roles to access the route.
+
+    This also checks whether the user is logged in.
+    """
+    def wrapper(f):
+        @wraps(f)
+        def decorator(*args, **kwargs):
+            # Check user is logged in
+            if not current_user.is_authenticated:
+                return current_app.login_manager.unauthorized()
+
+            # Check roles
+            if set(roles).isdisjoint(current_user.role_names):
+                flash(
+                    _('You do not have permission to access the page'),
+                    'warning'
+                )
+                return redirect(url_for('admin.home'))
+
+            return f(*args, **kwargs)
+        return decorator
+    return wrapper
 
 def is_safe_url(target):
     """Check whether the target is safe for redirection.

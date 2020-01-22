@@ -1,0 +1,27 @@
+{% extends "admin/layout.html" %}
+
+{% block title %}{{ _('Manage posts') }}{% endblock %}
+
+{% block breadcrumbs %}
+<li><a href="{{ url_for('admin.home') }}">{{ _('Dashboard') }}</a></li>
+<li class="is-active"><a href="#" aria-current="page">{{ _('Manage posts') }}</a></li>
+{% endblock %}
+
+{% block content %}
+<div class="columns">
+    <div class="column">
+        <h3 class="subtitle is-3">{{ _('My posts') }}</h3>
+    </div>
+
+    <div class="column is-2 has-text-right">
+        <a class="button" href="{{ url_for('admin.new_post') }}">
+            <span class="icon"><i class="fas fa-plus"></i></span>
+            <span>{{ _('New post') }}</span>
+        </a>
+    </div>
+</div>
+
+<div class="box page-items">
+    {% include "admin/posts/partial/posts_page.html" %}
+</div>
+{% endblock %}

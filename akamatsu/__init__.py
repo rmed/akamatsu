@@ -267,18 +267,22 @@ def init_app():
     js_bundle = Bundle(
         'js/vendor/zepto.min.js', # 1.2.0
         'js/vendor/noty.min.js', # 3.2.0-beta
-        'js/vendor/bulma-tagsinput.min.js',
         'js/navigation.js',
         'js/init.js',
         filters='rjsmin',
         output='gen/packed.js'
     )
 
-    # FIXME cannot minify easymde
-    admin_js_bundle = Bundle(
-        'js/vendor/easymde.min.js', # 2.9.0,
+    pre_admin_js_bundle = Bundle(
+        'js/vendor/bulma-tagsinput.min.js', # 1.0.11
         'js/admin/navigation.js',
         'js/admin/init.js',
+        filters='rjsmin'
+    )
+
+    admin_js_bundle = Bundle(
+        'js/vendor/easymde.min.js', # 2.9.0
+        pre_admin_js_bundle,
         output='gen/packed_admin.js'
     )
 

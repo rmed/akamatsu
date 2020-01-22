@@ -306,12 +306,12 @@ Would render a link to the next page taking into account search arguments, sorti
 #}
 {% macro render_pagination(pagination) %}
     <nav class="pagination is-centered" role="navigation" aria-label="pagination" data-target="{{ target }}">
-        <a {% if pagination.has_prev %}href="{{ url_for_self(page=pagination.page-1) }}"{% else %}disabled{% endif %} class="pagination-previous">
+        <a {% if pagination.has_prev %}href="{{ url_for_self(page=pagination.page-1, sort=kwargs['sort'], order=kwargs['order']) }}"{% else %}disabled{% endif %} class="pagination-previous">
             <span class="icon"><i class="fas fa-chevron-left"></i></span>
             <span>{{ _('Previous') }}</span>
         </a>
 
-        <a {% if pagination.has_next %}href="{{ url_for_self(page=pagination.page+1) }}"{% else %}disabled{% endif %} class="pagination-next">
+        <a {% if pagination.has_next %}href="{{ url_for_self(page=pagination.page+1, sort=kwargs['sort'], order=kwargs['order']) }}"{% else %}disabled{% endif %} class="pagination-next">
             <span>{{ _('Next') }}</span>
             <span class="icon"><i class="fas fa-chevron-right"></i></span>
         </a>
@@ -321,7 +321,7 @@ Would render a link to the next page taking into account search arguments, sorti
                 <li>
                     {% if page %}
                         {% if page != pagination.page %}
-                            <a href="{{ url_for_self(page=page) }}"class="pagination-link">{{ page }}</a>
+                            <a href="{{ url_for_self(page=page, sort=kwargs['sort'], order=kwargs['order']) }}"class="pagination-link">{{ page }}</a>
                         {% else %}
                             <a class="pagination-link is-current">{{ page }}</a>
                         {% endif %}
@@ -333,4 +333,15 @@ Would render a link to the next page taking into account search arguments, sorti
             {% endfor %}
         </ul>
     </nav>
+{% endmacro %}
+
+{# Sortable table headers #}
+{% macro sort_order(key, sort='date', order='desc') %}
+    {% if key == sort %}
+        {% if order == 'asc' %}
+            <span class="icon"><i class="fas fa-chevron-up"></i></span>
+        {% else %}
+            <span class="icon"><i class="fas fa-chevron-down"></i></span>
+        {% endif %}
+    {% endif %}
 {% endmacro %}

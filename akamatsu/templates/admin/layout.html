@@ -41,9 +41,15 @@
                     </a>
                 </li>
                 <li>
-                    <a href="" {% if request.endpoint == 'admin.post_index' %}class="is-active"{% endif %}>
+                    <a href="{{ url_for('admin.post_index') }}" {% if request.endpoint == 'admin.post_index' %}class="is-active"{% endif %}>
                         <span class="icon"><i class="fas fa-clipboard-list"></i></span>
                         <span>{{ _('Manage posts') }}</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="" {% if request.endpoint == 'admin.post_ghosts' %}class="is-active"{% endif %}>
+                        <span class="icon"><i class="fas fa-ghost"></i></span>
+                        <span>{{ _('Ghost posts') }}</span>
                     </a>
                 </li>
             </ul>
@@ -62,6 +68,12 @@
                     <a href="" {% if request.endpoint == 'admin.page_index' %}class="is-active"{% endif %}>
                         <span class="icon"><i class="fas fa-layer-group"></i></span>
                         <span>{{ _('Manage pages') }}</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="" {% if request.endpoint == 'admin.page_ghosts' %}class="is-active"{% endif %}>
+                        <span class="icon"><i class="fas fa-ghost"></i></span>
+                        <span>{{ _('Ghost pages') }}</span>
                     </a>
                 </li>
             </ul>

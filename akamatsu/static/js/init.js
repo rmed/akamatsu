@@ -3,9 +3,6 @@
  * be imported last.
  */
 $(document).ready(function() {
-    // Bulma TagsInput
-    bulmaTagsinput.attach();
-
     // Toggle burger
     $('.navbar-burger').click(toggleBurger);
 

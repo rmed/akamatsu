@@ -212,3 +212,8 @@ body {
         }
     }
 }
+
+.sortable-header {
+    cursor: pointer;
+    text-decoration: underline dotted $dark;
+}
