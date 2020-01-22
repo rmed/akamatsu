@@ -250,10 +250,7 @@ class Post(BaseModel):
     last_updated = db.Column(db.DateTime)
 
     # Relationships
-    ghosted = db.relationship(
-        'Post',
-        primaryjoin='Post.ghosted_id == Post.id'
-    )
+    ghosted = db.relationship('Post', remote_side=[id])
 
     authors = db.relationship(
         'User', secondary='user_posts',

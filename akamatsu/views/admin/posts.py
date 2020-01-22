@@ -32,6 +32,7 @@ from flask import current_app, flash, redirect, render_template, request, \
 from flask_babel import _
 from flask_login import current_user, fresh_login_required, login_required
 from sqlalchemy.exc import IntegrityError
+from sqlalchemy.orm import aliased
 
 from akamatsu import db
 from akamatsu.models import user_posts, Post, User
@@ -54,14 +55,15 @@ def post_index():
     sort_key = request.args.get('sort')
     order_dir = request.args.get('order')
 
-    sort_key, order_dir, ordering = _sort_posts(sort_key, order_dir)
-
     # Users can only see posts in which they have participated
     # (unless they are administrators)
     posts = (
         Post.query
-        .order_by(ordering)
+        .filter(Post.ghosted_id == None)
     )
+
+    sort_key, order_dir, posts = _sort_posts(posts, sort_key, order_dir)
+
 
     if current_user.has_role('blogger'):
         posts = (
@@ -90,6 +92,54 @@ def post_index():
     )
 
 
+@bp_admin.route('/post-ghosts')
+@allowed_roles('administrator', 'blogger')
+def post_ghosts():
+    """Display a paginated list of post ghosts.
+
+    If this endpoint is called from AJAX, only the requested page contents
+    are returned.
+    """
+    page = request.args.get('page', 1, int)
+    sort_key = request.args.get('sort')
+    order_dir = request.args.get('order')
+
+    # Users can only see posts in which they have participated
+    # (unless they are administrators)
+    posts = (
+        Post.query
+        .filter(Post.ghosted_id != None)
+    )
+
+    sort_key, order_dir, posts = _sort_posts(posts, sort_key, order_dir)
+
+    if current_user.has_role('blogger'):
+        posts = (
+            posts
+            .join(user_posts)
+            .join(User)
+            .filter(User.id == current_user.id)
+        )
+
+    posts = posts.paginate(page, current_app.config['PAGE_ITEMS'], False)
+
+    if request.is_xhr:
+        # AJAX request
+        return render_template(
+            'admin/posts/partial/ghosts_page.html',
+            posts=posts,
+            sort_key=sort_key,
+            order_dir=order_dir
+        )
+
+    return render_template(
+        'admin/posts/ghost_index.html',
+        posts=posts,
+        sort_key=sort_key,
+        order_dir=order_dir
+    )
+
+
 @bp_admin.route('/posts/new', methods=['GET', 'POST'])
 @allowed_roles('administrator', 'blogger')
 def new_post():
@@ -104,50 +154,60 @@ def edit_post(hashid):
     pass
 
 
-def _sort_posts(key, order):
+def _sort_posts(query, key, order):
     """Sort posts according to the specified key and order.
 
     Args:
-        args(dict): Arguments from the `request` object.
+        query: Original query to order.
+        key (str): Key to order by.
+        order (str): Order direction ("asc" or "desc").
 
     Returns:
-        Tuple with key, order and ordering to apply in query `order_by()`.
+        Tuple with key, order and ordered query.
     """
-    result = None
+    ordering = None
 
     if key == 'title':
         # Order by title
-        result = Post.title
+        ordering = Post.title
 
     elif key == 'slug':
         # Order by slug
-        result = Post.slug
+        ordering = Post.slug
 
     elif key == 'published':
         # Order by published state
-        result = Post.is_published
+        ordering = Post.is_published
 
     elif key == 'comments':
         # Order by comments state
-        result = Post.comments_enabled
+        ordering = Post.comments_enabled
 
     elif key == 'ghost':
         # Order by ghosted title
-        result = Post.ghosted.title
+        alias = aliased(Post)
+        query = (
+            query
+            .join(alias, Post.ghosted)
+        )
+
+        if order == 'asc':
+            return key, order, query.order_by(alias.title)
+
+        order = 'desc'
+        return key, order, query.order_by(alias.title.desc())
 
     elif key == 'date':
         # Order by date
-        result = Post.last_updated
+        ordering = Post.last_updated
 
     else:
         # Order by date and don't set ordering
-        result = Post.last_updated.desc()
-
-        return None, None, result
+        return None, None, query.order_by(Post.last_updated.desc())
 
     # Ordering
     if order == 'asc':
-        return key, order, result
+        return key, order, query.order_by(ordering)
 
     order = 'desc'
-    return key, order, result.desc()
+    return key, order, query.order_by(ordering.desc())

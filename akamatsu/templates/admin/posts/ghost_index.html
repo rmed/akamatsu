@@ -1,0 +1,16 @@
+{% extends "admin/layout.html" %}
+
+{% block title %}{{ _('Manage post ghosts') }}{% endblock %}
+
+{% block breadcrumbs %}
+<li><a href="{{ url_for('admin.home') }}">{{ _('Dashboard') }}</a></li>
+<li class="is-active"><a href="#" aria-current="page">{{ _('Manage post ghosts') }}</a></li>
+{% endblock %}
+
+{% block content %}
+<h3 class="subtitle is-3">{{ _('My post ghosts') }}</h3>
+
+<div class="box page-items">
+    {% include "admin/posts/partial/ghosts_page.html" %}
+</div>
+{% endblock %}

@@ -1,0 +1,67 @@
+{# Partial to render a single post page #}
+{% import "macros.html" as macros %}
+
+<div class="table-container">
+    <table class="table is-striped is-hoverable is-fullwidth">
+        <thead>
+            <tr>
+                <th class="sortable-header" data-sort="title" {% if sort_key == 'title' %}data-order="{{ order_dir }}"{% endif %}>
+                    {{ macros.sort_order('title', sort_key, order_dir) }}
+                    <span>{{ _('Title') }}</span>
+                </th>
+                <th class="sortable-header" data-sort="ghost" {% if sort_key == 'ghost' %}data-order="{{ order_dir }}"{% endif %}>
+                    {{ macros.sort_order('ghost', sort_key, order_dir) }}
+                    <span>{{ _('Ghosted post') }}</span>
+                </th>
+                <th class="sortable-header" data-sort="slug" {% if sort_key == 'slug' %}data-order="{{ order_dir }}"{% endif %}>
+                    {{ macros.sort_order('slug', sort_key, order_dir) }}
+                    <span>{{ _('Slug') }}</span>
+                </th>
+                <th class="has-text-centered sortable-header" data-sort="published" {% if sort_key == 'published' %}data-order="{{ order_dir }}"{% endif %}>
+                    <abbr title="{{ _('Published') }}">
+                        {{ macros.sort_order('published', sort_key, order_dir) }}
+                        <span class="icon"><i class="fas fa-print"></i></span>
+                    </abbr>
+                </th>
+                <th class="has-text-centered sortable-header" data-sort="date" {% if sort_key == 'date' %}data-order="{{ order_dir }}"{% endif %}>
+                    {{ macros.sort_order('date', sort_key, order_dir) }}
+                    <span>{{ _('Date') }}</span>
+                </th>
+                <th class="has-text-centered">{{ _('Actions') }}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for post in posts.items %}
+                <tr>
+                    <td>{{ post.title }}</td>
+                    <td>{{ post.ghosted.title }}</td>
+                    <td>{{ post.slug }}</td>
+                    <td class="has-text-centered">
+                        <span class="icon">
+                            {% if post.is_published %}
+                                <i class="fas fa-check-circle"></i>
+                            {% else %}
+                                <i class="fas fa-times"></i>
+                            {% endif %}
+                        </span>
+                    </td>
+                    <td class="has-text-centered">{{ post.last_updated|datetime }}</td>
+                    <td>
+                        <div class="buttons has-addons is-centered">
+                            <a href="{{ url_for('admin.edit_post', hashid=post.hashid) }}" class="button">
+                                <span class="icon"><i class="fas fa-edit"></i></span>
+                                <span>{{ _('Edit') }}</span>
+                            </a>
+                            <a class="button">
+                                <span class="icon"><i class="fas fa-trash"></i></span>
+                                <span>{{ _('Delete') }}</span>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{{ macros.render_pagination(posts, sort=sort_key, order=order_dir) }}

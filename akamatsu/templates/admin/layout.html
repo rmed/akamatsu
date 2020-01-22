@@ -47,7 +47,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="" {% if request.endpoint == 'admin.post_ghosts' %}class="is-active"{% endif %}>
+                    <a href="{{ url_for('admin.post_ghosts') }}" {% if request.endpoint == 'admin.post_ghosts' %}class="is-active"{% endif %}>
                         <span class="icon"><i class="fas fa-ghost"></i></span>
                         <span>{{ _('Ghost posts') }}</span>
                     </a>
