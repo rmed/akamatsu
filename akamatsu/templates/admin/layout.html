@@ -35,7 +35,7 @@
             <p class="menu-label">{{ _('Blog') }}</p>
             <ul class="menu-list">
                 <li>
-                    <a href="" {% if request.endpoint == 'admin.new_post' %}class="is-active"{% endif %}>
+                    <a href="{{ url_for('admin.new_post') }}" {% if request.endpoint == 'admin.new_post' %}class="is-active"{% endif %}>
                         <span class="icon"><i class="fas fa-plus"></i></span>
                         <span>{{ _('New post') }}</span>
                     </a>

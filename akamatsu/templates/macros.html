@@ -1,5 +1,5 @@
 {# Renders an input field #}
-{% macro render_input(field, label="", placeholder="", size="", icon="", label_icon="") %}
+{% macro render_input(field, label="", placeholder="", size="", icon="", label_icon="", type="") %}
     {% if not label %}
         {% set label = field.label.text %}
     {% endif %}
@@ -21,7 +21,11 @@
 
         {% if icon %}
             <div class="control has-icons-left">
-                {{ field(class_="input "+size) }}
+                {% if type %}
+                    {{ field(class_="input "+size, type=type) }}
+                {% else %}
+                    {{ field(class_="input "+size) }}
+                {% endif %}
 
                 <span class="icon is-small is-left">
                     <i class="fas fa-{{ icon }}"></i>
@@ -30,21 +34,36 @@
 
         {% else %}
             <div class="control">
-                {{ field(class_="input "+size) }}
+                {% if type %}
+                    {{ field(class_="input "+size, type=type) }}
+                {% else %}
+                    {{ field(class_="input "+size) }}
+                {% endif %}
             </div>
         {% endif %}
     </div>
 {% endmacro %}
 
 
-{# Renders a date field #}
-{% macro render_date_input(field, label="", placeholder="", size="", icon="", label_icon="") %}
+{# Renders a date field
+
+Available calendar types:
+- datetime
+- date
+- time
+#}
+{% macro render_date_input(field, calendar_type='datetime', label="", label_icon="") %}
     {% if not label %}
         {% set label = field.label.text %}
     {% endif %}
 
-    {% if size %}
-        {% set size = "is-"+size %}
+    {% set cal_class = 'calendar-datetime' %}
+
+    {% if calendar_type == 'date' %}
+        {% set cal_class = 'calendar-date' %}
+
+    {% elif calendar_type == 'time' %}
+        {% set cal_class = 'time' %}
     {% endif %}
 
     <div class="field">
@@ -58,20 +77,9 @@
             </label>
         {% endif %}
 
-        {% if icon %}
-            <div class="control has-icons-left">
-                {{ field(class_="input "+size, type="date", pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}") }}
-
-                <span class="icon is-small is-left">
-                    <i class="fas fa-{{ icon }}"></i>
-                </span>
-            </div>
-
-        {% else %}
-            <div class="control">
-                {{ field(class_="input "+size, type="date", pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}") }}
-            </div>
-        {% endif %}
+        <div class="control">
+            {{ field(class_="input " + cal_class, type="text") }}
+        </div>
     </div>
 {% endmacro %}
 
@@ -214,7 +222,7 @@
 
 
 {# Renders a select field #}
-{% macro render_select(field, label="", size="", icon="", label_icon="") %}
+{% macro render_select(field, label="", size="", icon="", label_icon="", multiple=false, multiple_size=5) %}
     {% if not label %}
         {% set label = field.label.text %}
     {% endif %}
@@ -235,13 +243,19 @@
         {% endif %}
 
         <div class="control {% if icon %}has-icons-left{% endif %}">
-            <div class="select {{ size }}">
-                {{ field(default_='es') }}
-            </div>
+            {% if multiple %}
+                <div class="select is-fullwidth is-multiple {{ size }}">
+                    {{ field(size=multiple_size) }}
+                </div>
+            {% else %}
+                <div class="select is-fullwidth {{ size }}">
+                    {{ field() }}
+                </div>
+            {% endif %}
 
             {% if icon %}
                 <div class="icon is-left">
-                    <i class="fas fa-globe"></i>
+                    <i class="fas fa-{{ icon }}"></i>
                 </div>
             {% endif %}
         </div>

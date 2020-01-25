@@ -27,10 +27,13 @@
 
 """This file contains utility code."""
 
+import datetime
+
 from functools import wraps
 from urllib.parse import urlparse, urljoin
 
 import misaka
+import pytz
 
 from flask import current_app, flash, redirect, request, url_for
 from flask_babel import _
@@ -241,6 +244,34 @@ def allowed_roles(*roles):
             return f(*args, **kwargs)
         return decorator
     return wrapper
+
+
+def datetime_to_utc(original):
+    """Converts a datetime object to UTC
+
+    This is done by taking into account the timezone configured in the
+    application. If no valid timezone is specified, defaults to UTC.
+
+    Args:
+        value (datetime): Datetime object to convert.
+
+    Returns:
+        Converted datetime object.
+    """
+    app_tz = current_app.config.get('TIMEZONE', 'UTC')
+
+    if not app_tz in pytz.common_timezones:
+        app_tz = 'UTC'
+
+    tz = pytz.timezone(app_tz)
+
+    local = tz.localize(original)
+    utc_dt = local.astimezone(pytz.utc)
+
+    print(utc_dt)
+
+    return utc_dt
+
 
 def is_safe_url(target):
     """Check whether the target is safe for redirection.

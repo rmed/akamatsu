@@ -140,7 +140,7 @@ def format_datetime(value):
 
     return babel_dates.format_datetime(
         value,
-        'yyyy-MM-dd HH:mm:ss z',
+        'yyyy-MM-dd HH:mm z',
         tzinfo=tz
     )
 
@@ -275,6 +275,7 @@ def init_app():
 
     pre_admin_js_bundle = Bundle(
         'js/vendor/bulma-tagsinput.min.js', # 1.0.11
+        'js/vendor/bulma-calendar.min.js', # 6.0.3
         'js/admin/navigation.js',
         'js/admin/init.js',
         filters='rjsmin'

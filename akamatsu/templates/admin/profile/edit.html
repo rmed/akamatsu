@@ -64,7 +64,7 @@
         {% endif %}
 
         {# Bio #}
-        {{ macros.render_input(form.personal_bio) }}
+        {{ macros.render_textarea(form.personal_bio) }}
 
         {% if form.errors.personal_bio %}
             {{ macros.render_messages(form.errors.personal_bio, size='') }}

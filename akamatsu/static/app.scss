@@ -5,6 +5,7 @@
 @import "sass/vendor/bulma/bulma.sass";
 
 // Bulma extensions
+@import "sass/vendor/bulma-extensions/bulma-calendar/index.sass";
 @import "sass/vendor/bulma-extensions/bulma-divider.sass";
 @import "sass/vendor/bulma-extensions/bulma-switch.sass";
 @import "sass/vendor/bulma-extensions/bulma-tagsinput.sass";
@@ -39,6 +40,10 @@ html {
 body {
     background-color: #FBFBFB;
     height: 100%;
+}
+
+.is-fullwidth {
+    width: 100%;
 }
 
 // Margin helpers

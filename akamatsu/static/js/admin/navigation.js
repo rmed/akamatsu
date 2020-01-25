@@ -30,6 +30,7 @@ function loadEasyMDE() {
         element: $textarea[0],
         spellChecker: false,
         previewClass: ['editor-preview', 'content'],
+        forceSync: true,
         tabSize: 4,
         toolbar: [
             'bold',

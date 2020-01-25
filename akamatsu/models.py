@@ -255,7 +255,7 @@ class Post(BaseModel):
     authors = db.relationship(
         'User', secondary='user_posts',
         backref=db.backref('posts', lazy='dynamic'),
-        cascade='delete, save-update', collection_class=set
+        cascade='delete, save-update', collection_class=list
     )
 
     tags = db.relationship(
@@ -270,6 +270,9 @@ class Post(BaseModel):
         'name',
         creator=lambda n: Tag.get_or_new(n)
     )
+
+    def __str__(self):
+        return self.title
 
 
 class Tag(db.Model):
@@ -377,6 +380,9 @@ class User(BaseModel, UserMixin):
         'name',
         creator=lambda n: Role.get_role(n)
     )
+
+    def __str__(self):
+        return '[{}] {} {}'.format(self.username, self.first_name, self.last_name)
 
     def has_role(self, role):
         """Check whether the user has the specified role.
