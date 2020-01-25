@@ -3,11 +3,11 @@
 
 
 {% block title %}
-    {% if request.endpoint == 'admin.new_post' %}
-        {{ _('New post') }}
-    {% elif request.endpoint == 'admin.edit_post' %}
-        {{ post.title }}
-    {% endif %}
+{% if request.endpoint == 'admin.new_post' %}
+    {{ _('New post') }}
+{% elif request.endpoint == 'admin.edit_post' %}
+    {{ _('Edit post: %(title)s', title=post.title) }}
+{% endif %}
 {% endblock %}
 
 {% block breadcrumbs %}
@@ -59,6 +59,12 @@
                 {% endif %}
             </div>
             <div class="column">
+                {% if request.endpoint == 'admin.edit_post' and not post.authors %}
+                    <p class="notification is-warning">
+                        {{ _('This post has no authors!')}}
+                    </p>
+                {% endif %}
+
                 {# Authors #}
                 {{ macros.render_select(form.authors, multiple=true) }}
 

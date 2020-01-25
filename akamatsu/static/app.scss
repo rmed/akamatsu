@@ -149,7 +149,7 @@ body {
     position: absolute;
     top: 0;
     width: $admin-sidebar-width;
-    z-index: 2;
+    z-index: 3;
 
     @include mobile {
         left: -$admin-sidebar-width;

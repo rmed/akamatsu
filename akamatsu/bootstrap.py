@@ -118,5 +118,7 @@ DEV_CONFIG = {
 
     # Footer
     'FOOTER_LEFT': 'Left footer',
-    'FOOTER_RIGHT': 'Right footer'
+    'FOOTER_RIGHT': 'Right footer',
+
+    'TIMEZONE': 'Europe/Madrid'
 }

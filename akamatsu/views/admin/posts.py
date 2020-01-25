@@ -40,7 +40,7 @@ from akamatsu import db
 from akamatsu.models import user_posts, Post, User
 from akamatsu.views.admin import bp_admin
 from akamatsu.forms import PostForm
-from akamatsu.util import allowed_roles, datetime_to_utc
+from akamatsu.util import allowed_roles, datetime_to_utc, utc_to_local_tz
 
 
 @bp_admin.route('/posts')
@@ -190,8 +190,6 @@ def new_post():
         # Adjust timezone
         new_post.last_updated = datetime_to_utc(new_post.last_updated)
 
-        print(new_post.last_updated)
-
         # Current user is always an author
         if current_user not in new_post.authors:
             new_post.authors.append(current_user)
@@ -237,7 +235,109 @@ def new_post():
 @allowed_roles('administrator', 'blogger')
 def edit_post(hashid):
     """Create a new post."""
-    pass
+    post = Post.get_by_hashid(hashid)
+
+    if not post:
+        flash(_('Could not find post'), 'error')
+
+        return redirect(url_for('admin.post_index'))
+
+    if not current_user.has_role('administrator'):
+        if current_user not in post.authors:
+            flash(_('You cannot edit that post'), 'warning')
+
+            return redirect(url_for('admin.post_index'))
+
+    form = PostForm(obj=post)
+
+    # Posts available to ghost
+    if current_user.has_role('administrator'):
+        # All posts
+        form.ghosted.query = (
+            Post.query
+            .filter(Post.ghosted_id == None)
+            .order_by(Post.title)
+        )
+
+    elif current_user.has_role('blogger'):
+        # Own posts
+        form.ghosted.query = (
+            Post.query
+            .join(user_posts)
+            .join(User)
+            .filter(Post.ghosted_id == None)
+            .filter(User.id == current_user.id)
+        )
+
+    # Authors
+    form.authors.query = (
+        User.query
+        .filter_by(is_active=True)
+        .filter(User.id != current_user.id)
+        .order_by(User.username)
+    )
+
+    if form.validate_on_submit():
+        # Slug
+        if not form.slug.data:
+            form.slug.data = slugify.slugify(
+                form.title.data,
+                to_lower=True,
+                max_length=512
+        )
+
+        form.populate_obj(post)
+
+        # Adjust timezone
+        post.last_updated = datetime_to_utc(post.last_updated)
+
+        # Current user is always an author
+        if current_user not in post.authors:
+            post.authors.append(current_user)
+
+        # Add tags
+        if form.tag_list.data:
+            post.tag_names = set(
+                n.strip() for n in form.tag_list.data.split(',')
+            )
+
+        try:
+            correct = True
+            db.session.commit()
+
+            flash(_('Post updated correctly'), 'success')
+
+            return redirect(url_for('admin.edit_post', hashid=post.hashid))
+
+        except IntegrityError:
+            # Slug already exists
+            correct = False
+            form.slug.email.append(_('Post slug is already in use'))
+
+            return render_template('admin/posts/edit.html', form=form, post=post)
+
+        except Exception:
+            # Catch anything unknown
+            correct = False
+
+            flash(_('Failed to create post, contact an administrator'), 'error')
+
+            return render_template('admin/posts/edit.html', form=form, post=post)
+
+        finally:
+            if not correct:
+                db.session.rollback()
+
+
+    # First load checks
+    if request.method == 'GET':
+        # Date
+        form.last_updated.data = utc_to_local_tz(form.last_updated.data)
+
+        # Tags
+        form.tag_list.data = ','.join(post.tag_names)
+
+    return render_template('admin/posts/edit.html', form=form, post=post)
 
 
 def _sort_posts(query, key, order):

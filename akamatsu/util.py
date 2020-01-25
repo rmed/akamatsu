@@ -268,9 +268,30 @@ def datetime_to_utc(original):
     local = tz.localize(original)
     utc_dt = local.astimezone(pytz.utc)
 
-    print(utc_dt)
-
     return utc_dt
+
+
+def utc_to_local_tz(original):
+    """Converts a UTC datetime object to application timezone.
+
+    This is done by taking into account the timezone configured in the
+    application. If no valid timezone is specified, defaults to UTC.
+
+    Args:
+        value (datetime): Datetime object to convert.
+
+    Returns:
+        Converted datetime object.
+    """
+    app_tz = current_app.config.get('TIMEZONE', 'UTC')
+
+    if not app_tz in pytz.common_timezones:
+        app_tz = 'UTC'
+
+    utc = pytz.utc.localize(original)
+    local = utc.astimezone(pytz.timezone(app_tz))
+
+    return local
 
 
 def is_safe_url(target):

@@ -1,7 +1,15 @@
 {% import "macros.html" as macros %}
 {% extends "layout.html" %}
 
-{% block title %}{{ _('Blog index') }}{% endblock %}
+{% block title %}
+{% if request.endpoint == 'blog.index'%}
+    {{ _('Blog index') }}
+{% elif request.endpoint == 'blog.by_user' %}
+    {{ _('Posts by: %(username)s', username=username) }}
+{% elif request.endpoint == 'blog.tagged' %}
+    {{ _('Posts tagged "%(tag)s"', tag=tag) }}
+{% endif %}
+{% endblock %}
 
 {# Include blog atom feed #}
 {% block head_extend %}
