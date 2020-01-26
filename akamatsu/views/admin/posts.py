@@ -212,8 +212,9 @@ def new_post():
 
         except IntegrityError:
             # Slug already exists
-            correct = False
-            form.slug.email.append(_('Post slug is already in use'))
+            # Need to manually rollback here
+            db.session.rollback()
+            form.slug.errors.append(_('Post slug is already in use'))
 
             return render_template('admin/posts/edit.html', form=form)
 
@@ -319,8 +320,9 @@ def edit_post(hashid):
 
         except IntegrityError:
             # Slug already exists
-            correct = False
-            form.slug.email.append(_('Post slug is already in use'))
+            # Need to manually rollback here
+            db.session.rollback()
+            form.slug.errors.append(_('Post slug is already in use'))
 
             return render_template('admin/posts/edit.html', form=form, post=post)
 
@@ -328,7 +330,7 @@ def edit_post(hashid):
             # Catch anything unknown
             correct = False
 
-            flash(_('Failed to create post, contact an administrator'), 'error')
+            flash(_('Failed to update post, contact an administrator'), 'error')
 
             return render_template('admin/posts/edit.html', form=form, post=post)
 
@@ -355,6 +357,8 @@ def delete_post(hashid):
 
     Administrators can delete any post, while regular users can only delete
     posts in which they have participated.
+
+    Usual flow is by calling this endpoint from AJAX (button in post listing).
 
     Args:
         hashid (str): HashID of the post.

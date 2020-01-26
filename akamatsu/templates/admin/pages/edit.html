@@ -1,0 +1,116 @@
+{% import "macros.html" as macros %}
+{% extends "admin/layout.html" %}
+
+
+{% block title %}
+{% if request.endpoint == 'admin.new_page' %}
+    {{ _('New page') }}
+{% elif request.endpoint == 'admin.edit_page' %}
+    {{ _('Edit page: %(title)s', title=page.title) }}
+{% endif %}
+{% endblock %}
+
+{% block breadcrumbs %}
+<li><a href="{{ url_for('admin.home') }}">{{ _('Dashboard') }}</a></li>
+<li><a href="{{ url_for('admin.page_index') }}">{{ _('Manage pages') }}</a></li>
+{% if request.endpoint == 'admin.new_page' %}
+    <li class="is-active"><a href="#" aria-current="page">{{ _('New page') }}</a></li>
+{% elif request.endpoint == 'admin.edit_page' %}
+    <li class="is-active"><a href="#" aria-current="page">{{ page.title[:50] + '...' if page.title|length > 50 else page.title  }}</a></li>
+{% endif %}
+{% endblock %}
+
+{% block content %}
+{% if request.endpoint == 'admin.new_page' %}
+    <h3 class="subtitle is-3">{{ _('New page') }}</h3>
+{% elif request.endpoint == 'admin.edit_page' %}
+    <h3 class="subtitle is-3">{{ _('Edit page') }}</h3>
+{% endif %}
+
+<div class="box">
+    <form action="" method="POST" role="form">
+        {{ form.hidden_tag() }}
+
+        <div class="columns">
+            <div class="column is-3 is-offset-9 has-text-right">
+                {# Published #}
+                {{ macros.render_switch(form.is_published) }}
+
+                {% if form.errors.is_published %}
+                    {{ macros.render_messages(form.errors.is_published, size='') }}
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="columns">
+            <div class="column is-9">
+                {# Title #}
+                {{ macros.render_input(form.title) }}
+
+                {% if form.errors.title %}
+                    {{ macros.render_messages(form.errors.title, size='') }}
+                {% endif %}
+            </div>
+            <div class="column">
+                {# Mini #}
+                {{ macros.render_input(form.mini) }}
+
+                {% if form.errors.mini %}
+                    {{ macros.render_messages(form.errors.mini, size='') }}
+                {% endif %}
+            </div>
+        </div>
+
+        {# Route #}
+        {{ macros.render_input(form.route) }}
+
+        {% if form.errors.route %}
+            {{ macros.render_messages(form.errors.route, size='') }}
+        {% endif %}
+
+        {# Custom head #}
+        {{ macros.render_textarea(form.custom_head) }}
+
+        {% if form.errors.custom_head %}
+            {{ macros.render_messages(form.errors.custom_head, size='') }}
+        {% endif %}
+
+        {# Content #}
+        {{ macros.render_textarea(form.content) }}
+
+        {% if form.errors.content %}
+            {{ macros.render_messages(form.errors.content, size='') }}
+        {% endif %}
+
+        {# Enable comments #}
+        {{ macros.render_switch(form.comments_enabled) }}
+
+        {% if form.errors.comments_enabled %}
+            {{ macros.render_messages(form.errors.comments_enabled, size='') }}
+        {% endif %}
+
+        <div class="columns">
+            <div class="column is-4">
+                {# Ghosted #}
+                {{ macros.render_select(form.ghosted, icon="ghost") }}
+
+                {% if form.errors.ghosted %}
+                    {{ macros.render_messages(form.errors.ghosted, size='') }}
+                {% endif %}
+            </div>
+        </div>
+
+        {# Last updated #}
+        {{ macros.render_date_input(form.last_updated) }}
+
+        {% if form.errors.last_updated %}
+            {{ macros.render_messages(form.errors.last_updated, size='') }}
+        {% endif %}
+
+        <p class="has-margin-bottom">{{ _('Application timezone: %(timezone)s', timezone=config.get('TIMEZONE', 'UTC')) }}
+
+        {# Submit #}
+        {{ macros.render_submit(form.submit) }}
+    </form>
+</div>
+{% endblock %}

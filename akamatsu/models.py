@@ -211,10 +211,15 @@ class Page(BaseModel):
     last_updated = db.Column(db.DateTime)
 
     # Relationships
-    ghosted = db.relationship(
+    ghosts = db.relationship(
         'Page',
-        primaryjoin='Page.ghosted_id == Page.id',
+        cascade='all',
+        backref=db.backref('ghosted', remote_side='Page.id'),
+        collection_class=set
     )
+
+    def __str__(self):
+        return self.title
 
 
 class Post(BaseModel):

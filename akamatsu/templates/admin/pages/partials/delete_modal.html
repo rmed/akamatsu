@@ -1,0 +1,26 @@
+{# Partial view that shows a confirmation dialog when deleting a page #}
+{# This partial is copied to a '.modal' container when needed #}
+<div id="page-delete-modal" class="modal-card">
+    <header class="modal-card-head">
+        <p class="modal-card-title">{{ _('Delete page') }}</p>
+        <button class="delete" aria-label="close"></button>
+    </header>
+
+    <section class="modal-card-body">
+        <h3 class="subtitle is-3">{{ _('Are you sure you want to delete the following page?') }}</h3>
+        <h4 class="subtitle is-4">{{ page.title }}</h4>
+
+        <p>{{ _('Note that this will also delete any associated page ghosts') }}</p>
+    </section>
+
+    <footer class="modal-card-foot">
+        <a href="{{ url_for('admin.delete_page', hashid=page.hashid) }}" class="button is-danger confirm-action">
+            <span class="icon"><i class="fas fa-trash"></i></span>
+            <span>{{ _('Delete') }}</span>
+        </a>
+        <button class="button cancel-action">
+            <span class="icon"><i class="fas fa-times"></i></span>
+            <span>{{ _('Cancel') }}</span>
+        </button>
+    </footer>
+</div>

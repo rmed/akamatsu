@@ -65,19 +65,19 @@
             <p class="menu-label">{{ _('Pages') }}</p>
             <ul class="menu-list">
                 <li>
-                    <a href="" {% if request.endpoint == 'admin.new_page' %}class="is-active"{% endif %}>
+                    <a href="{{ url_for('admin.new_page') }}" {% if request.endpoint == 'admin.new_page' %}class="is-active"{% endif %}>
                         <span class="icon"><i class="fas fa-plus"></i></span>
                         <span>{{ _('New page') }}</span>
                     </a>
                 </li>
                 <li>
-                    <a href="" {% if request.endpoint == 'admin.page_index' %}class="is-active"{% endif %}>
+                    <a href="{{ url_for('admin.page_index') }}" {% if request.endpoint == 'admin.page_index' %}class="is-active"{% endif %}>
                         <span class="icon"><i class="fas fa-layer-group"></i></span>
                         <span>{{ _('Manage pages') }}</span>
                     </a>
                 </li>
                 <li>
-                    <a href="" {% if request.endpoint == 'admin.page_ghosts' %}class="is-active"{% endif %}>
+                    <a href="{{ url_for('admin.page_ghosts') }}" {% if request.endpoint == 'admin.page_ghosts' %}class="is-active"{% endif %}>
                         <span class="icon"><i class="fas fa-ghost"></i></span>
                         <span>{{ _('Ghost pages') }}</span>
                     </a>

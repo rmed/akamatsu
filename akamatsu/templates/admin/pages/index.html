@@ -1,0 +1,29 @@
+{% extends "admin/layout.html" %}
+
+{% set _include_csrf = true %}
+
+{% block title %}{{ _('Manage pages') }}{% endblock %}
+
+{% block breadcrumbs %}
+<li><a href="{{ url_for('admin.home') }}">{{ _('Dashboard') }}</a></li>
+<li class="is-active"><a href="#" aria-current="page">{{ _('Manage pages') }}</a></li>
+{% endblock %}
+
+{% block content %}
+<div class="columns">
+    <div class="column">
+        <h3 class="subtitle is-3">{{ _('Pages') }}</h3>
+    </div>
+
+    <div class="column is-2 has-text-right">
+        <a class="button" href="{{ url_for('admin.new_page') }}">
+            <span class="icon"><i class="fas fa-plus"></i></span>
+            <span>{{ _('New page') }}</span>
+        </a>
+    </div>
+</div>
+
+<div class="box page-items">
+    {% include "admin/pages/partials/pages_page.html" %}
+</div>
+{% endblock %}

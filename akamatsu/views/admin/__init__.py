@@ -43,6 +43,7 @@ def home():
 
 
 # Import subviews
+from akamatsu.views.admin import pages
 from akamatsu.views.admin import posts
 from akamatsu.views.admin import profile
 # from akamatsu.views.admin import blog

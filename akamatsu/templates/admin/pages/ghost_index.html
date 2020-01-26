@@ -1,0 +1,18 @@
+{% extends "admin/layout.html" %}
+
+{% set _include_csrf = true %}
+
+{% block title %}{{ _('Manage page ghosts') }}{% endblock %}
+
+{% block breadcrumbs %}
+<li><a href="{{ url_for('admin.home') }}">{{ _('Dashboard') }}</a></li>
+<li class="is-active"><a href="#" aria-current="page">{{ _('Manage page ghosts') }}</a></li>
+{% endblock %}
+
+{% block content %}
+<h3 class="subtitle is-3">{{ _('Page ghosts') }}</h3>
+
+<div class="box page-items">
+    {% include "admin/pages/partials/ghosts_page.html" %}
+</div>
+{% endblock %}
