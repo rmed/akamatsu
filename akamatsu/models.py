@@ -250,18 +250,23 @@ class Post(BaseModel):
     last_updated = db.Column(db.DateTime)
 
     # Relationships
-    ghosted = db.relationship('Post', remote_side=[id])
+    ghosts = db.relationship(
+        'Post',
+        cascade='all',
+        backref=db.backref('ghosted', remote_side='Post.id'),
+        collection_class=set
+    )
 
     authors = db.relationship(
         'User', secondary='user_posts',
         backref=db.backref('posts', lazy='dynamic'),
-        cascade='delete, save-update', collection_class=list
+        cascade='save-update', collection_class=list
     )
 
     tags = db.relationship(
         'Tag', secondary='post_tags',
         backref=db.backref('posts', lazy='dynamic'),
-        cascade='delete, save-update', collection_class=set
+        cascade='save-update', collection_class=set
     )
 
     # Proxies
@@ -371,7 +376,7 @@ class User(BaseModel, UserMixin):
     roles = db.relationship(
         'Role', secondary='user_roles',
         backref=db.backref('users', lazy='dynamic'),
-        cascade='delete, save-update', collection_class=set
+        cascade='save-update', collection_class=set
     )
 
     # Proxies
