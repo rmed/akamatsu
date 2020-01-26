@@ -1,5 +1,7 @@
 {% extends "admin/layout.html" %}
 
+{% set _include_csrf = true %}
+
 {% block title %}{{ _('Manage post ghosts') }}{% endblock %}
 
 {% block breadcrumbs %}
@@ -11,6 +13,6 @@
 <h3 class="subtitle is-3">{{ _('My post ghosts') }}</h3>
 
 <div class="box page-items">
-    {% include "admin/posts/partial/ghosts_page.html" %}
+    {% include "admin/posts/partials/ghosts_page.html" %}
 </div>
 {% endblock %}

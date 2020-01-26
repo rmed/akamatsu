@@ -51,4 +51,11 @@ $(document).ready(function() {
 
     // EasyMDE
     loadEasyMDE();
+
+    // Confirmation modals
+    $('.delete-item').on(
+        'click',
+        {func: confirmItemDeletion},
+        showConfirmationModal
+    );
 });

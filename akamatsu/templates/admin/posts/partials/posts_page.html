@@ -62,7 +62,7 @@
                                 <span class="icon"><i class="fas fa-edit"></i></span>
                                 <span>{{ _('Edit') }}</span>
                             </a>
-                            <a class="button">
+                            <a href="{{ url_for('admin.delete_post', hashid=post.hashid) }}" class="button delete-item">
                                 <span class="icon"><i class="fas fa-trash"></i></span>
                                 <span>{{ _('Delete') }}</span>
                             </a>

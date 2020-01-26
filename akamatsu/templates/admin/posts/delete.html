@@ -1,0 +1,36 @@
+{% import "macros.html" as macros %}
+{% extends "admin/layout.html" %}
+
+
+{% block title %}{{ _('Delete post') }}{% endblock %}
+
+{% block breadcrumbs %}
+<li><a href="{{ url_for('admin.home') }}">{{ _('Dashboard') }}</a></li>
+<li><a href="{{ url_for('admin.post_index') }}">{{ _('Manage posts') }}</a></li>
+<li><a href="{{ url_for('admin.edit_post', hashid=post.hashid) }}">{{ post.title[:50] + '...' if post.title|length > 50 else post.title  }}</a></li>
+<li class="is-active"><a href="#" aria-current="page">{{ _('Delete') }}</a></li>
+{% endblock %}
+
+{% block content %}
+<h3 class="subtitle is-3">{{ _('Delete post') }}</h3>
+
+<div class="box">
+    <form id="delete-form" action="" method="POST" role="form">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+
+        <h3 class="subtitle is-3">{{ _('Are you sure you want to delete the following post?') }}</h3>
+        <h4 class="subtitle is-4">{{ post.title }}</h4>
+
+        <p>{{ _('Note that this will also delete any associated post ghosts') }}</p>
+
+        <button type="submit" class="button is-danger">
+            <span class="icon"><i class="fas fa-trash"></i></span>
+            <span>{{ _('Delete') }}</span>
+        </button>
+        <a href="{{ url_for('admin.edit_post', hashid=post.hashid) }}" class="button">
+            <span class="icon"><i class="fas fa-times"></i></span>
+            <span>{{ _('Cancel') }}</span>
+        </a>
+    </form>
+</div>
+{% endblock %}

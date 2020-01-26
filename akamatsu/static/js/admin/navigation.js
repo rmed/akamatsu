@@ -148,6 +148,11 @@ function setSortOrder() {
         $container.find('.pagination-link').click(handlePagination);
         $container.find('.dropdown-trigger').click(toggleDropdown);
         $container.find('.sortable-header').click(setSortOrder);
+        $container.find('.delete-item').on(
+            'click',
+            {func: confirmItemDeletion},
+            showConfirmationModal
+        );
     };
 
     var query = {
@@ -203,6 +208,11 @@ function handlePagination(e) {
             $container.find('.pagination-link').click(handlePagination);
             $container.find('.dropdown-trigger').click(toggleDropdown);
             $container.find('.sortable-header').click(setSortOrder);
+            $container.find('.delete-item').on(
+                'click',
+                {func: confirmItemDeletion},
+                showConfirmationModal
+            );
         },
         error: function(xhr, textStatus, errorThrown) {
             console.log('[ERROR] ' + xhr.responseText);
@@ -253,6 +263,11 @@ function handleTableSorting(e) {
             $container.find('.sort-attribute').click(setOrderingAttribute);
             $container.find('.sort-order').click(setOrderingOrder);
             $container.find('.sortable-header').click(handleTableSorting);
+            $container.find('.delete-item').on(
+                'click',
+                {func: confirmItemDeletion},
+                showConfirmationModal
+            );
         },
         error: function(xhr, textStatus, errorThrown) {
             console.log('[ERROR] ' + xhr.responseText);
@@ -260,3 +275,102 @@ function handleTableSorting(e) {
         }
     });
 }
+
+
+/**
+ * Base confirmation modal.
+ *
+ * This method first makes a GET request to get the contents of the modal and
+ * then, if the .modal-confirm button is pressed, it makes a POST request
+ * to its specified link.
+ */
+function showConfirmationModal(e) {
+    // Prevent page reloads
+    e.preventDefault();
+
+    var func = e.data.func;
+    var link = $(this).attr('href');
+
+    if (!link) {
+        // Assume that the link was disabled
+        return;
+    }
+
+    var $modal = $('#global-modal');
+    var $modalContent = $('#global-modal-content');
+
+    // Event handlers
+    var close = function() {
+        $modalContent.html('');
+        $modal.removeClass('is-active');
+    }
+
+    var confirmAction = function(e) {
+        func(e, $(this));
+        close();
+    }
+
+    // Get modal content
+    $.ajax({
+        url: link,
+        type: 'GET',
+        success: function(data) {
+            // Update page
+            $modalContent.html(data);
+
+            $modalContent.find('.delete').click(close);
+            $modalContent.find('.cancel-action').click(close);
+            $modalContent.find('.confirm-action').click(confirmAction);
+
+            $modal.addClass('is-active');
+        },
+        error: function(xhr, textStatus, errorThrown) {
+            console.log('[ERROR] ' + xhr.responseText);
+            showNotification('error', 'ERROR');
+        }
+    });
+}
+
+
+/**
+ * Confirm item deletion.
+ *
+ * This is called after the user has confirmed the deletion through the
+ * appropriate modal.
+ */
+function confirmItemDeletion(e, $item) {
+    // Prevent page reloads
+    e.preventDefault();
+
+    var link = $item.attr('href');
+
+    if (!link) {
+        console.log('[ERROR] Cannot find deletion link');
+        showNotification('error', 'ERROR');
+        return;
+    }
+
+    // Delete recipe
+    $.ajax({
+        url: link,
+        type: 'POST',
+        success: function(data) {
+            // Recipe was deleted, should have received redirect
+            var redirectLink = data['redirect'];
+
+            if (!redirectLink) {
+                console.log('[ERROR] Did not get redirect from server');
+                showNotification('error', 'ERROR');
+                return;
+            }
+
+            // Redirect to the specified URL
+            window.location.replace(redirectLink);
+        },
+        error: function(xhr, textStatus, errorThrown) {
+            console.log('[ERROR] ' + xhr.responseText);
+            showNotification('error', 'ERROR');
+        }
+    });
+}
+

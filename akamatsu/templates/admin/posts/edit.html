@@ -16,7 +16,7 @@
 {% if request.endpoint == 'admin.new_post' %}
     <li class="is-active"><a href="#" aria-current="page">{{ _('New post') }}</a></li>
 {% elif request.endpoint == 'admin.edit_post' %}
-    <li class="is-active"><a href="#" aria-current="page">{{ post.title }}</a></li>
+    <li class="is-active"><a href="#" aria-current="page">{{ post.title[:50] + '...' if post.title|length > 50 else post.title  }}</a></li>
 {% endif %}
 {% endblock %}
 

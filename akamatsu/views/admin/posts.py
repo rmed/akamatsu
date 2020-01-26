@@ -29,12 +29,13 @@
 
 import slugify
 
-from flask import current_app, flash, redirect, render_template, request, \
-        url_for
+from flask import abort, current_app, flash, jsonify, redirect, \
+        render_template, request, url_for
 from flask_babel import _
 from flask_login import current_user, fresh_login_required, login_required
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import aliased
+from wtforms import ValidationError
 
 from akamatsu import db
 from akamatsu.models import user_posts, Post, User
@@ -80,7 +81,7 @@ def post_index():
     if request.is_xhr:
         # AJAX request
         return render_template(
-            'admin/posts/partial/posts_page.html',
+            'admin/posts/partials/posts_page.html',
             posts=posts,
             sort_key=sort_key,
             order_dir=order_dir
@@ -128,7 +129,7 @@ def post_ghosts():
     if request.is_xhr:
         # AJAX request
         return render_template(
-            'admin/posts/partial/ghosts_page.html',
+            'admin/posts/partials/ghosts_page.html',
             posts=posts,
             sort_key=sort_key,
             order_dir=order_dir
@@ -234,7 +235,14 @@ def new_post():
 @bp_admin.route('/posts/<hashid>', methods=['GET', 'POST'])
 @allowed_roles('administrator', 'blogger')
 def edit_post(hashid):
-    """Create a new post."""
+    """Edit an existing post.
+
+    Administrators can edit any post, while regular users can only edit
+    posts in which they have participated.
+
+    Args:
+        hashid (str): HashID of the post.
+    """
     post = Post.get_by_hashid(hashid)
 
     if not post:
@@ -338,6 +346,87 @@ def edit_post(hashid):
         form.tag_list.data = ','.join(post.tag_names)
 
     return render_template('admin/posts/edit.html', form=form, post=post)
+
+
+@bp_admin.route('/posts/<hashid>/delete', methods=['GET', 'POST'])
+@allowed_roles('administrator', 'blogger')
+def delete_post(hashid):
+    """Delete a post.
+
+    Administrators can delete any post, while regular users can only delete
+    posts in which they have participated.
+
+    Args:
+        hashid (str): HashID of the post.
+    """
+    post = Post.get_by_hashid(hashid)
+
+    if not post:
+        flash(_('Could not find post'), 'error')
+
+        return redirect(url_for('admin.post_index'))
+
+    if not current_user.has_role('administrator'):
+        if current_user not in post.authors:
+            flash(_('You cannot delete that post'), 'warning')
+
+            return redirect(url_for('admin.post_index'))
+
+    if request.method == 'POST':
+        # Delete post
+        try:
+            correct = True
+            db.session.delete(post)
+            db.session.commit()
+
+            flash(_('Post "%(title)s" deleted', title=post.title), 'success')
+
+            # AJAX must be notified of the redirect
+            dest = 'admin.post_ghosts' if post.ghosted_id else 'admin.post_index'
+
+            if request.is_xhr:
+                return jsonify({'redirect': url_for(dest)}), 200
+
+            return redirect(url_for(dest))
+
+        except ValidationError as e:
+            # CSRF invalid
+            correct = False
+            current_app.logger.error(e)
+
+            flash(_('Failed to delete post, invalid CSRF token received'), 'error')
+
+        except Exception as e:
+            # Catch anything unknown
+            correct = False
+            current_app.logger.error(e)
+
+            flash(_('Failed to delete post, unknown error encountered'), 'error')
+
+        finally:
+            if not correct:
+                # Cleanup and show error
+                db.session.rollback()
+
+                # Check AJAX
+                if request.is_xhr:
+                    abort(400)
+
+                return redirect(
+                    url_for('admin.edit_post', hashid=post.hashid)
+                )
+
+    # Check AJAX
+    if request.is_xhr:
+        return render_template(
+            'admin/posts/partials/delete_modal.html',
+            post=post
+        )
+
+    return render_template(
+        'admin/posts/delete.html',
+        post=post
+    )
 
 
 def _sort_posts(query, key, order):
