@@ -208,7 +208,7 @@ def new_post():
 
             flash(_('New post created correctly'), 'success')
 
-            return redirect(url_for('admin.post_index'))
+            return redirect(url_for('admin.post_index'), code=201)
 
         except IntegrityError:
             # Slug already exists
@@ -249,13 +249,13 @@ def edit_post(hashid):
     if not post:
         flash(_('Could not find post'), 'error')
 
-        return redirect(url_for('admin.post_index'))
+        return redirect(url_for('admin.post_index'), code=404)
 
     if not current_user.has_role('administrator'):
         if current_user not in post.authors:
             flash(_('You cannot edit that post'), 'warning')
 
-            return redirect(url_for('admin.post_index'))
+            return redirect(url_for('admin.post_index'), code=403)
 
     form = PostForm(obj=post)
 
@@ -316,7 +316,10 @@ def edit_post(hashid):
 
             flash(_('Post updated correctly'), 'success')
 
-            return redirect(url_for('admin.edit_post', hashid=post.hashid))
+            return redirect(
+                url_for('admin.edit_post', hashid=post.hashid),
+                code=200
+            )
 
         except IntegrityError:
             # Slug already exists
@@ -368,13 +371,13 @@ def delete_post(hashid):
     if not post:
         flash(_('Could not find post'), 'error')
 
-        return redirect(url_for('admin.post_index'))
+        return redirect(url_for('admin.post_index'), code=404)
 
     if not current_user.has_role('administrator'):
         if current_user not in post.authors:
             flash(_('You cannot delete that post'), 'warning')
 
-            return redirect(url_for('admin.post_index'))
+            return redirect(url_for('admin.post_index'), code=403)
 
     if request.method == 'POST':
         # Delete post
@@ -391,7 +394,7 @@ def delete_post(hashid):
             if request.is_xhr:
                 return jsonify({'redirect': url_for(dest)}), 200
 
-            return redirect(url_for(dest))
+            return redirect(url_for(dest), code=200)
 
         except ValidationError as e:
             # CSRF invalid
@@ -417,7 +420,8 @@ def delete_post(hashid):
                     abort(400)
 
                 return redirect(
-                    url_for('admin.edit_post', hashid=post.hashid)
+                    url_for('admin.edit_post', hashid=post.hashid),
+                    code=400
                 )
 
     # Check AJAX

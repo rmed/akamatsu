@@ -149,15 +149,13 @@ def new_page():
 
             flash(_('New page created correctly'), 'success')
 
-            return redirect(url_for('admin.page_index'))
+            return redirect(url_for('admin.page_index'), code=201)
 
         except IntegrityError:
             # Route already exists
             # Need to manually rollback here
             db.session.rollback()
             form.route.errors.append(_('Page route is already in use'))
-
-            print('qweqweqweqweqweqwe')
 
             return render_template('admin/pages/edit.html', form=form)
 
@@ -189,7 +187,7 @@ def edit_page(hashid):
     if not page:
         flash(_('Could not find page'), 'error')
 
-        return redirect(url_for('admin.page_index'))
+        return redirect(url_for('admin.page_index'), code=404)
 
     form = PageForm(obj=page)
 
@@ -212,7 +210,10 @@ def edit_page(hashid):
 
             flash(_('Page updated correctly'), 'success')
 
-            return redirect(url_for('admin.edit_page', hashid=page.hashid))
+            return redirect(
+                url_for('admin.edit_page', hashid=page.hashid),
+                code=200
+            )
 
         except IntegrityError:
             # Route already exists
@@ -258,7 +259,7 @@ def delete_page(hashid):
     if not page:
         flash(_('Could not find page'), 'error')
 
-        return redirect(url_for('admin.page_index'))
+        return redirect(url_for('admin.page_index'), code=404)
 
     if request.method == 'POST':
         # Delete page
@@ -275,7 +276,7 @@ def delete_page(hashid):
             if request.is_xhr:
                 return jsonify({'redirect': url_for(dest)}), 200
 
-            return redirect(url_for(dest))
+            return redirect(url_for(dest), code=200)
 
         except ValidationError as e:
             # CSRF invalid
@@ -301,7 +302,8 @@ def delete_page(hashid):
                     abort(400)
 
                 return redirect(
-                    url_for('admin.edit_page', hashid=page.hashid)
+                    url_for('admin.edit_page', hashid=page.hashid),
+                    code=400
                 )
 
     # Check AJAX

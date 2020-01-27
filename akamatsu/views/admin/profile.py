@@ -95,7 +95,7 @@ def change_password():
 
             flash(_('Password updated correctly'), 'success')
 
-            return redirect(url_for('admin.profile_edit'))
+            return redirect(url_for('admin.profile_edit'), code=200)
 
         except Exception:
             correct = False
