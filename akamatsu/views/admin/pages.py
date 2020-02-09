@@ -27,19 +27,21 @@
 
 """This module contains page views."""
 
+from urllib.parse import unquote
+
 from flask import abort, current_app, flash, jsonify, redirect, \
         render_template, request, url_for
 from flask_babel import _
-from flask_login import current_user, fresh_login_required, login_required
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import aliased
 from wtforms import ValidationError
 
 from akamatsu import db
-from akamatsu.models import Page, User
+from akamatsu.models import Page
 from akamatsu.views.admin import bp_admin
 from akamatsu.forms import PageForm
-from akamatsu.util import allowed_roles, datetime_to_utc, utc_to_local_tz
+from akamatsu.util import allowed_roles, datetime_to_utc, is_safe_url, \
+        utc_to_local_tz
 
 
 @bp_admin.route('/pages')
@@ -63,7 +65,7 @@ def page_index():
         .filter(Page.ghosted_id == None)
     )
 
-    sort_key, order_dir, pages = _sort_pages(pages, sort_key, order_dir)
+    pages, sort_key, order_dir = _sort_pages(pages, sort_key, order_dir)
     pages = pages.paginate(page, current_app.config['PAGE_ITEMS'], False)
 
     if request.is_xhr:
@@ -102,7 +104,7 @@ def page_ghosts():
         .filter(Page.ghosted_id != None)
     )
 
-    sort_key, order_dir, pages = _sort_pages(pages, sort_key, order_dir)
+    pages, sort_key, order_dir = _sort_pages(pages, sort_key, order_dir)
     pages = pages.paginate(page, current_app.config['PAGE_ITEMS'], False)
 
     if request.is_xhr:
@@ -149,7 +151,7 @@ def new_page():
 
             flash(_('New page created correctly'), 'success')
 
-            return redirect(url_for('admin.page_index'), code=201)
+            return redirect(url_for('admin.page_index'))
 
         except IntegrityError:
             # Route already exists
@@ -187,7 +189,7 @@ def edit_page(hashid):
     if not page:
         flash(_('Could not find page'), 'error')
 
-        return redirect(url_for('admin.page_index'), code=404)
+        return redirect(url_for('admin.page_index'))
 
     form = PageForm(obj=page)
 
@@ -211,8 +213,7 @@ def edit_page(hashid):
             flash(_('Page updated correctly'), 'success')
 
             return redirect(
-                url_for('admin.edit_page', hashid=page.hashid),
-                code=200
+                url_for('admin.edit_page', hashid=hashid)
             )
 
         except IntegrityError:
@@ -251,6 +252,9 @@ def delete_page(hashid):
 
     Usual flow is by calling this endpoint from AJAX (button in post listing).
 
+    If the query parameter "ref" is set, the browser will be redirected to that
+    URL after deletion (if it is safe).
+
     Args:
         hashid (str): HashID of the page.
     """
@@ -259,10 +263,12 @@ def delete_page(hashid):
     if not page:
         flash(_('Could not find page'), 'error')
 
-        return redirect(url_for('admin.page_index'), code=404)
+        return redirect(url_for('admin.page_index'))
 
     if request.method == 'POST':
         # Delete page
+        ref = unquote(request.args.get('ref', ''))
+
         try:
             correct = True
             db.session.delete(page)
@@ -270,25 +276,33 @@ def delete_page(hashid):
 
             flash(_('Page "%(title)s" deleted', title=page.title), 'success')
 
-            # AJAX must be notified of the redirect
+            # Redirect user
+            if ref and is_safe_url(ref):
+                # Provided as query parameter
+                if request.is_xhr:
+                    return jsonify({'redirect': ref}), 200
+
+                return redirect(ref)
+
+            # Default to index
             dest = 'admin.page_ghosts' if page.ghosted_id else 'admin.page_index'
 
             if request.is_xhr:
                 return jsonify({'redirect': url_for(dest)}), 200
 
-            return redirect(url_for(dest), code=200)
+            return redirect(url_for(dest))
 
-        except ValidationError as e:
+        except ValidationError:
             # CSRF invalid
             correct = False
-            current_app.logger.error(e)
+            current_app.logger.exception('Failed to delete page')
 
             flash(_('Failed to delete page, invalid CSRF token received'), 'error')
 
-        except Exception as e:
+        except Exception:
             # Catch anything unknown
             correct = False
-            current_app.logger.error(e)
+            current_app.logger.exception('Failed to delete page')
 
             flash(_('Failed to delete page, unknown error encountered'), 'error')
 
@@ -302,15 +316,15 @@ def delete_page(hashid):
                     abort(400)
 
                 return redirect(
-                    url_for('admin.edit_page', hashid=page.hashid),
-                    code=400
+                    url_for('admin.edit_page', hashid=hashid)
                 )
 
     # Check AJAX
     if request.is_xhr:
         return render_template(
             'admin/pages/partials/delete_modal.html',
-            page=page
+            page=page,
+            ref=request.args.get('ref', '')
         )
 
     return render_template(
@@ -328,7 +342,7 @@ def _sort_pages(query, key, order):
         order (str): Order direction ("asc" or "desc").
 
     Returns:
-        Tuple with key, order and ordered query.
+        Tuple with ordered query, key, and order.
     """
     ordering = None
 
@@ -357,10 +371,10 @@ def _sort_pages(query, key, order):
         )
 
         if order == 'asc':
-            return key, order, query.order_by(alias.title)
+            return query.order_by(alias.title), key, order
 
         order = 'desc'
-        return key, order, query.order_by(alias.title.desc())
+        return query.order_by(alias.title.desc()), key, order
 
     elif key == 'date':
         # Order by date
@@ -368,11 +382,11 @@ def _sort_pages(query, key, order):
 
     else:
         # Order by date and don't set ordering
-        return None, None, query.order_by(Page.last_updated.desc())
+        return query.order_by(Page.last_updated.desc()), None, None
 
     # Ordering
     if order == 'asc':
-        return key, order, query.order_by(ordering)
+        return query.order_by(ordering), key, order
 
     order = 'desc'
-    return key, order, query.order_by(ordering.desc())
+    return query.order_by(ordering.desc()), key, order

@@ -289,7 +289,7 @@ function showConfirmationModal(e) {
     e.preventDefault();
 
     var func = e.data.func;
-    var link = $(this).attr('href');
+    var link = $(this).data('dest');
 
     if (!link) {
         // Assume that the link was disabled
@@ -342,7 +342,7 @@ function confirmItemDeletion(e, $item) {
     // Prevent page reloads
     e.preventDefault();
 
-    var link = $item.attr('href');
+    var link = $item.data('dest');
 
     if (!link) {
         console.log('[ERROR] Cannot find deletion link');

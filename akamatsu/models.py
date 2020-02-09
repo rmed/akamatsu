@@ -328,6 +328,9 @@ class Role(BaseModel):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), unique=True)
 
+    def __str__(self):
+        return self.name
+
     @classmethod
     def get_role(self, name):
         """Obtain an already existing role by name.
@@ -381,7 +384,7 @@ class User(BaseModel, UserMixin):
     roles = db.relationship(
         'Role', secondary='user_roles',
         backref=db.backref('users', lazy='dynamic'),
-        cascade='save-update', collection_class=set
+        cascade='save-update', collection_class=list
     )
 
     # Proxies

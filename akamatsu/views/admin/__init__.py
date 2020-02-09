@@ -46,7 +46,7 @@ def home():
 from akamatsu.views.admin import pages
 from akamatsu.views.admin import posts
 from akamatsu.views.admin import profile
-# from akamatsu.views.admin import blog
+from akamatsu.views.admin import users
 
 
 @bp_admin.errorhandler(404)

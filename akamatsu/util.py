@@ -27,8 +27,6 @@
 
 """This file contains utility code."""
 
-import datetime
-
 from functools import wraps
 from urllib.parse import urlparse, urljoin
 

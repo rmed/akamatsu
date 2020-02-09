@@ -1,0 +1,115 @@
+{% import "macros.html" as macros %}
+{% extends "admin/layout.html" %}
+
+
+{% block title %}
+{% if request.endpoint == 'admin.new_user' %}
+    {{ _('New user') }}
+{% elif request.endpoint == 'admin.edit_user' %}
+    {{ _('Edit user: %(username)s', username=user.username) }}
+{% endif %}
+{% endblock %}
+
+{% block breadcrumbs %}
+<li><a href="{{ url_for('admin.home') }}">{{ _('Dashboard') }}</a></li>
+<li><a href="{{ url_for('admin.user_index') }}">{{ _('Manage users') }}</a></li>
+{% if request.endpoint == 'admin.new_user' %}
+    <li class="is-active"><a href="#" aria-current="user">{{ _('New user') }}</a></li>
+{% elif request.endpoint == 'admin.edit_user' %}
+    <li class="is-active"><a href="#" aria-current="user">{{ user.username  }}</a></li>
+{% endif %}
+{% endblock %}
+
+{% block content %}
+{% if request.endpoint == 'admin.new_user' %}
+    <h3 class="subtitle is-3">{{ _('New user') }}</h3>
+{% elif request.endpoint == 'admin.edit_user' %}
+    <h3 class="subtitle is-3">{{ _('Edit user') }}</h3>
+{% endif %}
+
+<div class="box">
+    <form action="" method="POST" role="form">
+        {{ form.hidden_tag() }}
+
+        <div class="columns">
+            <div class="column is-3 is-offset-9 has-text-right">
+                {# Is active #}
+                {{ macros.render_switch(form.is_active) }}
+
+                {% if form.errors.is_active %}
+                    {{ macros.render_messages(form.errors.is_active, size='') }}
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="columns">
+            <div class="column is-9">
+                {# Username #}
+                {{ macros.render_input(form.username) }}
+
+                {% if form.errors.username %}
+                    {{ macros.render_messages(form.errors.username, size='') }}
+                {% endif %}
+
+                {# Email #}
+                {{ macros.render_input(form.email) }}
+
+                {% if form.errors.email %}
+                    {{ macros.render_messages(form.errors.email, size='') }}
+                {% endif %}
+
+                {# Notify login #}
+                {{ macros.render_switch(form.notify_login) }}
+
+                {% if form.errors.notify_login %}
+                    {{ macros.render_messages(form.errors.notify_login, size='') }}
+                {% endif %}
+            </div>
+            <div class="column">
+                {# Roles #}
+                {{ macros.render_select(form.roles, multiple=true) }}
+
+                {% if form.errors.roles %}
+                    {{ macros.render_messages(form.errors.roles, size='') }}
+                {% endif %}
+            </div>
+        </div>
+
+        {# Password #}
+        {{ macros.render_input(form.password) }}
+
+        {% if form.errors.password %}
+            {{ macros.render_messages(form.errors.password, size='') }}
+        {% endif %}
+
+        {# First name #}
+        <div class="columns">
+            <div class="column">
+                {{ macros.render_input(form.first_name) }}
+
+                {% if form.errors.first_name %}
+                    {{ macros.render_messages(form.errors.first_name, size='') }}
+                {% endif %}
+            </div>
+            <div class="column">
+                {# Last name #}
+                {{ macros.render_input(form.last_name) }}
+
+                {% if form.errors.last_name %}
+                    {{ macros.render_messages(form.errors.last_name, size='') }}
+                {% endif %}
+            </div>
+        </div>
+
+        {# Personal bio #}
+        {{ macros.render_textarea(form.personal_bio) }}
+
+        {% if form.errors.personal_bio %}
+            {{ macros.render_messages(form.errors.personal_bio, size='') }}
+        {% endif %}
+
+        {# Submit #}
+        {{ macros.render_submit(form.submit) }}
+    </form>
+</div>
+{% endblock %}

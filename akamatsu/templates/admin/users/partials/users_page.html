@@ -1,0 +1,67 @@
+{# Partial to render a single post page #}
+{% import "macros.html" as macros %}
+
+<div class="table-container">
+    <table class="table is-striped is-hoverable is-fullwidth">
+        <thead>
+            <tr>
+                <th class="sortable-header" data-sort="username" {% if sort_key == 'username' %}data-order="{{ order_dir }}"{% endif %}>
+                    {{ macros.sort_order('username', sort_key, order_dir) }}
+                    <span>{{ _('Username') }}</span>
+                </th>
+                <th class="sortable-header" data-sort="email" {% if sort_key == 'email' %}data-order="{{ order_dir }}"{% endif %}>
+                    {{ macros.sort_order('email', sort_key, order_dir) }}
+                    <span>{{ _('Email') }}</span>
+                </th>
+                <th class="sortable-header" data-sort="first_name" {% if sort_key == 'first_name' %}data-order="{{ order_dir }}"{% endif %}>
+                    {{ macros.sort_order('first_name', sort_key, order_dir) }}
+                    <span>{{ _('First Name') }}</span>
+                </th>
+                <th class="sortable-header" data-sort="last_name" {% if sort_key == 'last_name' %}data-order="{{ order_dir }}"{% endif %}>
+                    {{ macros.sort_order('last_name', sort_key, order_dir) }}
+                    <span>{{ _('Last Name') }}</span>
+                </th>
+                <th class="has-text-centered sortable-header" data-sort="active" {% if sort_key == 'active' %}data-order="{{ order_dir }}"{% endif %}>
+                    <abbr title="{{ _('Active') }}">
+                        {{ macros.sort_order('active', sort_key, order_dir) }}
+                        <span class="icon"><i class="fas fa-certificate"></i></span>
+                    </abbr>
+                </th>
+                <th class="has-text-centered">{{ _('Actions') }}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users.items %}
+                <tr>
+                    <td>{{ user.username }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.first_name or '' }}</td>
+                    <td>{{ user.last_name or '' }}</td>
+                    <td class="has-text-centered">
+                        <span class="icon">
+                            {% if user.is_active %}
+                                <i class="fas fa-check-circle"></i>
+                            {% else %}
+                                <i class="fas fa-times"></i>
+                            {% endif %}
+                        </span>
+                    </td>
+                    <td>
+                        <div class="buttons has-addons is-centered">
+                            <a href="{{ url_for('admin.edit_user', username=user.username) }}" class="button">
+                                <span class="icon"><i class="fas fa-edit"></i></span>
+                                <span>{{ _('Edit') }}</span>
+                            </a>
+                            <a data-dest="{{ url_for('admin.delete_user', username=user.username, ref=url_for_self(page=users.page, sort=sort_key, order=order_dir)|urlencode) }}"  class="button delete-item">
+                                <span class="icon"><i class="fas fa-trash"></i></span>
+                                <span>{{ _('Delete') }}</span>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{{ macros.render_pagination(users, sort=sort_key, order=order_dir) }}

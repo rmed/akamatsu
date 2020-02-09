@@ -30,11 +30,11 @@
 import os
 
 from babel import dates as babel_dates
-from flask import Flask, current_app, request
+from flask import Flask, current_app
 from flask_assets import Environment, Bundle
 from flask_babel import Babel, _
 from flask_discussion import Discussion
-from flask_login import LoginManager, current_user
+from flask_login import LoginManager
 from flask_mail import Mail
 from flask_migrate import Migrate
 from flask_misaka import Misaka

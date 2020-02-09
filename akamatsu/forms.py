@@ -228,7 +228,7 @@ class PostForm(FlaskForm):
 
 
 class ProfileForm(FlaskForm):
-    """For for editing own profile details."""
+    """Form for editing own profile details."""
     first_name = StringField(
         _l('First name'),
         validators=[
@@ -271,3 +271,70 @@ class ProfileForm(FlaskForm):
     )
 
     submit = SubmitField(_l('Save changes'))
+
+
+class UserForm(FlaskForm):
+    """Form for editing users."""
+    username = StringField(
+        _l('Username'),
+        description=_l('Must be unique'),
+        validators=[
+            validators.InputRequired(_l('Username is required')),
+            validators.Length(
+                min=3,
+                max=50,
+                message=_l('Username must be between 3 and 50 characters long')
+            )
+        ]
+    )
+
+    password = PasswordField(
+        _l('Password'),
+        description=_l('If empty, a random password will be generated')
+    )
+
+    email = StringField(
+        _l('Email'),
+        description=_l('Must be unique'),
+        validators=[
+            validators.InputRequired(_l('Email is required')),
+            validators.Email(_l('Invalid Email'))
+        ]
+    )
+
+    is_active = BooleanField(_l('Is active'))
+    notify_login = BooleanField(
+        _l('Notify login'),
+        description=_l(
+            'Receive an email notification each time a session is started'
+        )
+    )
+
+    first_name = StringField(
+        _l('First name'),
+        validators=[
+            validators.Length(
+                max=50,
+                message=_l('First name must be 50 characters long at most')
+            )
+        ]
+    )
+
+    last_name = StringField(
+        _l('Last name'),
+        validators=[
+            validators.Length(
+                max=50,
+                message=_l('Last name must be 50 characters long at most')
+            )
+        ]
+    )
+
+    personal_bio = TextAreaField(
+        _l('Personal bio'),
+        description='Markdown enabled'
+    )
+
+    roles = QuerySelectMultipleField(_l('User roles'))
+
+    submit = SubmitField(_l('Save user'))

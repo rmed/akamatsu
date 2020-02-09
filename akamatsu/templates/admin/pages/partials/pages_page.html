@@ -62,7 +62,7 @@
                                 <span class="icon"><i class="fas fa-edit"></i></span>
                                 <span>{{ _('Edit') }}</span>
                             </a>
-                            <a href="{{ url_for('admin.delete_page', hashid=page.hashid) }}" class="button delete-item">
+                            <a data-dest="{{ url_for('admin.delete_page', hashid=page.hashid, ref=url_for_self(page=pages.page, sort=sort_key, order=order_dir)|urlencode) }}" class="button delete-item">
                                 <span class="icon"><i class="fas fa-trash"></i></span>
                                 <span>{{ _('Delete') }}</span>
                             </a>

@@ -14,7 +14,7 @@
     </section>
 
     <footer class="modal-card-foot">
-        <a href="{{ url_for('admin.delete_page', hashid=page.hashid) }}" class="button is-danger confirm-action">
+        <a data-dest="{{ url_for('admin.delete_page', hashid=page.hashid, ref=ref) }}" class="button is-danger confirm-action">
             <span class="icon"><i class="fas fa-trash"></i></span>
             <span>{{ _('Delete') }}</span>
         </a>

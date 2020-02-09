@@ -105,13 +105,13 @@
             <p class="menu-label">{{ _('Users') }}</p>
             <ul class="menu-list">
                 <li>
-                    <a href="" {% if request.endpoint == 'admin.new_user' %}class="is-active"{% endif %}>
+                    <a href="{{ url_for('admin.new_user') }}" {% if request.endpoint == 'admin.new_user' %}class="is-active"{% endif %}>
                         <span class="icon"><i class="fas fa-plus"></i></span>
                         <span>{{ _('New user') }}</span>
                     </a>
                 </li>
                 <li>
-                    <a href="" {% if request.endpoint == 'admin.user_index' %}class="is-active"{% endif %}>
+                    <a href="{{ url_for('admin.user_index') }}" {% if request.endpoint == 'admin.user_index' %}class="is-active"{% endif %}>
                         <span class="icon"><i class="fas fa-users"></i></span>
                         <span>{{ _('Manage users') }}</span>
                     </a>

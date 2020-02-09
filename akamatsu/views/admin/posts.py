@@ -29,10 +29,12 @@
 
 import slugify
 
+from urllib.parse import unquote
+
 from flask import abort, current_app, flash, jsonify, redirect, \
         render_template, request, url_for
 from flask_babel import _
-from flask_login import current_user, fresh_login_required, login_required
+from flask_login import current_user
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import aliased
 from wtforms import ValidationError
@@ -41,7 +43,8 @@ from akamatsu import db
 from akamatsu.models import user_posts, Post, User
 from akamatsu.views.admin import bp_admin
 from akamatsu.forms import PostForm
-from akamatsu.util import allowed_roles, datetime_to_utc, utc_to_local_tz
+from akamatsu.util import allowed_roles, datetime_to_utc, is_safe_url, \
+        utc_to_local_tz
 
 
 @bp_admin.route('/posts')
@@ -65,7 +68,7 @@ def post_index():
         .filter(Post.ghosted_id == None)
     )
 
-    sort_key, order_dir, posts = _sort_posts(posts, sort_key, order_dir)
+    posts, sort_key, order_dir = _sort_posts(posts, sort_key, order_dir)
 
 
     if current_user.has_role('blogger'):
@@ -114,7 +117,7 @@ def post_ghosts():
         .filter(Post.ghosted_id != None)
     )
 
-    sort_key, order_dir, posts = _sort_posts(posts, sort_key, order_dir)
+    posts, sort_key, order_dir = _sort_posts(posts, sort_key, order_dir)
 
     if current_user.has_role('blogger'):
         posts = (
@@ -208,7 +211,7 @@ def new_post():
 
             flash(_('New post created correctly'), 'success')
 
-            return redirect(url_for('admin.post_index'), code=201)
+            return redirect(url_for('admin.post_index'))
 
         except IntegrityError:
             # Slug already exists
@@ -249,13 +252,13 @@ def edit_post(hashid):
     if not post:
         flash(_('Could not find post'), 'error')
 
-        return redirect(url_for('admin.post_index'), code=404)
+        return redirect(url_for('admin.post_index'))
 
     if not current_user.has_role('administrator'):
         if current_user not in post.authors:
             flash(_('You cannot edit that post'), 'warning')
 
-            return redirect(url_for('admin.post_index'), code=403)
+            return redirect(url_for('admin.post_index'))
 
     form = PostForm(obj=post)
 
@@ -317,8 +320,7 @@ def edit_post(hashid):
             flash(_('Post updated correctly'), 'success')
 
             return redirect(
-                url_for('admin.edit_post', hashid=post.hashid),
-                code=200
+                url_for('admin.edit_post', hashid=hashid)
             )
 
         except IntegrityError:
@@ -363,6 +365,9 @@ def delete_post(hashid):
 
     Usual flow is by calling this endpoint from AJAX (button in post listing).
 
+    If the query parameter "ref" is set, the browser will be redirected to that
+    URL after deletion (if it is safe).
+
     Args:
         hashid (str): HashID of the post.
     """
@@ -371,16 +376,18 @@ def delete_post(hashid):
     if not post:
         flash(_('Could not find post'), 'error')
 
-        return redirect(url_for('admin.post_index'), code=404)
+        return redirect(url_for('admin.post_index'))
 
     if not current_user.has_role('administrator'):
         if current_user not in post.authors:
             flash(_('You cannot delete that post'), 'warning')
 
-            return redirect(url_for('admin.post_index'), code=403)
+            return redirect(url_for('admin.post_index'))
 
     if request.method == 'POST':
         # Delete post
+        ref = unquote(request.args.get('ref', ''))
+
         try:
             correct = True
             db.session.delete(post)
@@ -388,25 +395,33 @@ def delete_post(hashid):
 
             flash(_('Post "%(title)s" deleted', title=post.title), 'success')
 
-            # AJAX must be notified of the redirect
+            # Redirect user
+            if ref and is_safe_url(ref):
+                # Provided as query parameter
+                if request.is_xhr:
+                    return jsonify({'redirect': ref}), 200
+
+                return redirect(ref)
+
+            # Default to index
             dest = 'admin.post_ghosts' if post.ghosted_id else 'admin.post_index'
 
             if request.is_xhr:
                 return jsonify({'redirect': url_for(dest)}), 200
 
-            return redirect(url_for(dest), code=200)
+            return redirect(url_for(dest))
 
-        except ValidationError as e:
+        except ValidationError:
             # CSRF invalid
             correct = False
-            current_app.logger.error(e)
+            current_app.logger.exception('Failed to delete post')
 
             flash(_('Failed to delete post, invalid CSRF token received'), 'error')
 
-        except Exception as e:
+        except Exception:
             # Catch anything unknown
             correct = False
-            current_app.logger.error(e)
+            current_app.logger.exception('Failed to delete post')
 
             flash(_('Failed to delete post, unknown error encountered'), 'error')
 
@@ -420,15 +435,15 @@ def delete_post(hashid):
                     abort(400)
 
                 return redirect(
-                    url_for('admin.edit_post', hashid=post.hashid),
-                    code=400
+                    url_for('admin.edit_post', hashid=hashid)
                 )
 
     # Check AJAX
     if request.is_xhr:
         return render_template(
             'admin/posts/partials/delete_modal.html',
-            post=post
+            post=post,
+            ref=request.args.get('ref', '')
         )
 
     return render_template(
@@ -446,7 +461,7 @@ def _sort_posts(query, key, order):
         order (str): Order direction ("asc" or "desc").
 
     Returns:
-        Tuple with key, order and ordered query.
+        Tuple with ordered query, key, order.
     """
     ordering = None
 
@@ -475,10 +490,10 @@ def _sort_posts(query, key, order):
         )
 
         if order == 'asc':
-            return key, order, query.order_by(alias.title)
+            return query.order_by(alias.title), key, order
 
         order = 'desc'
-        return key, order, query.order_by(alias.title.desc())
+        return query.order_by(alias.title.desc()), key, order
 
     elif key == 'date':
         # Order by date
@@ -486,11 +501,11 @@ def _sort_posts(query, key, order):
 
     else:
         # Order by date and don't set ordering
-        return None, None, query.order_by(Post.last_updated.desc())
+        return query.order_by(Post.last_updated.desc()), None, None
 
     # Ordering
     if order == 'asc':
-        return key, order, query.order_by(ordering)
+        return query.order_by(ordering), key, order
 
     order = 'desc'
-    return key, order, query.order_by(ordering.desc())
+    return query.order_by(ordering.desc()), key, order

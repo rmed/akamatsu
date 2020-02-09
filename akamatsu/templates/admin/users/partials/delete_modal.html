@@ -1,20 +1,18 @@
-{# Partial view that shows a confirmation dialog when deleting a post #}
+{# Partial view that shows a confirmation dialog when deleting a user #}
 {# This partial is copied to a '.modal' container when needed #}
-<div id="post-delete-modal" class="modal-card">
+<div id="page-delete-modal" class="modal-card">
     <header class="modal-card-head">
-        <p class="modal-card-title">{{ _('Delete post') }}</p>
+        <p class="modal-card-title">{{ _('Delete user') }}</p>
         <button class="delete" aria-label="close"></button>
     </header>
 
     <section class="modal-card-body">
-        <h3 class="subtitle is-3">{{ _('Are you sure you want to delete the following post?') }}</h3>
-        <h4 class="subtitle is-4">{{ post.title }}</h4>
-
-        <p>{{ _('Note that this will also delete any associated post ghosts') }}</p>
+        <h3 class="subtitle is-3">{{ _('Are you sure you want to delete the following user?') }}</h3>
+        <h4 class="subtitle is-4">{{ user.username }}</h4>
     </section>
 
     <footer class="modal-card-foot">
-        <a data-dest="{{ url_for('admin.delete_post', hashid=post.hashid, ref=ref) }}" class="button is-danger confirm-action">
+        <a data-dest="{{ url_for('admin.delete_user', username=user.username, ref=ref) }}" class="button is-danger confirm-action">
             <span class="icon"><i class="fas fa-trash"></i></span>
             <span>{{ _('Delete') }}</span>
         </a>
