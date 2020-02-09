@@ -46,6 +46,8 @@ BASE_CONFIG = {
     'PASSLIB_SCHEMES': ['bcrypt'],
     'PASSLIB_ALG_BCRYPT_ROUNDS': 14,
 
+    # App specific
+    'SITENAME': 'akamatsu',
     'PAGE_ITEMS': 10,
     'LOCALE': 'en',
     'TIMEZONE': 'UTC'
@@ -117,5 +119,5 @@ DEV_CONFIG = {
     'FOOTER_LEFT': 'Left footer',
     'FOOTER_RIGHT': 'Right footer',
 
-    'TIMEZONE': 'Europe/Madrid'
+    'TIMEZONE': 'UTC'
 }
