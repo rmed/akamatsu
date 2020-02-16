@@ -29,24 +29,63 @@
 
 from flask import Blueprint, abort, current_app, redirect, render_template, \
         request, url_for
+from feedgen.feed import FeedGenerator
+from sqlalchemy import or_
 from werkzeug.exceptions import NotFound
 
+import pytz
+
 from akamatsu import md as markdown
-from akamatsu.models import Post, User, user_posts
+from akamatsu.models import Post, Role, User, user_posts, user_roles
 
 
 bp_blog = Blueprint('blog', __name__)
 
 
-@bp_blog.route('/atom.xml')
+@bp_blog.route('/_feed')
 def feed():
-    """Generate an atom feed for the blog."""
-    feed = AtomFeed(
-        '{}: Recent posts'.format(current_app.config.get('SITENAME', 'akamatsu')),
-        feed_url=request.url,
-        url=request.url_root
+    """Generate a RSS feed for the blog."""
+    fg = FeedGenerator()
+
+    fg.id(url_for('blog.index', _external=True))
+    fg.title('{} feed'.format(current_app.config['SITENAME']))
+    fg.description('{} feed'.format(current_app.config['SITENAME']))
+    fg.author({'name': current_app.config['SITENAME']})
+    fg.link(href=url_for('blog.index', _external=True), rel='alternate')
+    # fg.logo('http://ex.com/logo.jpg')
+    fg.link(href=url_for('blog.feed', _external=True), rel='self')
+    fg.language(current_app.config['LOCALE'])
+
+    # Add contributors
+    users = (
+        User.query
+        .join(user_roles)
+        .join(Role)
+        .filter(User.is_active == True)
+        .filter(
+            or_(
+                Role.name == 'administrator',
+                Role.name == 'blogger'
+            )
+        )
     )
 
+    contributors = []
+
+    for user in users:
+        name = user.username
+
+        if user.first_name and user.last_name:
+            name = '{} {}'.format(user.first_name, user.last_name)
+
+        contributors.append({
+            'name': name,
+            #'email': user.email
+        })
+
+    fg.contributor = contributors
+
+    # Add entries
     posts = (
         Post.query
         .filter_by(is_published=True)
@@ -57,16 +96,37 @@ def feed():
 
     for post in posts:
         # Unicode conversion is needed for the content
-        feed.add(
-            post.title,
-            markdown.render(post.content).unescape(),
-            content_type='html',
-            author=[a.username for a in post.authors],
-            url=url_for('blog.show', slug=post.slug, _external=True),
-            updated=post.last_updated
+        entry = fg.add_entry()
+
+        entry.id(url_for('blog.show', slug=post.slug, _external=True))
+        entry.link(href=url_for('blog.show', slug=post.slug, _external=True))
+        entry.title(post.title)
+        entry.updated(pytz.utc.localize(post.last_updated))
+        entry.description(
+            description=markdown.render(
+                post.content.split('<!--aka-break-->')[0]
+            ).unescape(),
+            isSummary=True
+        )
+        entry.content(
+            content=markdown.render(post.content).unescape(),
+            type='html'
         )
 
-    return feed.get_response()
+        authors = []
+
+        for author in post.authors:
+            name = author.username
+
+            if author.first_name and author.last_name:
+                name = '{} {}'.format(author.first_name, author.last_name)
+
+            contributors.append({
+                'name': name,
+                #'email': author.email
+            })
+
+    return fg.rss_str()
 
 
 @bp_blog.route('/')
