@@ -273,6 +273,53 @@ class ProfileForm(FlaskForm):
     submit = SubmitField(_l('Save changes'))
 
 
+class UploadForm(FlaskForm):
+    """Form for uploading files."""
+    filename = StringField(
+        _l('Name for the stored file'),
+        description=_l('If empty, uploaded file name is used'),
+            validators=[
+                validators.Length(
+                    max=256,
+                    message=_l('Filename should not exceed 256 characters')
+                )
+            ]
+    )
+
+    subdir = StringField(
+        _l('Subirectory in which to store the file'),
+        description=_l('If empty, will use upload root')
+    )
+
+    description = StringField(
+        _l('File description'),
+        validators=[
+            validators.Length(
+                max=256,
+                message=_l('Description should not exceed 256 characters')
+            )
+        ]
+    )
+
+    mime = StringField(
+        _l('MIME type for the file'),
+        description=_l('X/Y format, may be inferred from the file if left empty'),
+        validators=[
+            validators.Length(
+                max=128,
+                message=_l('MIME type should not exceed 128 characters')
+            )
+        ]
+    )
+
+    upload = FileField(
+        _l('Choose a file...'),
+        validators=[FileRequired()]
+    )
+
+    submit = SubmitField(_l('Save changes'))
+
+
 class UserForm(FlaskForm):
     """Form for editing users."""
     username = StringField(

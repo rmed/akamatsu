@@ -29,7 +29,6 @@
 
 from flask import Blueprint, abort, current_app, redirect, render_template, \
         request, url_for
-from werkzeug.contrib.atom import AtomFeed
 from werkzeug.exceptions import NotFound
 
 from akamatsu import md as markdown

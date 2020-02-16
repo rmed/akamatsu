@@ -1,0 +1,68 @@
+{% import "macros.html" as macros %}
+{% extends "admin/layout.html" %}
+
+
+{% block title %}{{ _('Upload file') }}{% endblock %}
+
+{% block breadcrumbs %}
+<li><a href="{{ url_for('admin.home') }}">{{ _('Dashboard') }}</a></li>
+<li><a href="{{ url_for('admin.file_index') }}">{{ _('Manage files') }}</a></li>
+<li class="is-active"><a href="#" aria-current="file">{{ _('Upload file') }}</a></li>
+{% endblock %}
+
+{% block content %}
+<h3 class="subtitle is-3">{{ _('Upload file') }}</h3>
+
+<div class="box">
+    <form action="" method="POST" role="form" enctype="multipart/form-data">
+        {{ form.hidden_tag() }}
+
+        <div class="columns">
+            <div class="column is-4 is-offset-4">
+                {# Upload #}
+                {{ macros.render_file(form.upload) }}
+
+                {% if form.errors.upload %}
+                    {{ macros.render_messages(form.errors.upload, size='') }}
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="columns">
+            <div class="column is-6">
+                {# Subdir #}
+                {{ macros.render_input(form.subdir) }}
+
+                {% if form.errors.subdir %}
+                    {{ macros.render_messages(form.errors.subdir, size='') }}
+                {% endif %}
+            </div>
+            <div class="column">
+                {# Filename #}
+                {{ macros.render_input(form.filename) }}
+
+                {% if form.errors.filename %}
+                    {{ macros.render_messages(form.errors.filename, size='') }}
+                {% endif %}
+            </div>
+        </div>
+
+        {# MIME type #}
+        {{ macros.render_input(form.mime) }}
+
+        {% if form.errors.mime %}
+            {{ macros.render_messages(form.errors.mime, size='') }}
+        {% endif %}
+
+        {# Description #}
+        {{ macros.render_input(form.description) }}
+
+        {% if form.errors.description %}
+            {{ macros.render_messages(form.errors.description, size='') }}
+        {% endif %}
+
+        {# Submit #}
+        {{ macros.render_submit(form.submit) }}
+    </form>
+</div>
+{% endblock %}

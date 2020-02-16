@@ -150,7 +150,7 @@ class FileUpload(BaseModel):
         id (int): Unique ID of the record.
         path (str): Path to the file relative to the uploads directory.
         description (str): Optional description of the file.
-        uploaded (datetime): UTC datetime in which the file was uploaded.
+        uploaded_at (datetime): UTC datetime in which the file was uploaded.
     """
     __tablename__ = 'uploads'
 
@@ -158,11 +158,22 @@ class FileUpload(BaseModel):
 
     path = db.Column(db.String(512), nullable=False, unique=True)
     description = db.Column(db.String(256), nullable=True)
-    timestamp = db.Column(
+    mime = db.Column(db.String(128), nullable=False)
+    uploaded_at = db.Column(
         db.DateTime,
         nullable=False,
         default=datetime.datetime.utcnow()
     )
+
+
+    @classmethod
+    def get_by_path(cls, path):
+        """Get instance by path.
+
+        Returns:
+            Instance or `None` if not found.
+        """
+        return cls.query.filter_by(path=path).first()
 
 
 class Page(BaseModel):

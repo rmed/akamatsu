@@ -40,7 +40,7 @@ from akamatsu import crypto_manager, db
 from akamatsu.models import User, Role
 from akamatsu.views.admin import bp_admin
 from akamatsu.forms import UserForm
-from akamatsu.util import allowed_roles, is_safe_url
+from akamatsu.util import allowed_roles, is_ajax, is_safe_url
 
 
 @bp_admin.route('/users')
@@ -60,7 +60,7 @@ def user_index():
     users, sort_key, order_dir = _sort_users(users, sort_key, order_dir)
     users = users.paginate(page, current_app.config['PAGE_ITEMS'], False)
 
-    if request.is_xhr:
+    if is_ajax():
         # AJAX request
         return render_template(
             'admin/users/partials/users_page.html',
@@ -242,13 +242,13 @@ def delete_user(username):
             # Redirect user
             if ref and is_safe_url(ref):
                 # Provided as query parameter
-                if request.is_xhr:
+                if is_ajax():
                     return jsonify({'redirect': ref}), 200
 
                 return redirect(ref)
 
             # Default to index
-            if request.is_xhr:
+            if is_ajax():
                 return jsonify({'redirect': url_for('admin.user_index')}), 200
 
             return redirect(url_for('admin.user_index'))
@@ -273,7 +273,7 @@ def delete_user(username):
                 db.session.rollback()
 
                 # Check AJAX
-                if request.is_xhr:
+                if is_ajax():
                     abort(400)
 
                 return redirect(
@@ -281,7 +281,7 @@ def delete_user(username):
                 )
 
     # Check AJAX
-    if request.is_xhr:
+    if is_ajax():
         return render_template(
             'admin/users/partials/delete_modal.html',
             user=user,

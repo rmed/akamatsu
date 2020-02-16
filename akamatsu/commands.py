@@ -98,7 +98,7 @@ def addrole(username, role):
     except Exception as e:
         # Catch anything unknown
         correct = False
-        
+
         click.echo('Error updating roles')
         click.echo(e)
 

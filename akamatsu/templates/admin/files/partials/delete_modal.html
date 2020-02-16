@@ -1,0 +1,24 @@
+{# Partial view that shows a confirmation dialog when deleting a file #}
+{# This partial is copied to a '.modal' container when needed #}
+<div id="file-delete-modal" class="modal-card">
+    <header class="modal-card-head">
+        <p class="modal-card-title">{{ _('Delete file') }}</p>
+        <button class="delete" aria-label="close"></button>
+    </header>
+
+    <section class="modal-card-body">
+        <h3 class="subtitle is-3">{{ _('Are you sure you want to delete the following file?') }}</h3>
+        <h4 class="subtitle is-4">{{ fupload.path }}</h4>
+    </section>
+
+    <footer class="modal-card-foot">
+        <a data-dest="{{ url_for('admin.delete_file', hashid=fupload.hashid, ref=ref) }}" class="button is-danger confirm-action">
+            <span class="icon"><i class="fas fa-trash"></i></span>
+            <span>{{ _('Delete') }}</span>
+        </a>
+        <button class="button cancel-action">
+            <span class="icon"><i class="fas fa-times"></i></span>
+            <span>{{ _('Cancel') }}</span>
+        </button>
+    </footer>
+</div>

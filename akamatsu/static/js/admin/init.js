@@ -45,10 +45,6 @@ $(document).ready(function() {
     // Table sorting
     $('.sortable-header').click(setSortOrder);
 
-    // Listing sorting
-    // $('.sort-attribute').click(setOrderingAttribute);
-    // $('.sort-order').click(setOrderingOrder);
-
     // EasyMDE
     loadEasyMDE();
 
@@ -58,4 +54,31 @@ $(document).ready(function() {
         {func: confirmItemDeletion},
         showConfirmationModal
     );
+
+    // File uploads
+    $('input[type=file]').change(updateUploadFilename);
+});
+
+
+/**
+ * Configure AJAX requests
+ */
+$(document).on('ajaxBeforeSend', function(e, xhr, options) {
+    // Add custom header to detect AJAX requests
+    xhr.setRequestHeader('x-akamatsu-partial', 'true');
+
+    // Handle CSRF protection in specific AJAX requests.
+    // The tag needs to be enabled in the template.
+    if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(options.type) && !this.crossDomain) {
+        var $csrf = $('meta[name=csrf-token]');
+
+        if ($csrf.length === 0) {
+            // Missing CSRF token
+            console.log('[ERROR] Missing CSRF meta tag');
+            showNotification('error', 'ERROR - CSRF');
+
+        } else {
+            xhr.setRequestHeader('X-CSRFToken', $csrf.attr('content'));
+        }
+    }
 });

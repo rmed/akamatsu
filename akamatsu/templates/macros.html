@@ -45,6 +45,34 @@
 {% endmacro %}
 
 
+{# Renders a file field #}
+{% macro render_file(field, label="", size="") %}
+    {% if not label %}
+        {% set label = field.label.text %}
+    {% endif %}
+
+    {% if size %}
+        {% set size = "is-"+size %}
+    {% endif %}
+
+    <div class="field">
+        <div class="file has-name is-fullwidth {{ size }}">
+            <label class="file-label">
+                {{ field(class_="file-input")}}
+
+                <span class="file-cta">
+                    <span class="file-icon">
+                        <i class="fas fa-upload"></i>
+                    </span>
+                    <span class="file-label">{{ label }}</span>
+                </span>
+                <span class="file-name">{{ _('Nothing selected') }}</span>
+            </label>
+        </div>
+    </div>
+{% endmacro %}
+
+
 {# Renders a date field
 
 Available calendar types:

@@ -292,6 +292,19 @@ def utc_to_local_tz(original):
     return local
 
 
+def is_allowed_file(filename):
+    """Check if a file extension is allowed.
+
+    Args:
+        filename (str): Name of the file to check.
+
+    Returns:
+        True if the file upload is allowed.
+    """
+    return '.' in filename and \
+        filename.rsplit('.', 1)[1] in current_app.config['ALLOWED_EXTENSIONS']
+
+
 def is_safe_url(target):
     """Check whether the target is safe for redirection.
 
@@ -329,3 +342,18 @@ def send_email(*args, **kwargs):
         message = Message(*args, **kwargs)
 
         return mail.send(message)
+
+
+def is_ajax():
+    """Detect whether the request was made through AJAX.
+
+    In akamatsu this is used to handle some pagination, therefore only a partial
+    view is returned instead of the whole HTML.
+
+    In order to detect this, the `x-akamatsu-partial` header should be set to
+    "true".
+
+    Returns:
+        `True` if the request was made through AJAX, otherwise `False`.
+    """
+    return request.headers.get('x-akamatsu-partial', 'false') == 'true'

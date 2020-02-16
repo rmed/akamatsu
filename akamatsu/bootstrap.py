@@ -50,7 +50,9 @@ BASE_CONFIG = {
     'SITENAME': 'akamatsu',
     'PAGE_ITEMS': 10,
     'LOCALE': 'en',
-    'TIMEZONE': 'UTC'
+    'TIMEZONE': 'UTC',
+    'ALLOWED_EXTENSIONS': {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'},
+    'UPLOADS_PATH': '/tmp'
 }
 
 
@@ -75,6 +77,10 @@ DEV_CONFIG = {
 
     # Items per page in pagination
     'PAGE_ITEMS': 1,
+
+    # File uploads
+    'ALLOWED_EXTENSIONS': {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'},
+    'UPLOADS_PATH': '/tmp',
 
     # Hashids
     'HASHIDS_SALT': 'hashedpotatoes',
@@ -119,5 +125,8 @@ DEV_CONFIG = {
     'FOOTER_LEFT': 'Left footer',
     'FOOTER_RIGHT': 'Right footer',
 
-    'TIMEZONE': 'UTC'
+    'TIMEZONE': 'UTC',
+
+    # Uploads
+    'UPLOADS_PATH': '/tmp/uploads'
 }

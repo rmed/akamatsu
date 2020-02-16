@@ -40,7 +40,7 @@ from akamatsu import db
 from akamatsu.models import Page
 from akamatsu.views.admin import bp_admin
 from akamatsu.forms import PageForm
-from akamatsu.util import allowed_roles, datetime_to_utc, is_safe_url, \
+from akamatsu.util import allowed_roles, datetime_to_utc, is_ajax, is_safe_url, \
         utc_to_local_tz
 
 
@@ -58,8 +58,6 @@ def page_index():
     sort_key = request.args.get('sort')
     order_dir = request.args.get('order')
 
-    # Users can only see posts in which they have participated
-    # (unless they are administrators)
     pages = (
         Page.query
         .filter(Page.ghosted_id == None)
@@ -68,7 +66,7 @@ def page_index():
     pages, sort_key, order_dir = _sort_pages(pages, sort_key, order_dir)
     pages = pages.paginate(page, current_app.config['PAGE_ITEMS'], False)
 
-    if request.is_xhr:
+    if is_ajax():
         # AJAX request
         return render_template(
             'admin/pages/partials/pages_page.html',
@@ -97,8 +95,6 @@ def page_ghosts():
     sort_key = request.args.get('sort')
     order_dir = request.args.get('order')
 
-    # Users can only see posts in which they have participated
-    # (unless they are administrators)
     pages = (
         Page.query
         .filter(Page.ghosted_id != None)
@@ -107,7 +103,7 @@ def page_ghosts():
     pages, sort_key, order_dir = _sort_pages(pages, sort_key, order_dir)
     pages = pages.paginate(page, current_app.config['PAGE_ITEMS'], False)
 
-    if request.is_xhr:
+    if is_ajax():
         # AJAX request
         return render_template(
             'admin/pages/partials/ghosts_page.html',
@@ -250,7 +246,7 @@ def edit_page(hashid):
 def delete_page(hashid):
     """Delete a page.
 
-    Usual flow is by calling this endpoint from AJAX (button in post listing).
+    Usual flow is by calling this endpoint from AJAX (button in page listing).
 
     If the query parameter "ref" is set, the browser will be redirected to that
     URL after deletion (if it is safe).
@@ -279,7 +275,7 @@ def delete_page(hashid):
             # Redirect user
             if ref and is_safe_url(ref):
                 # Provided as query parameter
-                if request.is_xhr:
+                if is_ajax():
                     return jsonify({'redirect': ref}), 200
 
                 return redirect(ref)
@@ -287,7 +283,7 @@ def delete_page(hashid):
             # Default to index
             dest = 'admin.page_ghosts' if page.ghosted_id else 'admin.page_index'
 
-            if request.is_xhr:
+            if is_ajax():
                 return jsonify({'redirect': url_for(dest)}), 200
 
             return redirect(url_for(dest))
@@ -312,7 +308,7 @@ def delete_page(hashid):
                 db.session.rollback()
 
                 # Check AJAX
-                if request.is_xhr:
+                if is_ajax():
                     abort(400)
 
                 return redirect(
@@ -320,7 +316,7 @@ def delete_page(hashid):
                 )
 
     # Check AJAX
-    if request.is_xhr:
+    if is_ajax():
         return render_template(
             'admin/pages/partials/delete_modal.html',
             page=page,

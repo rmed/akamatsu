@@ -302,11 +302,13 @@ def init_app():
     from akamatsu.views.auth import bp_auth
     from akamatsu.views.admin import bp_admin
     from akamatsu.views.blog import bp_blog
+    from akamatsu.views.common import bp_common
     from akamatsu.views.pages import bp_pages
 
     app.register_blueprint(bp_auth)
     app.register_blueprint(bp_admin, url_prefix='/admin')
     app.register_blueprint(bp_blog, url_prefix='/blog')
+    app.register_blueprint(bp_common)
     app.register_blueprint(bp_pages)
 
 

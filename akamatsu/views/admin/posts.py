@@ -43,7 +43,7 @@ from akamatsu import db
 from akamatsu.models import user_posts, Post, User
 from akamatsu.views.admin import bp_admin
 from akamatsu.forms import PostForm
-from akamatsu.util import allowed_roles, datetime_to_utc, is_safe_url, \
+from akamatsu.util import allowed_roles, datetime_to_utc, is_ajax, is_safe_url, \
         utc_to_local_tz
 
 
@@ -81,7 +81,7 @@ def post_index():
 
     posts = posts.paginate(page, current_app.config['PAGE_ITEMS'], False)
 
-    if request.is_xhr:
+    if is_ajax():
         # AJAX request
         return render_template(
             'admin/posts/partials/posts_page.html',
@@ -129,7 +129,7 @@ def post_ghosts():
 
     posts = posts.paginate(page, current_app.config['PAGE_ITEMS'], False)
 
-    if request.is_xhr:
+    if is_ajax():
         # AJAX request
         return render_template(
             'admin/posts/partials/ghosts_page.html',
@@ -398,7 +398,7 @@ def delete_post(hashid):
             # Redirect user
             if ref and is_safe_url(ref):
                 # Provided as query parameter
-                if request.is_xhr:
+                if is_ajax():
                     return jsonify({'redirect': ref}), 200
 
                 return redirect(ref)
@@ -406,7 +406,7 @@ def delete_post(hashid):
             # Default to index
             dest = 'admin.post_ghosts' if post.ghosted_id else 'admin.post_index'
 
-            if request.is_xhr:
+            if is_ajax():
                 return jsonify({'redirect': url_for(dest)}), 200
 
             return redirect(url_for(dest))
@@ -431,7 +431,7 @@ def delete_post(hashid):
                 db.session.rollback()
 
                 # Check AJAX
-                if request.is_xhr:
+                if is_ajax():
                     abort(400)
 
                 return redirect(
@@ -439,7 +439,7 @@ def delete_post(hashid):
                 )
 
     # Check AJAX
-    if request.is_xhr:
+    if is_ajax():
         return render_template(
             'admin/posts/partials/delete_modal.html',
             post=post,

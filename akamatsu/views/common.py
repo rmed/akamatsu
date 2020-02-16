@@ -25,35 +25,30 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""This module contains administration views."""
+"""This file contains common views."""
 
-from flask import Blueprint, render_template
-from flask_babel import _
-from flask_login import login_required
+from flask import Blueprint, current_app, make_response, send_from_directory
 
-
-bp_admin = Blueprint('admin', __name__)
+from akamatsu.models import FileUpload
 
 
-@bp_admin.route('/')
-@login_required
-def home():
-    """Show admin dashboard."""
-    return render_template('admin/index.html')
+bp_common = Blueprint('common', __name__)
 
 
-# Import subviews
-from akamatsu.views.admin import files
-from akamatsu.views.admin import pages
-from akamatsu.views.admin import posts
-from akamatsu.views.admin import profile
-from akamatsu.views.admin import users
+@bp_common.route('/_uploads/<path:filename>')
+def serve_file(filename):
+    """Serve the given uploaded file.
 
+    Args:
+        filename (str): Relative file path.
+    """
+    fupload = FileUpload.get_by_path(filename)
 
-@bp_admin.errorhandler(404)
-@login_required
-def dashboard_not_found(e):
-    return render_template(
-        'admin/error.html',
-        error_msg=_('It\'s gone! Poof! Magic!')
-    ), 404
+    if not fupload:
+        return make_response('', 404)
+
+    return send_from_directory(
+        current_app.config['UPLOADS_PATH'],
+        filename,
+        mimetype=fupload.mime
+    )

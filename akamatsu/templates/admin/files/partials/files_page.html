@@ -1,0 +1,47 @@
+{# Partial to render a single file page #}
+{% import "macros.html" as macros %}
+
+<div class="table-container">
+    <table class="table is-striped is-hoverable is-fullwidth">
+        <thead>
+            <tr>
+                <th class="sortable-header" data-sort="path" {% if sort_key == 'path' %}data-order="{{ order_dir }}"{% endif %}>
+                    {{ macros.sort_order('path', sort_key, order_dir) }}
+                    <span>{{ _('Path') }}</span>
+                </th>
+                <th class="sortable-header" data-sort="mime" {% if sort_key == 'mime' %}data-order="{{ order_dir }}"{% endif %}>
+                    {{ macros.sort_order('mime', sort_key, order_dir) }}
+                    <span>{{ _('MIME') }}</span>
+                </th>
+                <th class="has-text-centered sortable-header" data-sort="date" {% if sort_key == 'date' %}data-order="{{ order_dir }}"{% endif %}>
+                    {{ macros.sort_order('date', sort_key, order_dir) }}
+                    <span>{{ _('Date') }}</span>
+                </th>
+                <th class="has-text-centered">{{ _('Actions') }}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for file in files.items %}
+                <tr>
+                    <td>{{ file.path }}</td>
+                    <td>{{ file.mime or _('UNKNOWN') }}</td>
+                    <td class="has-text-centered">{{ file.uploaded_at|datetime }}</td>
+                    <td>
+                        <div class="buttons has-addons is-centered">
+                            <a href="{{ url_for('admin.show_file', hashid=file.hashid) }}" class="button">
+                                <span class="icon"><i class="fas fa-eye"></i></span>
+                                <span>{{ _('Show') }}</span>
+                            </a>
+                            <a data-dest="{{ url_for('admin.delete_file', hashid=file.hashid, ref=url_for_self(page=files.page, sort=sort_key, order=order_dir)|urlencode) }}" class="button delete-item">
+                                <span class="icon"><i class="fas fa-trash"></i></span>
+                                <span>{{ _('Delete') }}</span>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{{ macros.render_pagination(files, sort=sort_key, order=order_dir) }}

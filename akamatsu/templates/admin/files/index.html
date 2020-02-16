@@ -1,0 +1,29 @@
+{% extends "admin/layout.html" %}
+
+{% set _include_csrf = true %}
+
+{% block title %}{{ _('Manage files') }}{% endblock %}
+
+{% block breadcrumbs %}
+<li><a href="{{ url_for('admin.home') }}">{{ _('Dashboard') }}</a></li>
+<li class="is-active"><a href="#" aria-current="page">{{ _('Manage files') }}</a></li>
+{% endblock %}
+
+{% block content %}
+<div class="columns">
+    <div class="column">
+        <h3 class="subtitle is-3">{{ _('Files') }}</h3>
+    </div>
+
+    <div class="column is-2 has-text-right">
+        <a class="button" href="{{ url_for('admin.upload_file') }}">
+            <span class="icon"><i class="fas fa-plus"></i></span>
+            <span>{{ _('Upload file') }}</span>
+        </a>
+    </div>
+</div>
+
+<div class="box page-items">
+    {% include "admin/files/partials/files_page.html" %}
+</div>
+{% endblock %}

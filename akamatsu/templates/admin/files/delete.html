@@ -1,0 +1,34 @@
+{% import "macros.html" as macros %}
+{% extends "admin/layout.html" %}
+
+
+{% block title %}{{ _('Delete file') }}{% endblock %}
+
+{% block breadcrumbs %}
+<li><a href="{{ url_for('admin.home') }}">{{ _('Dashboard') }}</a></li>
+<li><a href="{{ url_for('admin.file_index') }}">{{ _('Manage files') }}</a></li>
+<li><a href="{{ url_for('admin.show_file', hashid=fupload.hashid) }}">{{ fupload.path[:50] + '...' if fupload.path|length > 50 else fupload.path  }}</a></li>
+<li class="is-active"><a href="#" aria-current="file">{{ _('Delete') }}</a></li>
+{% endblock %}
+
+{% block content %}
+<h3 class="subtitle is-3">{{ _('Delete file') }}</h3>
+
+<div class="box">
+    <form id="delete-form" action="" method="POST" role="form">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+
+        <h3 class="subtitle is-3">{{ _('Are you sure you want to delete the following file?') }}</h3>
+        <h4 class="subtitle is-4">{{ fupload.path }}</h4>
+
+        <button type="submit" class="button is-danger">
+            <span class="icon"><i class="fas fa-trash"></i></span>
+            <span>{{ _('Delete') }}</span>
+        </button>
+        <a href="{{ url_for('admin.show_file', hashid=fupload.hashid) }}" class="button">
+            <span class="icon"><i class="fas fa-times"></i></span>
+            <span>{{ _('Cancel') }}</span>
+        </a>
+    </form>
+</div>
+{% endblock %}

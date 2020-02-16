@@ -374,3 +374,17 @@ function confirmItemDeletion(e, $item) {
     });
 }
 
+
+/**
+ * Update the filename on an upload field.
+ */
+function updateUploadFilename() {
+    var $elem = $(this);
+
+    if ($elem.prop('files').length < 1) {
+        return;
+    }
+
+    var $filename = $elem.closest('.file').find('.file-name');
+    $filename.text($elem.prop('files')[0].name);
+}

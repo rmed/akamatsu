@@ -88,13 +88,13 @@
         <p class="menu-label">{{ _('Files') }}</p>
         <ul class="menu-list">
             <li>
-                <a href="" {% if request.endpoint == 'admin.new_file' %}class="is-active"{% endif %}>
+                <a href="{{ url_for('admin.upload_file') }}" {% if request.endpoint == 'admin.upload_file' %}class="is-active"{% endif %}>
                     <span class="icon"><i class="fas fa-plus"></i></span>
                     <span>{{ _('New file') }}</span>
                 </a>
             </li>
             <li>
-                <a href="" {% if request.endpoint == 'admin.file_index' %}class="is-active"{% endif %}>
+                <a href="{{ url_for('admin.file_index') }}" {% if request.endpoint == 'admin.file_index' %}class="is-active"{% endif %}>
                     <span class="icon"><i class="fas fa-file"></i></span>
                     <span>{{ _('Manage files') }}</span>
                 </a>

@@ -15,4 +15,4 @@ Flask-WTF==0.14.3
 hashids==1.2.0
 passlib>=1.7.2
 Pygments>=2.5.2
--e git+https://github.com/maxcountryman/flask-uploads.git#egg=Flask-Uploads
+Werkzeug>=1.0.0
