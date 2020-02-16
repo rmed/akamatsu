@@ -29,7 +29,9 @@
 
 from flask import Blueprint, render_template
 from flask_babel import _
-from flask_login import login_required
+from flask_login import current_user, login_required
+
+from akamatsu.models import FileUpload, Page, Post, User
 
 
 bp_admin = Blueprint('admin', __name__)
@@ -39,7 +41,67 @@ bp_admin = Blueprint('admin', __name__)
 @login_required
 def home():
     """Show admin dashboard."""
-    return render_template('admin/index.html')
+    params = {}
+
+    if current_user.has_role('administrator'):
+        params['posts'] = (
+            Post.query
+            .filter(Post.ghosted_id == None)
+        ).count()
+
+        params['post_ghosts'] = (
+            Post.query
+            .filter(Post.ghosted_id != None)
+        ).count()
+
+        params['pages'] = (
+            Page.query
+            .filter(Page.ghosted_id == None)
+        ).count()
+
+        params['page_ghosts'] = (
+            Page.query
+            .filter(Page.ghosted_id != None)
+        ).count()
+
+        params['files'] = FileUpload.query.count()
+
+        params['users'] = User.query.count()
+
+    else:
+        if current_user.has_role('blogger'):
+            params['posts'] = (
+                Post.query
+                .join(user_posts)
+                .join(User)
+                .filter(User.id == current_user.id)
+                .filter(Post.ghosted_id == None)
+            ).count()
+
+            params['post_ghosts'] = (
+                Post.query
+                .join(user_posts)
+                .join(User)
+                .filter(User.id == current_user.id)
+                .filter(Post.ghosted_id != None)
+            ).count()
+
+            params['files'] = FileUpload.query.count()
+
+        elif current_user.has_role('editor'):
+            params['pages'] = (
+                Page.query
+                .filter(Page.ghosted_id == None)
+            ).count()
+
+            params['page_ghosts'] = (
+                Page.query
+                .filter(Page.ghosted_id != None)
+            ).count()
+
+            params['files'] = FileUpload.query.count()
+
+    return render_template('admin/index.html', **params)
 
 
 # Import subviews

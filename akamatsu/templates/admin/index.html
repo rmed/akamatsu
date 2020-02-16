@@ -3,5 +3,122 @@
 {% block title %}{{ _('Admin dashboard') }}{% endblock %}
 
 {% block content %}
-    <h3 class="subtitle is-3">{{ _('Admin dashboard') }}</h3>
+<h3 class="subtitle is-3">{{ _('Admin dashboard') }}</h3>
+
+<div class="box">
+    {% if current_user.has_role('administrator') or current_user.has_role('blogger') %}
+        <div class="columns">
+            <div class="column">
+                <h3 class="subtitle is-3">
+                    {% if current_user.has_role('administrator') %}
+                        {{ _('Posts') }}
+                    {% else %}
+                        {{ _('My posts') }}
+                    {% endif %}
+                </h3>
+            </div>
+
+            <div class="column is-5">
+                <div class="buttons has-addons is-right">
+                    <a class="button" href="{{ url_for('admin.new_post') }}">
+                        <span class="icon"><i class="fas fa-plus"></i></span>
+                        <span>{{ _('New post') }}</span>
+                    </a>
+                    <a class="button" href="{{ url_for('admin.post_index') }}">
+                        <span class="icon"><i class="fas fa-clipboard-list"></i></span>
+                        <span>{{ _('View posts') }}</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <ul>
+            <li>{{ _('Posts: %(count)d', count=posts) }}</li>
+            <li>{{ _('Ghost posts: %(count)d', count=post_ghosts) }}</li>
+        </ul>
+
+        <div class="is-divider"></div>
+    {% endif %}
+
+    {% if current_user.has_role('administrator') or current_user.has_role('editor') %}
+        <div class="columns">
+            <div class="column">
+                <h3 class="subtitle is-3">{{ _('Pages') }}</h3>
+            </div>
+
+            <div class="column is-5">
+                <div class="buttons has-addons is-right">
+                    <a class="button" href="{{ url_for('admin.new_page') }}">
+                        <span class="icon"><i class="fas fa-plus"></i></span>
+                        <span>{{ _('New page') }}</span>
+                    </a>
+                    <a class="button" href="{{ url_for('admin.page_index') }}">
+                        <span class="icon"><i class="fas fa-layer-group"></i></span>
+                        <span>{{ _('View pages') }}</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <ul>
+            <li>{{ _('Pages: %(count)d', count=pages) }}</li>
+            <li>{{ _('Ghost pages: %(count)d', count=page_ghosts) }}</li>
+        </ul>
+
+        <div class="is-divider"></div>
+    {% endif %}
+
+    {% if current_user.has_role('administrator') or current_user.has_role('blogger') or current_user.has_role('editor') %}
+        <div class="columns">
+            <div class="column">
+                <h3 class="subtitle is-3">{{ _('Files') }}</h3>
+            </div>
+
+            <div class="column is-5">
+                <div class="buttons has-addons is-right">
+                    <a class="button" href="{{ url_for('admin.upload_file') }}">
+                        <span class="icon"><i class="fas fa-plus"></i></span>
+                        <span>{{ _('Upload file') }}</span>
+                    </a>
+                    <a class="button" href="{{ url_for('admin.file_index') }}">
+                        <span class="icon"><i class="fas fa-file"></i></span>
+                        <span>{{ _('View files') }}</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <ul>
+            <li>{{ _('Uploaded files: %(count)d', count=files) }}</li>
+        </ul>
+
+        <div class="is-divider"></div>
+    {% endif %}
+
+
+    {% if current_user.has_role('administrator') %}
+        <div class="columns">
+            <div class="column">
+                <h3 class="subtitle is-3">{{ _('Users') }}</h3>
+            </div>
+
+            <div class="column is-5">
+                <div class="buttons has-addons is-right">
+                    <a class="button" href="{{ url_for('admin.new_user') }}">
+                        <span class="icon"><i class="fas fa-plus"></i></span>
+                        <span>{{ _('New user') }}</span>
+                    </a>
+                    <a class="button" href="{{ url_for('admin.user_index') }}">
+                        <span class="icon"><i class="fas fa-users"></i></span>
+                        <span>{{ _('View users') }}</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <ul>
+            <li>{{ _('Uploaded files: %(count)d', count=files) }}</li>
+        </ul>
+    {% endif %}
+</div>
 {% endblock %}
