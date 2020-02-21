@@ -31,7 +31,7 @@ from flask import Blueprint, render_template
 from flask_babel import _
 from flask_login import current_user, login_required
 
-from akamatsu.models import FileUpload, Page, Post, User
+from akamatsu.models import FileUpload, Page, Post, User, user_posts
 
 
 bp_admin = Blueprint('admin', __name__)

@@ -87,21 +87,23 @@
             </ul>
         {% endif %}
 
-        <p class="menu-label">{{ _('Files') }}</p>
-        <ul class="menu-list">
-            <li>
-                <a href="{{ url_for('admin.upload_file') }}" {% if request.endpoint == 'admin.upload_file' %}class="is-active"{% endif %}>
-                    <span class="icon"><i class="fas fa-plus"></i></span>
-                    <span>{{ _('New file') }}</span>
-                </a>
-            </li>
-            <li>
-                <a href="{{ url_for('admin.file_index') }}" {% if request.endpoint == 'admin.file_index' %}class="is-active"{% endif %}>
-                    <span class="icon"><i class="fas fa-file"></i></span>
-                    <span>{{ _('Manage files') }}</span>
-                </a>
-            </li>
-        </ul>
+        {% if current_user.has_role('administrator') or current_user.has_role('blogger') or current_user.has_role('editor') %}
+            <p class="menu-label">{{ _('Files') }}</p>
+            <ul class="menu-list">
+                <li>
+                    <a href="{{ url_for('admin.upload_file') }}" {% if request.endpoint == 'admin.upload_file' %}class="is-active"{% endif %}>
+                        <span class="icon"><i class="fas fa-plus"></i></span>
+                        <span>{{ _('New file') }}</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ url_for('admin.file_index') }}" {% if request.endpoint == 'admin.file_index' %}class="is-active"{% endif %}>
+                        <span class="icon"><i class="fas fa-file"></i></span>
+                        <span>{{ _('Manage files') }}</span>
+                    </a>
+                </li>
+            </ul>
+        {% endif %}
 
         {% if current_user.has_role('administrator') %}
             <p class="menu-label">{{ _('Users') }}</p>

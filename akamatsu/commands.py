@@ -122,6 +122,7 @@ def create(username, email, password):
         email=email,
         password=hashed_password,
         is_active=True,
+        notify_login=False
     )
 
     try:
