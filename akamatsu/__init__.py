@@ -162,6 +162,8 @@ def init_app():
         from akamatsu.bootstrap import DEV_CONFIG
         app.config.update(DEV_CONFIG)
 
+    app.config['__version__'] = __version__
+
 
     # Custom jinja helpers
     app.jinja_env.globals['url_for_self'] = url_for_self
