@@ -27,8 +27,8 @@
 
 """This file contains unauthenticated blog views."""
 
-from flask import Blueprint, abort, current_app, redirect, render_template, \
-        request, url_for
+from flask import Blueprint, Response, abort, current_app, redirect, \
+        render_template, request, url_for
 from feedgen.feed import FeedGenerator
 from sqlalchemy import or_
 from werkzeug.exceptions import NotFound
@@ -42,7 +42,7 @@ from akamatsu.models import Post, Role, User, user_posts, user_roles
 bp_blog = Blueprint('blog', __name__)
 
 
-@bp_blog.route('/_feed')
+@bp_blog.route('/_rss')
 def feed():
     """Generate a RSS feed for the blog."""
     fg = FeedGenerator()
@@ -126,7 +126,7 @@ def feed():
                 #'email': author.email
             })
 
-    return fg.rss_str()
+    return Response(fg.rss_str(), mimetype='text/xml')
 
 
 @bp_blog.route('/')
