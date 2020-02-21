@@ -1,330 +1,1183 @@
-# Spanish translations for akamatsu.
-# Copyright (C) 2019 Rafael Medina
-# This file is distributed under the same license as the akamatsu project.
-# Rafael Medina García <rafamedgar@gmail.com>, 2019.
+# Spanish translations for .
+# Copyright (C) 2020 ORGANIZATION
+# This file is distributed under the same license as the  project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2020.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: 0.1.0\n"
+"Project-Id-Version: 2.0.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2019-04-19 12:03+0200\n"
-"PO-Revision-Date: 2019-04-19 11:57+0200\n"
-"Last-Translator: Rafael Medina García <rafamedgar@gmail.com>\n"
+"POT-Creation-Date: 2020-02-21 20:44+0100\n"
+"PO-Revision-Date: 2020-02-21 20:47+0100\n"
+"Last-Translator: \n"
 "Language: es\n"
-"Language-Team: es <LL@li.org>\n"
-"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"Language-Team: Rafael Medina <rafamedgar@gmail.com>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.6.0\n"
+"Generated-By: Babel 2.8.0\n"
+"X-Generator: Poedit 2.2.4\n"
 
-#: akamatsu/bootstrap.py:11
-msgid "English"
-msgstr "Inglés"
+#: akamatsu/__init__.py:215
+msgid "Please login to continue"
+msgstr "Por favor, inicia sesión para continuar"
 
-#: akamatsu/bootstrap.py:11
-msgid "Spanish"
-msgstr "Español"
+#: akamatsu/__init__.py:219
+msgid "To protect your account, please reauthenticate to access this page."
+msgstr "Para proteger tu cuenta, por favor vuelve a autenticarte para acceder a esta página."
 
-#: akamatsu/templates/macros.html:311
-msgid "Previous"
-msgstr "Anterior"
-
-#: akamatsu/templates/macros.html:315
-msgid "Next"
-msgstr "Siguiente"
-
-#: akamatsu/templates/errors/403.html:3
-#: akamatsu/templates/errors/403.html:6
+#: akamatsu/errors.py:37
 msgid "Forbidden"
 msgstr "Prohibido"
 
-#: akamatsu/templates/errors/403.html:9
-msgid "You do not have the required permissions to access that page"
-msgstr "No tienes los permisos necesarios para acceder a esa página"
+#: akamatsu/errors.py:38
+msgid "You do not have permissions to access this page"
+msgstr "No tienes permisos para acceder a esta página"
 
-#: akamatsu/templates/errors/404.html:3
-#: akamatsu/templates/errors/404.html:6
-msgid "Page not found"
-msgstr "Página no encontrada"
+#: akamatsu/errors.py:45
+msgid "Not Found"
+msgstr "No encontrado"
 
-#: akamatsu/templates/errors/404.html:9
-msgid "The page you were looking for was not found"
-msgstr "La página que buscabas no ha sido encontrada"
+#: akamatsu/errors.py:46 akamatsu/views/admin/__init__.py:120
+msgid "It's gone! Poof! Magic!"
+msgstr "¡No está! ¡Chas! ¡Magia!"
 
-#: akamatsu/templates/errors/500.html:3
-#: akamatsu/templates/errors/500.html:6
-msgid "Internal server error"
-msgstr "Error interno del servidor"
+#: akamatsu/errors.py:54
+msgid "That was our mistake... Please try again or contact an admin"
+msgstr "Eso ha sido error nuestro... Por favor, inténtalo de nuevo o contacta a un administrador"
 
-#: akamatsu/templates/errors/500.html:9
-msgid ""
-"Ooops, something happening while processing your request. Please contact "
-"an administrator"
-msgstr ""
-"Uuups, ha ocurrido algo mientras se procesaba tu solicitud. Por favor "
-"contacta con un administrador"
+#: akamatsu/forms.py:46
+msgid "Username or email"
+msgstr "Nombre de usuario o email"
 
-#: akamatsu/templates/extensions/flask_user/change_password.html:4
-#: akamatsu/templates/extensions/flask_user/change_password.html:10
-#: akamatsu/templates/extensions/flask_user/change_password.html:45
-#: akamatsu/templates/extensions/flask_user/reset_password.html:41
-msgid "Change password"
-msgstr "Cambiar contraseña"
+#: akamatsu/forms.py:48
+msgid "Identity is required"
+msgstr "Se requiere la identidad"
 
-#: akamatsu/templates/extensions/flask_user/change_password.html:9
-#: akamatsu/templates/extensions/flask_user/invite.html:10
-#: akamatsu/templates/general/home.html:3
-#: akamatsu/templates/general/home.html:8
-#: akamatsu/templates/general/home.html:14
-msgid "Home"
-msgstr "Inicio"
-
-#: akamatsu/templates/extensions/flask_user/change_password.html:21
-msgid "Old Password"
-msgstr "Antigua contraseña"
-
-#: akamatsu/templates/extensions/flask_user/change_password.html:28
-#: akamatsu/templates/extensions/flask_user/reset_password.html:25
-msgid "New Password"
-msgstr "Nueva contraseña"
-
-#: akamatsu/templates/extensions/flask_user/change_password.html:36
-#: akamatsu/templates/extensions/flask_user/reset_password.html:33
-msgid "Retype New Password"
-msgstr "Confirmar nueva contraseña"
-
-#: akamatsu/templates/extensions/flask_user/forgot_password.html:4
-#: akamatsu/templates/extensions/flask_user/forgot_password.html:13
-msgid "Forgot password"
-msgstr "Contraseña olvidada"
-
-#: akamatsu/templates/extensions/flask_user/forgot_password.html:25
-msgid "Your email address"
-msgstr "Tu dirección de correo"
-
-#: akamatsu/templates/extensions/flask_user/forgot_password.html:32
-msgid "Send reset password email"
-msgstr "Enviar email para restablecer contraseña"
-
-#: akamatsu/templates/extensions/flask_user/invite.html:5
-#: akamatsu/templates/extensions/flask_user/invite.html:11
-#: akamatsu/templates/extensions/flask_user/invite.html:17
-msgid "Invite a friend"
-msgstr "Invitar a un amigo"
-
-#: akamatsu/templates/extensions/flask_user/invite.html:24
-#: akamatsu/templates/extensions/flask_user/register.html:34
-msgid "Email"
-msgstr "Email"
-
-#: akamatsu/templates/extensions/flask_user/invite.html:32
-msgid "Invite!"
-msgstr "¡Invitar!"
-
-#: akamatsu/templates/extensions/flask_user/login.html:4
-msgid "Login"
-msgstr "Login"
-
-#: akamatsu/templates/extensions/flask_user/login.html:23
-msgid "Username or Email"
-msgstr "Nombre de usuario o Email"
-
-#: akamatsu/templates/extensions/flask_user/login.html:30
-#: akamatsu/templates/extensions/flask_user/register.html:42
+#: akamatsu/forms.py:53 akamatsu/forms.py:80 akamatsu/forms.py:339
 msgid "Password"
 msgstr "Contraseña"
 
-#: akamatsu/templates/extensions/flask_user/login.html:38
+#: akamatsu/forms.py:55 akamatsu/forms.py:82 akamatsu/forms.py:93
+msgid "Password is required"
+msgstr "Se requiere la contraseña"
+
+#: akamatsu/forms.py:59
 msgid "Remember me"
 msgstr "Recordarme"
 
-#: akamatsu/templates/extensions/flask_user/login.html:42
+#: akamatsu/forms.py:61 akamatsu/forms.py:86
 msgid "Sign in"
 msgstr "Iniciar sesión"
 
-#: akamatsu/templates/extensions/flask_user/login.html:48
-msgid "Forgot your password?"
-msgstr "¿Has olvidado tu contraseña?"
+#: akamatsu/forms.py:67 akamatsu/forms.py:253 akamatsu/forms.py:344
+#: akamatsu/templates/admin/users/partials/users_page.html:14
+msgid "Email"
+msgstr "Email"
 
-#: akamatsu/templates/extensions/flask_user/register.html:4
-#: akamatsu/templates/extensions/flask_user/register.html:13
-#: akamatsu/templates/extensions/flask_user/register.html:58
-msgid "Register"
-msgstr "Registrarse"
+#: akamatsu/forms.py:69 akamatsu/forms.py:256 akamatsu/forms.py:347
+msgid "Email is required"
+msgstr "Se requiere el email"
 
-#: akamatsu/templates/extensions/flask_user/register.html:26
+#: akamatsu/forms.py:70 akamatsu/forms.py:257 akamatsu/forms.py:348
+msgid "Invalid Email"
+msgstr "Email inválido"
+
+#: akamatsu/forms.py:74 akamatsu/forms.py:106
+#: akamatsu/templates/auth/reset_password.html:4
+#: akamatsu/templates/auth/reset_password.html:13
+msgid "Reset password"
+msgstr "Restaurar contraseña"
+
+#: akamatsu/forms.py:92
+msgid "New password"
+msgstr "Nueva contraseña"
+
+#: akamatsu/forms.py:97
+msgid "Retype new password"
+msgstr "Vuelve a escribir la nueva contraseña"
+
+#: akamatsu/forms.py:101
+msgid "Passwords did not match"
+msgstr "Las contraseñas no coinciden"
+
+#: akamatsu/forms.py:112
+msgid "Page to ghost"
+msgstr "Página a la que hacer sombra"
+
+#: akamatsu/forms.py:115 akamatsu/forms.py:185
+#: akamatsu/templates/admin/pages/partials/ghosts_page.html:10
+#: akamatsu/templates/admin/pages/partials/pages_page.html:10
+#: akamatsu/templates/admin/posts/partials/ghosts_page.html:10
+#: akamatsu/templates/admin/posts/partials/posts_page.html:10
+msgid "Title"
+msgstr "Título"
+
+#: akamatsu/forms.py:117
+msgid "Page title is required"
+msgstr "Se requiere el título de la página"
+
+#: akamatsu/forms.py:121
+msgid "Title length should be between 3 and 255 characters long"
+msgstr "El título debería tener una longitud entre 3 y 255 caracteres"
+
+#: akamatsu/forms.py:129
+msgid "Page mini"
+msgstr "Mini de la página"
+
+#: akamatsu/forms.py:133
+msgid "Mini should be 50 characters long at most"
+msgstr "El mini debería tener una longitud máxima de 50 caracteres"
+
+#: akamatsu/forms.py:139
+msgid "Page route"
+msgstr "Ruta de la página"
+
+#: akamatsu/forms.py:141
+msgid "Page route is required"
+msgstr "Se requiere la ruta de la página"
+
+#: akamatsu/forms.py:144
+msgid "Route should be 512 characters long at most"
+msgstr "La ruta debería tener una longitud máxima de 512 caracteres"
+
+#: akamatsu/forms.py:150
+msgid "Custom HTML head"
+msgstr "Cabecera HTML personalizada"
+
+#: akamatsu/forms.py:152
+msgid "Optional and dangerous, HTML enabled"
+msgstr "Opcional y peligroso, HTML habilitado"
+
+#: akamatsu/forms.py:156
+msgid "Page content"
+msgstr "Contenido de la página"
+
+#: akamatsu/forms.py:157
+msgid "Markdown/HTML enabled"
+msgstr "Markdown/HTML habilitado"
+
+#: akamatsu/forms.py:158
+msgid "Page content is required"
+msgstr "Se requiere el contenido de la página"
+
+#: akamatsu/forms.py:161 akamatsu/forms.py:216
+msgid "Is published"
+msgstr "Publicado"
+
+#: akamatsu/forms.py:162 akamatsu/forms.py:217
+msgid "Enable comments"
+msgstr "Habilitar comentarios"
+
+#: akamatsu/forms.py:165 akamatsu/forms.py:220
+msgid "Last updated"
+msgstr "Última actualización"
+
+#: akamatsu/forms.py:166 akamatsu/forms.py:221
+msgid "Will be stored as UTC"
+msgstr "Se almacenará como UTC"
+
+#: akamatsu/forms.py:172
+msgid "Save page"
+msgstr "Guardar página"
+
+#: akamatsu/forms.py:178
+msgid "Post to ghost"
+msgstr "Post al que hacer sombra"
+
+#: akamatsu/forms.py:179
+msgid "Set to empty to disable ghosting"
+msgstr "Dejar vacío para deshabilitar la sombra"
+
+#: akamatsu/forms.py:182
+msgid "Additional post author(s)"
+msgstr "Autor(es) adicionales para el post"
+
+#: akamatsu/forms.py:187
+msgid "Post title is required"
+msgstr "Se requiere el título del post"
+
+#: akamatsu/forms.py:191
+msgid "Title length should be between 4 and 255 characters long"
+msgstr "El título debería tener una longitud entre 4 y 255 caracteres"
+
+#: akamatsu/forms.py:199
+msgid "Post slug"
+msgstr "Slug del post"
+
+#: akamatsu/forms.py:200
+msgid "Autogenerated if not set"
+msgstr "Generado automáticamente si no se indica"
+
+#: akamatsu/forms.py:204
+msgid "Slug should be 50 characters long at most"
+msgstr "El slug debería tener una longitud máxima de 50 caracteres"
+
+#: akamatsu/forms.py:210
+msgid "Post content"
+msgstr "Contenido del post"
+
+#: akamatsu/forms.py:211
+msgid "Markdown enabled"
+msgstr "Markdown habilitado"
+
+#: akamatsu/forms.py:214
+msgid "Tag list"
+msgstr "Lista de tags"
+
+#: akamatsu/forms.py:227
+msgid "Save post"
+msgstr "Guardar post"
+
+#: akamatsu/forms.py:233 akamatsu/forms.py:361
+msgid "First name"
+msgstr "Nombre"
+
+#: akamatsu/forms.py:237 akamatsu/forms.py:365
+msgid "First name must be 50 characters long at most"
+msgstr "El nombre debería tener una longitud máxima de 50 caracteres"
+
+#: akamatsu/forms.py:243 akamatsu/forms.py:371
+msgid "Last name"
+msgstr "Apellido"
+
+#: akamatsu/forms.py:247 akamatsu/forms.py:375
+msgid "Last name must be 50 characters long at most"
+msgstr "El apellido debería tener una longitud máxima de 50 caracteres"
+
+#: akamatsu/forms.py:254 akamatsu/forms.py:327 akamatsu/forms.py:345
+msgid "Must be unique"
+msgstr "Debe ser único"
+
+#: akamatsu/forms.py:262 akamatsu/forms.py:354
+msgid "Notify login"
+msgstr "Avisos de inicios de sesión"
+
+#: akamatsu/forms.py:263 akamatsu/forms.py:355
+msgid "Receive an email notification each time a session is started"
+msgstr "Recibir un correo electrónico cada vez que se inicie sesión"
+
+#: akamatsu/forms.py:269 akamatsu/forms.py:381
+msgid "Personal bio"
+msgstr "Biografía personal"
+
+#: akamatsu/forms.py:273 akamatsu/forms.py:320
+msgid "Save changes"
+msgstr "Guardar cambios"
+
+#: akamatsu/forms.py:279
+msgid "Name for the stored file"
+msgstr "Nombre para el archivo guardado"
+
+#: akamatsu/forms.py:280
+msgid "If empty, uploaded file name is used"
+msgstr "Si no se indica, se utilizará el nombre del archivo subido"
+
+#: akamatsu/forms.py:284
+msgid "Filename should not exceed 256 characters"
+msgstr "El nombre del archivo debería tener una longitud máxima de 256 caracteres"
+
+#: akamatsu/forms.py:290
+msgid "Subirectory in which to store the file"
+msgstr "Subdirectorio en el que guardar el archivo"
+
+#: akamatsu/forms.py:291
+msgid "If empty, will use upload root"
+msgstr "Si no se indica, se utilizará el directorio de subidas"
+
+#: akamatsu/forms.py:295
+msgid "File description"
+msgstr "Descripción del archivo"
+
+#: akamatsu/forms.py:299
+msgid "Description should not exceed 256 characters"
+msgstr "La descripción no debería exceder los 256 caracteres"
+
+#: akamatsu/forms.py:305
+msgid "MIME type for the file"
+msgstr "Tipo MIME para el archivo"
+
+#: akamatsu/forms.py:306
+msgid "X/Y format, may be inferred from the file if left empty"
+msgstr "Formato X/Y, puede ser inferido del archivo si no se indica"
+
+#: akamatsu/forms.py:310
+msgid "MIME type should not exceed 128 characters"
+msgstr "El tipo MIME no debería exceder los 128 caracteres"
+
+#: akamatsu/forms.py:316
+msgid "Choose a file..."
+msgstr "Elegir archivo..."
+
+#: akamatsu/forms.py:326
+#: akamatsu/templates/admin/users/partials/users_page.html:10
 msgid "Username"
 msgstr "Nombre de usuario"
 
-#: akamatsu/templates/extensions/flask_user/register.html:50
-msgid "Retype Password"
-msgstr "Confirmar contraseña"
+#: akamatsu/forms.py:329
+msgid "Username is required"
+msgstr "Nombre de usuario requerido"
 
-#: akamatsu/templates/extensions/flask_user/emails/forgot_password_message.html:8
-#: akamatsu/templates/extensions/flask_user/emails/forgot_password_subject.txt:3
-#: akamatsu/templates/extensions/flask_user/reset_password.html:4
-#: akamatsu/templates/extensions/flask_user/reset_password.html:13
-msgid "Reset password"
-msgstr "Restablecer contraseña"
+#: akamatsu/forms.py:333
+msgid "Username must be between 3 and 50 characters long"
+msgstr "El nombre de usuario debe tener una longitud entre 3 y 50 caracteres"
 
-#: akamatsu/templates/extensions/flask_user/emails/base_message.html:1
-#: akamatsu/templates/extensions/flask_user/emails/base_message.txt:1
+#: akamatsu/forms.py:340
+msgid "If empty, a random password will be generated"
+msgstr "Si se deja vacío, se generará una contraseña aleatoria"
+
+#: akamatsu/forms.py:352
+msgid "Is active"
+msgstr "Activo"
+
+#: akamatsu/forms.py:385
+msgid "User roles"
+msgstr "Roles de usuario"
+
+#: akamatsu/forms.py:387
+msgid "Save user"
+msgstr "Guardar usuario"
+
+#: akamatsu/util.py:237
+msgid "You do not have permission to access the page"
+msgstr "No tienes permisos para acceder a la página"
+
+#: akamatsu/templates/error.html:5
+msgid "error"
+msgstr "error"
+
+#: akamatsu/templates/general/home.html:3
+#: akamatsu/templates/general/home.html:8
+#: akamatsu/templates/general/home.html:14 akamatsu/templates/layout.html:76
+msgid "Home"
+msgstr "Inicio"
+
+#: akamatsu/templates/admin/layout.html:43 akamatsu/templates/layout.html:77
+msgid "Blog"
+msgstr "Blog"
+
+#: akamatsu/templates/macros.html:69
+msgid "Nothing selected"
+msgstr "No se ha seleccionado nada"
+
+#: akamatsu/templates/macros.html:353
+msgid "Previous"
+msgstr "Anterior"
+
+#: akamatsu/templates/macros.html:357
+msgid "Next"
+msgstr "Siguiente"
+
+#: akamatsu/templates/admin/index.html:3 akamatsu/templates/admin/index.html:6
+msgid "Admin dashboard"
+msgstr "Panel de administración"
+
+#: akamatsu/templates/admin/index.html:14
+msgid "Posts"
+msgstr "Posts"
+
+#: akamatsu/templates/admin/index.html:16
+#: akamatsu/templates/admin/posts/index.html:15
+msgid "My posts"
+msgstr "Mis posts"
+
+#: akamatsu/templates/admin/index.html:25
+#: akamatsu/templates/admin/layout.html:48
+#: akamatsu/templates/admin/posts/edit.html:7
+#: akamatsu/templates/admin/posts/edit.html:17
+#: akamatsu/templates/admin/posts/edit.html:25
+#: akamatsu/templates/admin/posts/index.html:21
+msgid "New post"
+msgstr "Nuevo post"
+
+#: akamatsu/templates/admin/index.html:29
+msgid "View posts"
+msgstr "Ver posts"
+
+#: akamatsu/templates/admin/index.html:36
 #, python-format
-msgid "Hello %(email)s,"
-msgstr "Hola %(email)s,"
+msgid "Posts: %(count)d"
+msgstr "Posts: %(count)d"
 
-#: akamatsu/templates/extensions/flask_user/emails/base_message.html:6
-#: akamatsu/templates/extensions/flask_user/emails/base_message.txt:6
-msgid "Sincerely,"
-msgstr "Un saludo,"
-
-#: akamatsu/templates/extensions/flask_user/emails/confirm_email_message.html:4
-#: akamatsu/templates/extensions/flask_user/emails/confirm_email_message.txt:4
+#: akamatsu/templates/admin/index.html:37
 #, python-format
-msgid "You will need to confirm your email before joining the %(app)s community."
-msgstr "Necesitarás confirmar to email antes de unirte a la comunidad de %(app)s."
+msgid "Ghost posts: %(count)d"
+msgstr "Posts sombra: %(count)d"
 
-#: akamatsu/templates/extensions/flask_user/emails/confirm_email_message.html:6
-#: akamatsu/templates/extensions/flask_user/emails/confirm_email_message.txt:6
-msgid "If you initiated this confirmation, please click on the link below:"
-msgstr "Si has iniciado esta confirmación, por favor haz click en el siguiente enlace:"
+#: akamatsu/templates/admin/index.html:46
+#: akamatsu/templates/admin/layout.html:67
+#: akamatsu/templates/admin/pages/index.html:15
+msgid "Pages"
+msgstr "Páginas"
 
-#: akamatsu/templates/extensions/flask_user/emails/confirm_email_message.html:7
-#: akamatsu/templates/extensions/flask_user/emails/registered_message.html:11
-#: akamatsu/templates/extensions/flask_user/emails/registered_subject.txt:3
-msgid "Confirm your email"
-msgstr "Confirma tu email"
+#: akamatsu/templates/admin/index.html:53
+#: akamatsu/templates/admin/layout.html:72
+#: akamatsu/templates/admin/pages/edit.html:7
+#: akamatsu/templates/admin/pages/edit.html:17
+#: akamatsu/templates/admin/pages/edit.html:25
+#: akamatsu/templates/admin/pages/index.html:21
+msgid "New page"
+msgstr "Nueva página"
 
-#: akamatsu/templates/extensions/flask_user/emails/confirm_email_message.html:9
-#: akamatsu/templates/extensions/flask_user/emails/confirm_email_message.txt:9
-msgid ""
-"If you did not initiate this confirmation, you may safely ignore this "
-"email."
-msgstr ""
-"Si no has iniciado esta confirmación, puedes ignorar este correo."
+#: akamatsu/templates/admin/index.html:57
+msgid "View pages"
+msgstr "Ver páginas"
 
-#: akamatsu/templates/extensions/flask_user/emails/confirm_email_subject.txt:3
-msgid "Email Confirmation"
-msgstr "Confirmación de email"
+#: akamatsu/templates/admin/index.html:64
+#, python-format
+msgid "Pages: %(count)d"
+msgstr "Páginas: %(count)d"
 
-#: akamatsu/templates/extensions/flask_user/emails/forgot_password_message.html:5
-#: akamatsu/templates/extensions/flask_user/emails/forgot_password_message.txt:4
+#: akamatsu/templates/admin/index.html:65
+#, python-format
+msgid "Ghost pages: %(count)d"
+msgstr "Páginas sombra: %(count)d"
+
+#: akamatsu/templates/admin/files/index.html:15
+#: akamatsu/templates/admin/index.html:74
+#: akamatsu/templates/admin/layout.html:91
+msgid "Files"
+msgstr "Archivos"
+
+#: akamatsu/templates/admin/files/edit.html:5
+#: akamatsu/templates/admin/files/edit.html:10
+#: akamatsu/templates/admin/files/edit.html:14
+#: akamatsu/templates/admin/files/index.html:21
+#: akamatsu/templates/admin/index.html:81
+msgid "Upload file"
+msgstr "Subir archivo"
+
+#: akamatsu/templates/admin/index.html:85
+msgid "View files"
+msgstr "Ver archivos"
+
+#: akamatsu/templates/admin/index.html:92
+#: akamatsu/templates/admin/index.html:120
+#, python-format
+msgid "Uploaded files: %(count)d"
+msgstr "Archivos subidos: %(count)d"
+
+#: akamatsu/templates/admin/index.html:102
+#: akamatsu/templates/admin/layout.html:109
+#: akamatsu/templates/admin/users/index.html:15
+msgid "Users"
+msgstr "Usuarios"
+
+#: akamatsu/templates/admin/index.html:109
+#: akamatsu/templates/admin/layout.html:114
+#: akamatsu/templates/admin/users/edit.html:7
+#: akamatsu/templates/admin/users/edit.html:17
+#: akamatsu/templates/admin/users/edit.html:25
+#: akamatsu/templates/admin/users/index.html:21
+msgid "New user"
+msgstr "Nuevo usuario"
+
+#: akamatsu/templates/admin/index.html:113
+msgid "View users"
+msgstr "Ver usuarios"
+
+#: akamatsu/templates/admin/layout.html:32
+msgid "General"
+msgstr "General"
+
+#: akamatsu/templates/admin/files/delete.html:8
+#: akamatsu/templates/admin/files/edit.html:8
+#: akamatsu/templates/admin/files/index.html:8
+#: akamatsu/templates/admin/files/show.html:8
+#: akamatsu/templates/admin/layout.html:37
+#: akamatsu/templates/admin/pages/delete.html:8
+#: akamatsu/templates/admin/pages/edit.html:14
+#: akamatsu/templates/admin/pages/ghost_index.html:8
+#: akamatsu/templates/admin/pages/index.html:8
+#: akamatsu/templates/admin/posts/delete.html:8
+#: akamatsu/templates/admin/posts/edit.html:14
+#: akamatsu/templates/admin/posts/ghost_index.html:8
+#: akamatsu/templates/admin/posts/index.html:8
+#: akamatsu/templates/admin/profile/change_password.html:7
+#: akamatsu/templates/admin/profile/edit.html:7
+#: akamatsu/templates/admin/users/delete.html:8
+#: akamatsu/templates/admin/users/edit.html:14
+#: akamatsu/templates/admin/users/index.html:8
+msgid "Dashboard"
+msgstr "Dashboard"
+
+#: akamatsu/templates/admin/layout.html:54
+#: akamatsu/templates/admin/posts/delete.html:9
+#: akamatsu/templates/admin/posts/edit.html:15
+#: akamatsu/templates/admin/posts/index.html:5
+#: akamatsu/templates/admin/posts/index.html:9
+msgid "Manage posts"
+msgstr "Gestionar posts"
+
+#: akamatsu/templates/admin/layout.html:60
+msgid "Ghost posts"
+msgstr "Posts sombra"
+
+#: akamatsu/templates/admin/layout.html:78
+#: akamatsu/templates/admin/pages/delete.html:9
+#: akamatsu/templates/admin/pages/edit.html:15
+#: akamatsu/templates/admin/pages/index.html:5
+#: akamatsu/templates/admin/pages/index.html:9
+msgid "Manage pages"
+msgstr "Gestionar páginas"
+
+#: akamatsu/templates/admin/layout.html:84
+msgid "Ghost pages"
+msgstr "Páginas sombra"
+
+#: akamatsu/templates/admin/layout.html:96
+msgid "New file"
+msgstr "Nuevo archivo"
+
+#: akamatsu/templates/admin/files/delete.html:9
+#: akamatsu/templates/admin/files/edit.html:9
+#: akamatsu/templates/admin/files/index.html:5
+#: akamatsu/templates/admin/files/index.html:9
+#: akamatsu/templates/admin/files/show.html:9
+#: akamatsu/templates/admin/layout.html:102
+msgid "Manage files"
+msgstr "Gestionar archivos"
+
+#: akamatsu/templates/admin/layout.html:120
+#: akamatsu/templates/admin/users/delete.html:9
+#: akamatsu/templates/admin/users/edit.html:15
+#: akamatsu/templates/admin/users/index.html:5
+#: akamatsu/templates/admin/users/index.html:9
+msgid "Manage users"
+msgstr "Gestionar usuarios"
+
+#: akamatsu/templates/admin/layout.html:126
+msgid "Profile"
+msgstr "Perfil"
+
+#: akamatsu/templates/admin/layout.html:131
+#: akamatsu/templates/admin/profile/change_password.html:8
+#: akamatsu/templates/admin/profile/edit.html:4
+#: akamatsu/templates/admin/profile/edit.html:8
+#: akamatsu/templates/admin/profile/edit.html:14
+msgid "Edit profile"
+msgstr "Editar perfil"
+
+#: akamatsu/templates/admin/layout.html:137
+msgid "Logout"
+msgstr "Cerrar sesión"
+
+#: akamatsu/templates/admin/files/delete.html:5
+#: akamatsu/templates/admin/files/delete.html:15
+#: akamatsu/templates/admin/files/partials/delete_modal.html:5
+#: akamatsu/templates/admin/files/show.html:21
+msgid "Delete file"
+msgstr "Eliminar archivo"
+
+#: akamatsu/templates/admin/files/delete.html:11
+#: akamatsu/templates/admin/files/delete.html:26
+#: akamatsu/templates/admin/files/partials/delete_modal.html:17
+#: akamatsu/templates/admin/files/partials/files_page.html:37
+#: akamatsu/templates/admin/pages/delete.html:11
+#: akamatsu/templates/admin/pages/delete.html:28
+#: akamatsu/templates/admin/pages/partials/delete_modal.html:19
+#: akamatsu/templates/admin/pages/partials/ghosts_page.html:57
+#: akamatsu/templates/admin/pages/partials/pages_page.html:67
+#: akamatsu/templates/admin/posts/delete.html:11
+#: akamatsu/templates/admin/posts/delete.html:28
+#: akamatsu/templates/admin/posts/partials/delete_modal.html:19
+#: akamatsu/templates/admin/posts/partials/ghosts_page.html:57
+#: akamatsu/templates/admin/posts/partials/posts_page.html:67
+#: akamatsu/templates/admin/users/delete.html:11
+#: akamatsu/templates/admin/users/delete.html:26
+#: akamatsu/templates/admin/users/partials/delete_modal.html:17
+#: akamatsu/templates/admin/users/partials/users_page.html:57
+msgid "Delete"
+msgstr "Eliminar"
+
+#: akamatsu/templates/admin/files/delete.html:21
+#: akamatsu/templates/admin/files/partials/delete_modal.html:10
+msgid "Are you sure you want to delete the following file?"
+msgstr "¿Seguro que quieres eliminar el siguiente archivo?"
+
+#: akamatsu/templates/admin/files/delete.html:30
+#: akamatsu/templates/admin/files/partials/delete_modal.html:21
+#: akamatsu/templates/admin/pages/delete.html:32
+#: akamatsu/templates/admin/pages/partials/delete_modal.html:23
+#: akamatsu/templates/admin/posts/delete.html:32
+#: akamatsu/templates/admin/posts/partials/delete_modal.html:23
+#: akamatsu/templates/admin/users/delete.html:30
+#: akamatsu/templates/admin/users/partials/delete_modal.html:21
+msgid "Cancel"
+msgstr "Cancelar"
+
+#: akamatsu/templates/admin/files/show.html:5
+#: akamatsu/templates/admin/files/show.html:14
+msgid "View file"
+msgstr "Ver archivo"
+
+#: akamatsu/templates/admin/files/show.html:31
+msgid "Failed to load image"
+msgstr "Fallo al cargar la imagen"
+
+#: akamatsu/templates/admin/files/show.html:34
+msgid "Click to view full size"
+msgstr "Click para ver a tamaño completo"
+
+#: akamatsu/templates/admin/files/show.html:39
+msgid "Download file"
+msgstr "Descargar archivo"
+
+#: akamatsu/templates/admin/files/show.html:48
+msgid "File path:"
+msgstr "Ruta del archivo:"
+
+#: akamatsu/templates/admin/files/show.html:49
+msgid "MIME type:"
+msgstr "Tipo MIME:"
+
+#: akamatsu/templates/admin/files/show.html:50
+msgid "Description:"
+msgstr "Descripción:"
+
+#: akamatsu/templates/admin/files/show.html:51
+msgid "Uploaded at:"
+msgstr "Subido el:"
+
+#: akamatsu/templates/admin/files/partials/files_page.html:10
+msgid "Path"
+msgstr "Ruta"
+
+#: akamatsu/templates/admin/files/partials/files_page.html:14
+msgid "MIME"
+msgstr "MIME"
+
+#: akamatsu/templates/admin/files/partials/files_page.html:18
+#: akamatsu/templates/admin/pages/partials/ghosts_page.html:28
+#: akamatsu/templates/admin/pages/partials/pages_page.html:30
+#: akamatsu/templates/admin/posts/partials/ghosts_page.html:28
+#: akamatsu/templates/admin/posts/partials/posts_page.html:30
+msgid "Date"
+msgstr "Fecha"
+
+#: akamatsu/templates/admin/files/partials/files_page.html:20
+#: akamatsu/templates/admin/pages/partials/ghosts_page.html:30
+#: akamatsu/templates/admin/pages/partials/pages_page.html:32
+#: akamatsu/templates/admin/posts/partials/ghosts_page.html:30
+#: akamatsu/templates/admin/posts/partials/posts_page.html:32
+#: akamatsu/templates/admin/users/partials/users_page.html:30
+msgid "Actions"
+msgstr "Acciones"
+
+#: akamatsu/templates/admin/files/partials/files_page.html:27
+msgid "UNKNOWN"
+msgstr "DESCONOCIDO"
+
+#: akamatsu/templates/admin/files/partials/files_page.html:33
+msgid "Show"
+msgstr "Mostrar"
+
+#: akamatsu/templates/admin/pages/delete.html:5
+#: akamatsu/templates/admin/pages/delete.html:15
+#: akamatsu/templates/admin/pages/partials/delete_modal.html:5
+msgid "Delete page"
+msgstr "Eliminar página"
+
+#: akamatsu/templates/admin/pages/delete.html:21
+#: akamatsu/templates/admin/pages/partials/delete_modal.html:10
+msgid "Are you sure you want to delete the following page?"
+msgstr "¿Seguro que quieres eliminar la siguiente página?"
+
+#: akamatsu/templates/admin/pages/delete.html:24
+#: akamatsu/templates/admin/pages/partials/delete_modal.html:13
+msgid "Note that this will also delete any associated page ghosts"
+msgstr "Ten en cuenta que esto también eliminará cualquier página sombra asociada"
+
+#: akamatsu/templates/admin/pages/edit.html:9
+#, python-format
+msgid "Edit page: %(title)s"
+msgstr "Editar página: %(title)s"
+
+#: akamatsu/templates/admin/pages/edit.html:27
+msgid "Edit page"
+msgstr "Editar página"
+
+#: akamatsu/templates/admin/pages/edit.html:110
+#: akamatsu/templates/admin/posts/edit.html:118
+#, python-format
+msgid "Application timezone: %(timezone)s"
+msgstr "Zona horaria de la aplicación: %(timezone)s"
+
+#: akamatsu/templates/admin/pages/ghost_index.html:5
+#: akamatsu/templates/admin/pages/ghost_index.html:9
+msgid "Manage page ghosts"
+msgstr "Gestionar páginas sombra"
+
+#: akamatsu/templates/admin/pages/ghost_index.html:13
+msgid "Page ghosts"
+msgstr "Páginas sombra"
+
+#: akamatsu/templates/admin/pages/partials/ghosts_page.html:14
+msgid "Ghosted page"
+msgstr "Página sombreada"
+
+#: akamatsu/templates/admin/pages/partials/ghosts_page.html:18
+#: akamatsu/templates/admin/pages/partials/pages_page.html:14
+msgid "Route"
+msgstr "Ruta"
+
+#: akamatsu/templates/admin/pages/partials/ghosts_page.html:21
+#: akamatsu/templates/admin/pages/partials/pages_page.html:17
+#: akamatsu/templates/admin/posts/partials/ghosts_page.html:21
+#: akamatsu/templates/admin/posts/partials/posts_page.html:17
+msgid "Published"
+msgstr "Publicado"
+
+#: akamatsu/templates/admin/pages/partials/ghosts_page.html:53
+#: akamatsu/templates/admin/pages/partials/pages_page.html:63
+#: akamatsu/templates/admin/posts/partials/ghosts_page.html:53
+#: akamatsu/templates/admin/posts/partials/posts_page.html:63
+#: akamatsu/templates/admin/users/partials/users_page.html:53
+msgid "Edit"
+msgstr "Editar"
+
+#: akamatsu/templates/admin/pages/partials/pages_page.html:23
+#: akamatsu/templates/admin/posts/partials/posts_page.html:23
+msgid "Comments enabled"
+msgstr "Comentarios habiltiados"
+
+#: akamatsu/templates/admin/posts/delete.html:5
+#: akamatsu/templates/admin/posts/delete.html:15
+#: akamatsu/templates/admin/posts/partials/delete_modal.html:5
+msgid "Delete post"
+msgstr "Eliminar post"
+
+#: akamatsu/templates/admin/posts/delete.html:21
+#: akamatsu/templates/admin/posts/partials/delete_modal.html:10
+msgid "Are you sure you want to delete the following post?"
+msgstr "¿Seguro que quieres eliminar el siguiente post?"
+
+#: akamatsu/templates/admin/posts/delete.html:24
+#: akamatsu/templates/admin/posts/partials/delete_modal.html:13
+msgid "Note that this will also delete any associated post ghosts"
+msgstr "Ten en cuenta que esto también eliminará cualquier post sombra asociado"
+
+#: akamatsu/templates/admin/posts/edit.html:9
+#, python-format
+msgid "Edit post: %(title)s"
+msgstr "Editar post: %(title)s"
+
+#: akamatsu/templates/admin/posts/edit.html:27
+msgid "Edit post"
+msgstr "Editar post"
+
+#: akamatsu/templates/admin/posts/edit.html:64
+msgid "This post has no authors!"
+msgstr "¡Este post no tiene autores!"
+
+#: akamatsu/templates/admin/posts/edit.html:93
+msgid "Add tag"
+msgstr "Añadir etiqueta"
+
+#: akamatsu/templates/admin/posts/ghost_index.html:5
+#: akamatsu/templates/admin/posts/ghost_index.html:9
+msgid "Manage post ghosts"
+msgstr "Gestionar posts sombra"
+
+#: akamatsu/templates/admin/posts/ghost_index.html:13
+msgid "My post ghosts"
+msgstr "Mis posts sombra"
+
+#: akamatsu/templates/admin/posts/partials/ghosts_page.html:14
+msgid "Ghosted post"
+msgstr "Post sombreado"
+
+#: akamatsu/templates/admin/posts/partials/ghosts_page.html:18
+#: akamatsu/templates/admin/posts/partials/posts_page.html:14
+msgid "Slug"
+msgstr "Slug"
+
+#: akamatsu/templates/admin/profile/change_password.html:4
+#: akamatsu/templates/admin/profile/change_password.html:9
+#: akamatsu/templates/admin/profile/change_password.html:13
+#: akamatsu/templates/admin/profile/edit.html:20
+msgid "Change password"
+msgstr "Cambiar contraseña"
+
+#: akamatsu/templates/admin/users/delete.html:5
+#: akamatsu/templates/admin/users/delete.html:15
+#: akamatsu/templates/admin/users/partials/delete_modal.html:5
+msgid "Delete user"
+msgstr "Eliminar usuario"
+
+#: akamatsu/templates/admin/users/delete.html:21
+#: akamatsu/templates/admin/users/partials/delete_modal.html:10
+msgid "Are you sure you want to delete the following user?"
+msgstr "¿Seguro que quieres eliminar el siguiente usuario?"
+
+#: akamatsu/templates/admin/users/edit.html:9
+#, python-format
+msgid "Edit user: %(username)s"
+msgstr "Editar usuario: %(username)s"
+
+#: akamatsu/templates/admin/users/edit.html:27
+msgid "Edit user"
+msgstr "Editar usuario"
+
+#: akamatsu/templates/admin/users/partials/users_page.html:18
+msgid "First Name"
+msgstr "Nombre"
+
+#: akamatsu/templates/admin/users/partials/users_page.html:22
+msgid "Last Name"
+msgstr "Apellido"
+
+#: akamatsu/templates/admin/users/partials/users_page.html:25
+msgid "Active"
+msgstr "Activo"
+
+#: akamatsu/templates/auth/forgot_password.html:4
+#: akamatsu/templates/auth/forgot_password.html:11
+msgid "Forgot password"
+msgstr "Contraseña olvidada"
+
+#: akamatsu/templates/auth/forgot_password.html:5
+msgid "password"
+msgstr "contraseña"
+
+#: akamatsu/templates/auth/forgot_password.html:19
+msgid "Back to login"
+msgstr "Volver al login"
+
+#: akamatsu/templates/auth/login.html:4 akamatsu/templates/auth/login.html:11
+msgid "Login"
+msgstr "Login"
+
+#: akamatsu/templates/auth/login.html:5
+msgid "login"
+msgstr "login"
+
+#: akamatsu/templates/auth/login.html:40
+msgid "Forgot your password?"
+msgstr "¿Has olvidado tu contraseña?"
+
+#: akamatsu/templates/blog/index.html:6
+msgid "Blog index"
+msgstr "Índice del blog"
+
+#: akamatsu/templates/blog/index.html:8 akamatsu/templates/blog/index.html:35
+#, python-format
+msgid "Posts by: %(username)s"
+msgstr "Posts por: %(username)s"
+
+#: akamatsu/templates/blog/index.html:10
+#, python-format
+msgid "Posts tagged \"%(tag)s\""
+msgstr "Posts etiquetados \"%(tag)s\""
+
+#: akamatsu/templates/blog/index.html:17
+msgid "Recent Posts"
+msgstr "Posts recientes"
+
+#: akamatsu/templates/blog/index.html:21 akamatsu/templates/blog/show.html:6
+msgid "blog"
+msgstr "blog"
+
+#: akamatsu/templates/blog/index.html:30
+msgid "Blog feed"
+msgstr "Feed del blog"
+
+#: akamatsu/templates/blog/index.html:38
+#, python-format
+msgid "Posts tagged: \"%(tag)s\""
+msgstr "Posts etiquetados: \"%(tag)s\""
+
+#: akamatsu/templates/blog/index.html:60 akamatsu/templates/blog/show.html:28
+msgid "Anonymous"
+msgstr "Anónimo"
+
+#: akamatsu/templates/blog/index.html:82
+msgid "Read more"
+msgstr "Leer más"
+
+#: akamatsu/templates/blog/index.html:89
+msgid "Comments"
+msgstr "Comentarios"
+
+#: akamatsu/templates/blog/index.html:108
+msgid "No posts found"
+msgstr "No se han encontrado posts"
+
+#: akamatsu/templates/blog/show.html:55
+msgid "About the author"
+msgid_plural "About the authors"
+msgstr[0] "Acerca del autor"
+msgstr[1] "Acerca de los autores"
+
+#: akamatsu/templates/email/auth/base_message.txt:1
+#, python-format
+msgid "Hello %(username)s,"
+msgstr "Hola %(username)s,"
+
+#: akamatsu/templates/email/auth/forgot_password.txt:4
 msgid "We have received a password reset request for your account."
 msgstr "Hemos recibido una solicitud para restablecer la contraseña de tu cuenta."
 
-#: akamatsu/templates/extensions/flask_user/emails/forgot_password_message.html:7
-#: akamatsu/templates/extensions/flask_user/emails/forgot_password_message.txt:6
+#: akamatsu/templates/email/auth/forgot_password.txt:6
 msgid "If you initiated this request, please click on the link below:"
 msgstr "Si has iniciado esta solicitud, por favor haz click en el siguiente enlace:"
 
-#: akamatsu/templates/extensions/flask_user/emails/forgot_password_message.html:10
-#: akamatsu/templates/extensions/flask_user/emails/forgot_password_message.txt:9
-msgid ""
-"If you did not initiate this password reset, you may safely ignore this "
-"email."
-msgstr ""
-"Si no has iniciado este proceso, puedes ignorar este correo."
+#: akamatsu/templates/email/auth/forgot_password.txt:9
+msgid "If you did not initiate this password reset, you may safely ignore this email."
+msgstr "Si no has iniciado este proceso de restauración, puedes ignorar este correo."
 
-#: akamatsu/templates/extensions/flask_user/emails/invite_message.html:5
-#: akamatsu/templates/extensions/flask_user/emails/invite_message.txt:4
+#: akamatsu/templates/email/auth/login_notification.txt:2
 #, python-format
-msgid "You have been invited to join the %(app)s community!"
-msgstr "¡Te han invitado a unirte a la comunidad de %(app)s!"
+msgid "A new session has been started for your account at site \"%(sitename)s\"."
+msgstr "Se ha iniciado una nueva sesión para tu cuenta en \"%(sitename)s\"."
 
-#: akamatsu/templates/extensions/flask_user/emails/invite_message.html:7
-#: akamatsu/templates/extensions/flask_user/emails/invite_message.txt:6
-msgid "To register an account, please click on the link below:"
-msgstr "Para registrar una cuenta, por favor haz click en el siguiente enlace:"
+#: akamatsu/templates/email/auth/login_notification.txt:4
+msgid "To stop receiving these messages, change your profile settings in the following link: "
+msgstr "Para dejar de recibir estos mensajes, cambia los ajustes de tu perfil en el siguiente enlace: "
 
-#: akamatsu/templates/extensions/flask_user/emails/invite_message.html:8
-#, python-format
-msgid "Join %(app)s"
-msgstr "Únete a %(app)s"
+#: akamatsu/templates/email/auth/login_notification.txt:8
+msgid "Sincerely,"
+msgstr "Un saludo,"
 
-#: akamatsu/templates/extensions/flask_user/emails/invite_subject.txt:3
-msgid "Invitation"
-msgstr "Invitación"
-
-#: akamatsu/templates/extensions/flask_user/emails/password_changed_message.html:4
-#: akamatsu/templates/extensions/flask_user/emails/password_changed_message.txt:4
+#: akamatsu/templates/email/auth/password_changed.txt:4
 msgid "Your password has been changed."
 msgstr "Tu contraseña ha sido cambiada."
 
-#: akamatsu/templates/extensions/flask_user/emails/password_changed_message.html:6
-msgid "If you did not initiate this password change,"
-msgstr "Si no has iniciado este cambio de contraseña,"
+#: akamatsu/templates/email/auth/password_changed.txt:6
+msgid "If you did not initiate this password change, click the link below to reset it."
+msgstr "Si no has iniciado este cambio de contraseña, haz click en el siguiente enlace para restablecerla."
 
-#: akamatsu/templates/extensions/flask_user/emails/password_changed_message.html:6
-msgid "click here to reset it"
-msgstr "haz click aquí para restablecerla"
-
-#: akamatsu/templates/extensions/flask_user/emails/password_changed_message.txt:7
-msgid ""
-"If you did not initiate this password change, click the link below to "
-"reset it."
-msgstr ""
-"Si no has iniciado este cambio de contraseña, haz click en el siguiente enlace "
-"para restablecerla."
-
-#: akamatsu/templates/extensions/flask_user/emails/password_changed_subject.txt:3
-msgid "Your password has been changed"
-msgstr "Tu contraseña ha sido cambiada"
-
-#: akamatsu/templates/extensions/flask_user/emails/registered_message.html:5
-#: akamatsu/templates/extensions/flask_user/emails/registered_message.txt:4
+#: akamatsu/templates/pages/show.html:16
 #, python-format
-msgid "Thank you for registering with the %(app)s community."
-msgstr "Gracias por registrarte en la comunidad de %(app)s."
+msgid "Last updated: %(date)s"
+msgstr "Última actualización: %(date)s"
 
-#: akamatsu/templates/extensions/flask_user/emails/registered_message.html:8
-#: akamatsu/templates/extensions/flask_user/emails/registered_message.txt:7
-msgid "You will need to confirm your email next."
-msgstr "A continuación necesitarás confirmar tu email."
+#: akamatsu/views/auth.py:69 akamatsu/views/auth.py:97
+#: akamatsu/views/auth.py:121
+msgid "Invalid credentials"
+msgstr "Credenciales no válidas"
 
-#: akamatsu/templates/extensions/flask_user/emails/registered_message.html:10
-#: akamatsu/templates/extensions/flask_user/emails/registered_message.txt:9
-msgid "If you initiated this registration, please click on the link below:"
-msgstr "Si has iniciado este registro, por favor haz click en el siguiente enlace:"
+#: akamatsu/views/auth.py:75
+msgid "Logged in successfully"
+msgstr "Acceso correcto"
 
-#: akamatsu/templates/extensions/flask_user/emails/registered_message.html:13
-#: akamatsu/templates/extensions/flask_user/emails/registered_message.txt:12
-msgid ""
-"If you did not initiate this registration, you may safely ignore this "
-"email."
-msgstr ""
-"Si no has iniciado este registro, puedes ignorar este correo."
+#: akamatsu/views/auth.py:80
+msgid "akamatsu - New session started"
+msgstr "akamatsu - Nueva sesión iniciada"
 
-#: akamatsu/templates/extensions/flask_user/emails/registered_subject.txt:3
-msgid "Thank you for registering"
-msgstr "Gracias por registrarte"
+#: akamatsu/views/auth.py:164 akamatsu/views/auth.py:190
+#: akamatsu/views/auth.py:200
+msgid "A password reset token has been sent"
+msgstr "Se ha enviado un token de restauración de contraseña"
 
-#: akamatsu/templates/extensions/flask_user/emails/username_changed_message.html:4
-#: akamatsu/templates/extensions/flask_user/emails/username_changed_message.txt:4
-msgid "Your username has been changed."
-msgstr "Tu nombre de usuario ha cambiado."
+#: akamatsu/views/auth.py:181
+msgid "Password reset"
+msgstr "Restauración de contraseña"
 
-#: akamatsu/templates/extensions/flask_user/emails/username_changed_message.html:5
-msgid "If you did not initiate this username change, please"
-msgstr "Si no has iniciado este cambio de usuario, por favor"
+#: akamatsu/views/auth.py:231
+msgid "Invalid password reset token provided"
+msgstr "Token de restauración de contraseña no válido"
 
-#: akamatsu/templates/extensions/flask_user/emails/username_changed_message.html:5
-msgid "sign in"
-msgstr "inicia sesión"
+#: akamatsu/views/auth.py:247
+msgid "Password reset notification"
+msgstr "Notificación de restauración de contraseña"
 
-#: akamatsu/templates/extensions/flask_user/emails/username_changed_message.html:5
-msgid "(using your email address) and change your password."
-msgstr "(utilizando tu dirección de email) y cambia tu contraseña."
+#: akamatsu/views/auth.py:255
+msgid "Password updated, you may now login"
+msgstr "Contraseña actualizada, ahora puedes iniciar sesión"
 
-#: akamatsu/templates/extensions/flask_user/emails/username_changed_message.txt:6
-msgid ""
-"If you did not initiate this username change, please sign in (using your "
-"email address) and change your password."
-msgstr ""
-"Si no has iniciado este cambio de nombre de usuario, por favor inicia sesión "
-"(usando tu dirección de email) y cambia tu contraseña."
+#: akamatsu/views/auth.py:262
+msgid "Error updating password, contact an admin"
+msgstr "Error al actualizar la contraseña, contacta con un administrador"
 
-#: akamatsu/templates/extensions/flask_user/emails/username_changed_subject.txt:3
-msgid "Your username has been changed"
-msgstr "Tu nombre de usuario ha sido cambiado"
+#: akamatsu/views/admin/files.py:93 akamatsu/views/admin/files.py:100
+msgid "File type is not allowed"
+msgstr "El tipo de archivo no está permitido"
 
+#: akamatsu/views/admin/files.py:118
+msgid "A file in that path already exists"
+msgstr "Ya existe un archivo en esa ruta"
+
+#: akamatsu/views/admin/files.py:128
+msgid "Failed to create subdirectory, contact an administrator"
+msgstr "Fallo al crear el subdirectorio, contacta con un administrador"
+
+#: akamatsu/views/admin/files.py:152
+msgid "New file uploaded correctly"
+msgstr "Nuevo archivo subido correctamente"
+
+#: akamatsu/views/admin/files.py:160
+msgid "File in that path already exists"
+msgstr "Ya existe un archivo en esa ruta"
+
+#: akamatsu/views/admin/files.py:168
+msgid "Failed to upload file, contact an administrator"
+msgstr "Fallo al subir el archivo, contacta con un administrador"
+
+#: akamatsu/views/admin/files.py:192 akamatsu/views/admin/files.py:215
+msgid "Could not find file"
+msgstr "No se pudo encontrar el archivo"
+
+#: akamatsu/views/admin/files.py:237
+msgid "File deleted"
+msgstr "Archivo eliminado"
+
+#: akamatsu/views/admin/files.py:258
+msgid "Failed to delete file, invalid CSRF token received"
+msgstr "Fallo al eliminar el archivo, token CSRF no válido"
+
+#: akamatsu/views/admin/files.py:265
+msgid "Failed to delete file, contact an administrator"
+msgstr "Fallo al eliminar el archivo, contacta con un administrador"
+
+#: akamatsu/views/admin/files.py:272
+msgid "Failed to delete file, unknown error encountered"
+msgstr "Fallo al eliminar el archivo, error desconocido"
+
+#: akamatsu/views/admin/pages.py:148
+msgid "New page created correctly"
+msgstr "Página creada correctamente"
+
+#: akamatsu/views/admin/pages.py:156 akamatsu/views/admin/pages.py:219
+msgid "Page route is already in use"
+msgstr "La ruta de la página ya está en uso"
+
+#: akamatsu/views/admin/pages.py:164
+msgid "Failed to create page, contact an administrator"
+msgstr "Fallo al crear la página, contacta con un administrador"
+
+#: akamatsu/views/admin/pages.py:186 akamatsu/views/admin/pages.py:260
+msgid "Could not find page"
+msgstr "No se pudo encontrar la página"
+
+#: akamatsu/views/admin/pages.py:209
+msgid "Page updated correctly"
+msgstr "Página actualizada correctamente"
+
+#: akamatsu/views/admin/pages.py:227
+msgid "Failed to update page, contact an administrator"
+msgstr "Fallo al actualizar la página, contacta con un administrador"
+
+#: akamatsu/views/admin/pages.py:273
+#, python-format
+msgid "Page \"%(title)s\" deleted"
+msgstr "Página \"%(title)s\" eliminada"
+
+#: akamatsu/views/admin/pages.py:296
+msgid "Failed to delete page, invalid CSRF token received"
+msgstr "Fallo al eliminar la página, token CSRF no válido"
+
+#: akamatsu/views/admin/pages.py:303
+msgid "Failed to delete page, unknown error encountered"
+msgstr "Fallo al eliminar la página, error desconocido"
+
+#: akamatsu/views/admin/posts.py:212
+msgid "New post created correctly"
+msgstr "Post creado correctamente"
+
+#: akamatsu/views/admin/posts.py:220 akamatsu/views/admin/posts.py:330
+msgid "Post slug is already in use"
+msgstr "El slug del post ya está en uso"
+
+#: akamatsu/views/admin/posts.py:228
+msgid "Failed to create post, contact an administrator"
+msgstr "Fallo al crear el post, contacta con un administrador"
+
+#: akamatsu/views/admin/posts.py:253 akamatsu/views/admin/posts.py:377
+msgid "Could not find post"
+msgstr "No se pudo encontrar el post"
+
+#: akamatsu/views/admin/posts.py:259
+msgid "You cannot edit that post"
+msgstr "No puedes editar ese post"
+
+#: akamatsu/views/admin/posts.py:320
+msgid "Post updated correctly"
+msgstr "Post actualizado correctamente"
+
+#: akamatsu/views/admin/posts.py:338
+msgid "Failed to update post, contact an administrator"
+msgstr "Fallo al actualizar el post, contacta con un administrador"
+
+#: akamatsu/views/admin/posts.py:383
+msgid "You cannot delete that post"
+msgstr "No puedes eliminar ese post"
+
+#: akamatsu/views/admin/posts.py:396
+#, python-format
+msgid "Post \"%(title)s\" deleted"
+msgstr "Post \"%(title)s\" eliminado"
+
+#: akamatsu/views/admin/posts.py:419
+msgid "Failed to delete post, invalid CSRF token received"
+msgstr "Fallo al eliminar el post, token CSRF no válido"
+
+#: akamatsu/views/admin/posts.py:426
+msgid "Failed to delete post, unknown error encountered"
+msgstr "Fallo al eliminar el post, error desconocido"
+
+#: akamatsu/views/admin/profile.py:53
+msgid "Profile updated correctly"
+msgstr "Perfil actualizado correctamente"
+
+#: akamatsu/views/admin/profile.py:60
+msgid "Email is already registered"
+msgstr "El email ya está registrado"
+
+#: akamatsu/views/admin/profile.py:68
+msgid "Failed to update profile, contact an administrator"
+msgstr "Fallo al actualizar el perfil, contacta con un administrador"
+
+#: akamatsu/views/admin/profile.py:96
+msgid "Password updated correctly"
+msgstr "Contraseña actualizada correctamente"
+
+#: akamatsu/views/admin/profile.py:104
+msgid "Error updating password, contact an administrator"
+msgstr "Error al actualizar la contraseña, contacta con un administrador"
+
+#: akamatsu/views/admin/users.py:108
+msgid "New user created correctly"
+msgstr "Usuario creado correctamente"
+
+#: akamatsu/views/admin/users.py:116 akamatsu/views/admin/users.py:185
+msgid "Username may already be in use"
+msgstr "Puede que el nombre de usuario ya esté en uso"
+
+#: akamatsu/views/admin/users.py:117 akamatsu/views/admin/users.py:186
+msgid "Email may already be in use"
+msgstr "Puede que el email ya esté en uso"
+
+#: akamatsu/views/admin/users.py:125
+msgid "Failed to create user, contact an administrator"
+msgstr "Fallo al crear el usuario, contacta con un administrador"
+
+#: akamatsu/views/admin/users.py:147 akamatsu/views/admin/users.py:227
+msgid "Could not find user"
+msgstr "No se pudo encontrar el usuario"
+
+#: akamatsu/views/admin/users.py:154
+msgid "Leave empty if unchanged"
+msgstr "Dejar vacío si no hay cambios"
+
+#: akamatsu/views/admin/users.py:175
+msgid "User updated correctly"
+msgstr "Usuario actualizado correctamente"
+
+#: akamatsu/views/admin/users.py:194
+msgid "Failed to update user, contact an administrator"
+msgstr "Fallo al actualizar el usuario, contacta con un administrador"
+
+#: akamatsu/views/admin/users.py:240
+#, python-format
+msgid "User \"%(username)s\" deleted"
+msgstr "Usuario \"%(username)s\" eliminado"
+
+#: akamatsu/views/admin/users.py:261
+msgid "Failed to delete user, invalid CSRF token received"
+msgstr "Fallo al eliminar el usuario, token CSRF no válido"
+
+#: akamatsu/views/admin/users.py:268
+msgid "Failed to delete user, unknown error encountered"
+msgstr "Fallo al eliminar el usuario, error desconocido"
