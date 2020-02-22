@@ -80,7 +80,7 @@ DEV_CONFIG = {
 
     # File uploads
     'ALLOWED_EXTENSIONS': {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'},
-    'UPLOADS_PATH': '/tmp',
+    'UPLOADS_PATH': '/tmp/uploads',
 
     # Hashids
     'HASHIDS_SALT': 'hashedpotatoes',
@@ -141,7 +141,4 @@ DEV_CONFIG = {
     'FOOTER_RIGHT': 'Right footer',
 
     'TIMEZONE': 'UTC',
-
-    # Uploads
-    'UPLOADS_PATH': '/tmp/uploads'
 }

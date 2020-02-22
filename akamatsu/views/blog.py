@@ -121,10 +121,12 @@ def feed():
             if author.first_name and author.last_name:
                 name = '{} {}'.format(author.first_name, author.last_name)
 
-            contributors.append({
+            authors.append({
                 'name': name,
-                #'email': author.email
+                'email': author.email
             })
+
+        entry.author(authors)
 
     return Response(fg.rss_str(), mimetype='text/xml')
 
