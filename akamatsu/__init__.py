@@ -31,6 +31,7 @@ import os
 
 from babel import dates as babel_dates
 from flask import Flask, current_app
+from flask_analytics import Analytics
 from flask_assets import Environment, Bundle
 from flask_babel import Babel, _
 from flask_discussion import Discussion
@@ -294,6 +295,11 @@ def init_app():
     assets.register('js_pack', js_bundle)
     assets.register('admin_css_pack', admin_css_bundle)
     assets.register('admin_js_pack', admin_js_bundle)
+
+
+    # Setup Flask-Analytics (does not need to be global)
+    if app.config.get('USE_ANALYTICS'):
+        analytics = Analytics(app)
 
 
     # Setup Flask-Discussion

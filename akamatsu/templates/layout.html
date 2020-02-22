@@ -5,6 +5,11 @@
 {% block html_head %}
 <head>
     {# Favicon #}
+    {% if config.get('FAVICON_DIR') and config.get('FAVICON_EXTRAS') %}
+        {% for extra in config['FAVICON_EXTRAS'] %}
+            <link rel="{{ extra['rel'] }}" type="{{ extra['type'] }}" sizes="{{ extra['sizes'] }}" href="{{ url_for('common.favicon_extras', filename=extra['file']) }}">
+        {% endfor %}
+    {% endif %}
 
     <title>{% block title %}{% endblock %} | {{ config['SITENAME'] }}</title>
 
@@ -26,6 +31,11 @@
     <meta property="og:type" content="website"/>
     <meta property="og:url" content="{{ request.url }}"/>
     <meta property="og:site_name" content="{{ config['SITENAME'] }}"/>
+
+    {# Analytics #}
+    {% if config.get('USE_ANALYTICS', False) %}
+        {{ analytics }}
+    {% endif %}
 
     {# CSRF token. Set flag in templates when needed #}
     {% if _include_csrf %}

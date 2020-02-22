@@ -87,6 +87,10 @@ DEV_CONFIG = {
     # Minimum length
     'HASHIDS_LENGTH': 8,
 
+    # Flask-Analytics:
+    'USE_ANALYTICS': False,
+    # ...
+
     # Flask-Mail
     'MAIL_SERVER': 'localhost',
     'MAIL_PORT': 25,
@@ -100,6 +104,17 @@ DEV_CONFIG = {
     'USE_CELERY': False,
     'CELERY_BROKER_URL': 'redis://localhost:6379/1',
     'CELERY_RESULT_BACKEND': 'redis://localhost:6379/1',
+
+    # Favicon
+    'FAVICON_DIR': '/tmp/favicon',
+    'FAVICON_EXTRAS': [
+        {
+            'rel': 'icon',
+            'type': 'image/png',
+            'sizes': '16x16',
+            'file': 'favicon-16x16.png'
+        }
+    ],
 
     # Social links
     'SOCIAL': [

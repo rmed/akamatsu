@@ -27,7 +27,10 @@
 
 """This file contains common views."""
 
+import os
+
 from flask import Blueprint, current_app, make_response, send_from_directory
+from werkzeug.utils import secure_filename
 
 from akamatsu.models import FileUpload
 
@@ -52,3 +55,40 @@ def serve_file(filename):
         filename,
         mimetype=fupload.mime
     )
+
+
+@bp_common.route('/favicon.ico')
+def favicon():
+    """Serve favicon.
+
+    This endpoint will return a 404 unless the `FAVICON_DIR` attribute
+    is configured in the application and a "favicon.ico" file exists in
+    that directory.
+
+    Args:
+        filename (str): Filename to serve.
+    """
+    fav_path = current_app.config.get('FAVICON_DIR')
+
+    if not fav_path or not os.path.isdir(fav_path):
+        return make_response('', 404)
+
+    return send_from_directory(fav_path, 'favicon.ico')
+
+
+@bp_common.route('/_favicon/<path:filename>')
+def favicon_extras(filename):
+    """Serve favicon related files.
+
+    This endpoint will return a 404 unless the `FAVICON_DIR` attribute
+    is configured in the application.
+
+    Args:
+        filename (str): Filename to serve.
+    """
+    fav_path = current_app.config.get('FAVICON_DIR')
+
+    if not fav_path or not os.path.isdir(fav_path):
+        return make_response('', 404)
+
+    return send_from_directory(fav_path, secure_filename(filename))
