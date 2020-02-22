@@ -75,7 +75,7 @@ setup(
 
     extras_require={
         'dev': [
-            'cssmin==0.2.0',
+            'rcssmin==1.0.6',
             'Flask-DebugToolbar==0.11.0',
             'libsass==0.19.4'
         ]

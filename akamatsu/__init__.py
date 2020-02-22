@@ -258,7 +258,7 @@ def init_app():
 
     css_bundle = Bundle(
         scss_bundle,
-        filters='cssmin',
+        filters='rcssmin',
         output='gen/packed.css'
     )
 
