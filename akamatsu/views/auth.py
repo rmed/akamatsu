@@ -167,7 +167,7 @@ def forgot_password():
         # Set token
         token = pwd.genword(entropy='strong', length=100, charset='hex')
 
-        user.password_reset_token = token
+        user.reset_password_token = token
         user.reset_expiration = (
             datetime.datetime.utcnow() + datetime.timedelta(days=1)
         )
@@ -237,6 +237,8 @@ def reset_password(token):
     if form.validate_on_submit():
         # Update user
         user.password = crypto_manager.hash(form.password.data)
+        user.reset_password_token = None
+        user.reset_expiration = None
 
         try:
             correct = True

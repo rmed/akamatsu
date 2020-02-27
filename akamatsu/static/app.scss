@@ -24,6 +24,9 @@ $fa-font-path: "../fonts/fontawesome";
 // Pygments styling (GitHub)
 @import "css/vendor/highlight";
 
+// Custom Isso theme to prevent conflicts
+@import "css/vendor/isso";
+
 
 // Variables
 $admin-sidebar-width: 300px;

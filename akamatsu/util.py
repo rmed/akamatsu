@@ -334,7 +334,7 @@ def send_email(*args, **kwargs):
     from akamatsu import mail
 
     if current_app.config.get('USE_CELERY', False):
-        from async_tasks import async_mail
+        from akamatsu.async_tasks import async_mail
 
         async_mail.delay(*args, **kwargs)
 

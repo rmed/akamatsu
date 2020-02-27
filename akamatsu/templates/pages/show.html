@@ -25,7 +25,7 @@
     {# Comments #}
     {% if page.comments_enabled %}
         <div id="comments" class="has-margin-top">
-            {{ discussion.render_comments(identifier='page_' + page.hashid, url=url_for('pages.show', route=page.route, _external=True, title=page.title))}}
+            {{ discussion.render_comments(identifier=url_for('pages.show', route=page.route), url=url_for('pages.show', route=page.route, _external=True), title=page.title) }}
         </div>
     {% endif %}
 </div>

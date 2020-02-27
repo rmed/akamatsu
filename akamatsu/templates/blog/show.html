@@ -71,7 +71,7 @@
     {# Comments #}
     {% if post.comments_enabled %}
         <div id="comments" class="has-margin-top">
-            {{ discussion.render_comments(identifier='post_' + post.hashid, url=url_for('blog.show', slug=post.slug, _external=True, title=post.title))}}
+            {{ discussion.render_comments(identifier=url_for('blog.show', slug=post.slug), url=url_for('blog.show', slug=post.slug, _external=True), title=post.title) }}
         </div>
     {% endif %}
 </div>

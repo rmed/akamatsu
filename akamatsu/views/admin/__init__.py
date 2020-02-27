@@ -86,9 +86,7 @@ def home():
                 .filter(Post.ghosted_id != None)
             ).count()
 
-            params['files'] = FileUpload.query.count()
-
-        elif current_user.has_role('editor'):
+        if current_user.has_role('editor'):
             params['pages'] = (
                 Page.query
                 .filter(Page.ghosted_id == None)
@@ -99,6 +97,7 @@ def home():
                 .filter(Page.ghosted_id != None)
             ).count()
 
+        if current_user.has_role('blogger') or current_user.has_role('editor'):
             params['files'] = FileUpload.query.count()
 
     return render_template('admin/index.html', **params)
