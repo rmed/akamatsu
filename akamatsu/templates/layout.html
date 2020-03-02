@@ -112,6 +112,11 @@
             </div>
         </div>
     </footer>
+
+    {# Cookie notice #}
+    {% if config.COOKIE_CONSENT_SHOW %}
+        {{ macros.cookie_consent() }}
+    {% endif %}
 </body>
 {% endblock %}
 </html>

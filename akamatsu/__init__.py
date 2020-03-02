@@ -251,6 +251,7 @@ def init_app():
         # Bulma-Switch 1.0.2
         # Bulma-Tagsinput 1.0.11
         # Font Awesome 5.12.0
+        # Cookie Consent 3.1.1
         'app.scss',
         depends='scss/custom.scss',
         filters=libsass
@@ -270,6 +271,7 @@ def init_app():
     js_bundle = Bundle(
         'js/vendor/zepto.min.js', # 1.2.0
         'js/vendor/noty.min.js', # 3.2.0-beta
+        'js/vendor/cookieconsent.min.js', # 3.1.1
         'js/navigation.js',
         'js/init.js',
         filters='rjsmin',

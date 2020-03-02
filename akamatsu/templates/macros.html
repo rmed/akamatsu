@@ -377,6 +377,7 @@ Would render a link to the next page taking into account search arguments, sorti
     </nav>
 {% endmacro %}
 
+
 {# Sortable table headers #}
 {% macro sort_order(key, sort='date', order='desc') %}
     {% if key == sort %}
@@ -386,4 +387,35 @@ Would render a link to the next page taking into account search arguments, sorti
             <span class="icon"><i class="fas fa-chevron-down"></i></span>
         {% endif %}
     {% endif %}
+{% endmacro %}
+
+{# Show cookie notice #}
+{% macro cookie_consent() %}
+    <script>
+        window.cookieconsent.initialise({
+            "palette": {
+                "popup": {
+                    "background": "#363636"
+                },
+                "button": {
+                    "background": "#3e8cc0"
+                }
+            },
+            "position": "bottom-right",
+            "content": {
+            {% if config.COOKIE_CONSENT_MESSAGE_TEXT %}
+                "message": "{{ config.COOKIE_CONSENT_MESSAGE_TEXT }}",
+            {% endif %}
+            {% if config.COOKIE_CONSENT_DISMISS_TEXT %}
+                "dismiss": "{{ config.COOKIE_CONSENT_DISMISS_TEXT }}",
+            {% endif %}
+            {% if config.COOKIE_CONSENT_LINK_TEXT %}
+                "link": "{{ config.COOKIE_CONSENT_LINK_TEXT }}",
+            {% endif %}
+            {% if config.COOKIE_CONSENT_LINK %}
+                "href": "{{ config.COOKIE_CONSENT_LINK }}"
+            {% endif %}
+            }
+        });
+    </script>
 {% endmacro %}

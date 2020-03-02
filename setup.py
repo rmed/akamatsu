@@ -61,7 +61,7 @@ setup(
         'Flask-Analytics==0.6.0',
         'Flask-Assets==2.0',
         'Flask-Babel==1.0.0',
-        'Flask-Discussion==0.1.0',
+        'Flask-Discussion>=0.1.1',
         'Flask-Login==0.5.0',
         'Flask-Migrate==2.5.2',
         'Flask-Mail==0.9.1',

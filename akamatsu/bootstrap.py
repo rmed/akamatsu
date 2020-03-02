@@ -52,7 +52,10 @@ BASE_CONFIG = {
     'LOCALE': 'en',
     'TIMEZONE': 'UTC',
     'ALLOWED_EXTENSIONS': {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'},
-    'UPLOADS_PATH': '/tmp'
+    'UPLOADS_PATH': '/tmp',
+
+    # Cookie consent
+    'COOKIE_CONSENT_SHOW': False
 }
 
 
@@ -74,6 +77,13 @@ DEV_CONFIG = {
 
     # Site language
     'LOCALE': 'en',
+
+    # Cookie consent
+    'COOKIE_CONSENT_SHOW': True,
+    'COOKIE_CONSENT_MESSAGE_TEXT': 'Cookie message',
+    'COOKIE_CONSENT_DISMISS_TEXT': 'Dismiss',
+    'COOKIE_CONSENT_LINK_TEXT': 'Learn more',
+    'COOKIE_CONSENT_LINK': '/',
 
     # Items per page in pagination
     'PAGE_ITEMS': 1,
