@@ -27,12 +27,14 @@
 
 """This file contains custom CLI commands."""
 
+import datetime
+import json
 import os
 
 from flask.cli import FlaskGroup
 
 from akamatsu import db, crypto_manager, init_app
-from akamatsu.models import Role, User
+from akamatsu.models import FileUpload, Page, Post, Role, User
 
 import click
 
@@ -354,3 +356,198 @@ def update():
 
 if __name__ == '__main__':
     cli()
+
+
+# Begin data commands
+@cli.group()
+def data():
+    """Data related commands."""
+    pass
+
+
+
+@data.command(name='import')
+@click.argument('source', type=click.Path(exists=True))
+def import_data(source):
+    """Import a backup file into the database.
+
+    This does not check the input nor overwrite any existing data,
+    but may cause conflicts.
+
+    \b
+    Args:
+        source: backup file (JSON)
+    """
+    relations = {
+        'pages': {},
+        'posts': {}
+    }
+
+    with open(source, 'r', encoding='utf-8') as f:
+        for line in [l.strip() for l in f if l.strip()]:
+            struct = json.loads(line)
+            entity = struct.get('entity')
+            data = struct.get('data')
+
+            if not data or not isinstance(data, dict):
+                click.echo('[ERROR] Malformed data: {}'.format(line))
+                continue
+
+            if entity == 'user':
+                new_user = User(
+                    username=data['username'],
+                    password=data['password'],
+                    reset_password_token=data['reset_password_token'],
+                    email=data['email'],
+                    is_active=data['is_active'],
+                    first_name=data['first_name'],
+                    last_name=data['last_name'],
+                    personal_bio=data['personal_bio'],
+                    notify_login=data['notify_login'],
+                )
+
+                new_user.role_names = set(data['roles'])
+
+                db.session.add(new_user)
+
+            elif entity == 'page':
+                new_page = Page(
+                    title=data['title'],
+                    mini=data['mini'],
+                    route=data['route'],
+                    custom_head=data['custom_head'],
+                    content=data['content'],
+                    is_published=data['is_published'],
+                    comments_enabled=data['comments_enabled'],
+                    last_updated=datetime.datetime.strptime(
+                        data['last_updated'],
+                        '%Y-%m-%d %H:%M:%S'
+                    )
+                )
+
+                if data['ghosted']:
+                    relations['pages'][data['route']] = data['ghosted']
+
+                db.session.add(new_page)
+
+            elif entity == 'post':
+                new_post = Post(
+                    title=data['title'],
+                    slug=data['slug'],
+                    content=data['content'],
+                    is_published=data['is_published'],
+                    comments_enabled=data['comments_enabled'],
+                    last_updated=datetime.datetime.strptime(
+                        data['last_updated'],
+                        '%Y-%m-%d %H:%M:%S'
+                    ),
+                    tag_names=data['tags']
+                )
+
+                if data['ghosted']:
+                    if data['slug'] not in relations['posts']:
+                        relations['posts'][data['slug']] = {
+                            'ghost': None,
+                            'authors': None
+                        }
+
+                    relations['posts'][data['slug']]['ghost'] = data['ghosted']
+
+                if data['authors']:
+                    if data['slug'] not in relations['posts']:
+                        relations['posts'][data['slug']] = {
+                            'ghost': None,
+                            'authors': None
+                        }
+
+                    relations['posts'][data['slug']]['authors'] = data['authors']
+
+                db.session.add(new_post)
+
+            elif entity == 'upload':
+                new_upload = FileUpload(
+                    path=data['path'],
+                    description=data['description'],
+                    mime=data['mime'],
+                    uploaded_at=datetime.datetime.strptime(
+                        data['uploaded_at'],
+                        '%Y-%m-%d %H:%M:%S'
+                    )
+                )
+
+                db.session.add(new_upload)
+
+            else:
+                click.echo('[ERROR] Invalid entity: {}'.format(line))
+                continue
+
+    try:
+        correct = True
+        db.session.commit()
+
+    except Exception as e:
+        correct = False
+
+        click.echo('Error importing data')
+        click.echo(e)
+
+        return
+
+    finally:
+        if not correct:
+            db.session.rollback()
+
+
+    # Handle relations
+    for route in relations['pages']:
+        ghost_page = Page.query.filter_by(route=route).first()
+
+        if not ghost_page:
+            continue
+
+        to_ghost = Page.query.filter_by(route=relations['pages'][route]).first()
+
+        if not to_ghost:
+            continue
+
+        ghost_page.ghosted_id = to_ghost.id
+
+
+    for slug in relations['posts']:
+        post = Post.query.filter_by(slug=slug).first()
+
+        if not post:
+            continue
+
+        if relations['posts'][slug]['ghost']:
+            to_ghost = Post.query.filter_by(
+                slug=relations['posts'][slug]['ghost']
+            ).first()
+
+            if to_ghost:
+                post.ghosted_id = to_ghost.id
+
+        if relations['posts'][slug]['authors']:
+            authors = User.query.filter(
+                User.username.in_(relations['posts'][slug]['authors'])
+            )
+
+            post.authors = [a for a in authors]
+
+    try:
+        correct = True
+        db.session.commit()
+
+    except Exception as e:
+        correct = False
+
+        click.echo('Error processing relations')
+        click.echo(e)
+
+        return
+
+    finally:
+        if not correct:
+            db.session.rollback()
+
+    click.echo('Finished data import!')
