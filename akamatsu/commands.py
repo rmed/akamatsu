@@ -378,6 +378,10 @@ def import_data(source):
     Args:
         source: backup file (JSON)
     """
+    if not click.confirm('Do you want to import data from {}?'.format(source)):
+        click.echo('Operation cancelled')
+        return
+
     relations = {
         'pages': {},
         'posts': {}
@@ -551,3 +555,91 @@ def import_data(source):
             db.session.rollback()
 
     click.echo('Finished data import!')
+
+
+@data.command(name='export')
+@click.argument('output', type=click.Path())
+def export_data(output):
+    """Export database data to a backup file.
+
+    This file is a newline-delimited JSON file, where each line is a data
+    entity.
+
+    \b
+    Args:
+        output: backup file (JSON)
+    """
+    if not click.confirm('Do you want to export data to {}?'.format(output)):
+        click.echo('Operation cancelled')
+        return
+
+    out = open(output, 'w', encoding='utf-8')
+
+    # Backup users
+    for u in User.query:
+        user = {
+            'username': u.username,
+            'password': u.password,
+            'reset_password_token': u.reset_password_token,
+            'email': u.email,
+            'is_active': u.is_active,
+            'first_name': u.first_name,
+            'last_name': u.last_name,
+            'personal_bio': u.personal_bio,
+            'notify_login': u.notify_login,
+            'roles': [r for r in u.role_names]
+        }
+
+        out.write(json.dumps({'entity': 'user', 'data': user})+'\n')
+
+    # Backup pages
+    for p in Page.query:
+        page = {
+            'title': p.title,
+            'mini': p.mini,
+            'route': p.route,
+            'custom_head': p.custom_head,
+            'content': p.content,
+            'is_published': p.is_published,
+            'comments_enabled': p.comments_enabled,
+            'ghosted': None, # Should be route
+            'last_updated': p.last_updated.strftime('%Y-%m-%d %H:%M:%S'),
+        }
+
+        if p.ghosted_id:
+            page['ghosted'] = p.ghosted.route
+
+        out.write(json.dumps({'entity': 'page', 'data': page})+'\n')
+
+    # Backup posts
+    for p in Post.query:
+        post = {
+            'title': p.title,
+            'slug': p.slug,
+            'content': p.content,
+            'is_published': p.is_published,
+            'comments_enabled': p.comments_enabled,
+            'last_updated': p.last_updated.strftime('%Y-%m-%d %H:%M:%S'),
+            'authors': [a.username for a in p.authors],
+            'ghosted': None, # Should be slug
+            'tags': [t for t in p.tag_names]
+        }
+
+        if p.ghosted_id:
+            post['ghosted'] = p.ghosted.slug
+
+
+        out.write(json.dumps({'entity': 'post', 'data': post})+'\n')
+
+    # Backup uploads
+    for f in FileUpload.query:
+        upload = {
+            'path': f.path,
+            'description': f.description,
+            'mime': f.mime,
+            'uploaded_at': f.uploaded_at.strftime('%Y-%m-%d %H:%M:%S')
+        }
+
+        out.write(json.dumps({'entity': 'upload', 'data': upload})+'\n')
+
+    out.close()
