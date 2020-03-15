@@ -130,7 +130,7 @@ class PageForm(FlaskForm):
         validators=[
             validators.Length(
                 max=50,
-                message=_l('Mini should be 50 characters long at most')
+                message=_l('Mini should not exceed 50 characters')
             )
         ]
     )
@@ -140,8 +140,8 @@ class PageForm(FlaskForm):
         validators=[
             validators.InputRequired(_l('Page route is required')),
             validators.Length(
-                max=512,
-                message=_l('Route should be 512 characters long at most')
+                max=255,
+                message=_l('Route should not exceed 255 characters')
             )
         ]
     )
@@ -201,7 +201,7 @@ class PostForm(FlaskForm):
         validators=[
             validators.Length(
                 max=255,
-                message=_l('Slug should be 50 characters long at most')
+                message=_l('Slug should not exceed 255 characters')
             )
         ]
     )
@@ -234,7 +234,7 @@ class ProfileForm(FlaskForm):
         validators=[
             validators.Length(
                 max=50,
-                message=_l('First name must be 50 characters long at most')
+                message=_l('First name should not exceed 50 characters')
             )
         ]
     )
@@ -244,7 +244,7 @@ class ProfileForm(FlaskForm):
         validators=[
             validators.Length(
                 max=50,
-                message=_l('Last name must be 50 characters long at most')
+                message=_l('Last name should not exceed 50 characters')
             )
         ]
     )
@@ -278,17 +278,23 @@ class UploadForm(FlaskForm):
     filename = StringField(
         _l('Name for the stored file'),
         description=_l('If empty, uploaded file name is used'),
-            validators=[
-                validators.Length(
-                    max=256,
-                    message=_l('Filename should not exceed 256 characters')
-                )
-            ]
+        validators=[
+            validators.Length(
+                max=155,
+                message=_l('Filename should not exceed 155 characters')
+            )
+        ]
     )
 
     subdir = StringField(
         _l('Subirectory in which to store the file'),
-        description=_l('If empty, will use upload root')
+        description=_l('If empty, will use upload root'),
+        validators=[
+            validators.Length(
+                max=100,
+                message=_l('Subdirectory should not exceed 100 characters')
+            )
+        ]
     )
 
     description = StringField(
@@ -362,7 +368,7 @@ class UserForm(FlaskForm):
         validators=[
             validators.Length(
                 max=50,
-                message=_l('First name must be 50 characters long at most')
+                message=_l('First name should not exceed 50 characters')
             )
         ]
     )
@@ -372,7 +378,7 @@ class UserForm(FlaskForm):
         validators=[
             validators.Length(
                 max=50,
-                message=_l('Last name must be 50 characters long at most')
+                message=_l('Last name should not exceed 50 characters')
             )
         ]
     )

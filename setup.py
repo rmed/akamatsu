@@ -76,8 +76,8 @@ setup(
 
     extras_require={
         'celery': [
-            'celery==4.4.0',
-            'redis==3.4.1'
+            'celery>=4.4.0',
+            'redis>=3.4.1'
         ],
         'dev': [
             'rcssmin==1.0.6',

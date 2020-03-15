@@ -156,7 +156,7 @@ class FileUpload(BaseModel):
 
     id = db.Column(db.Integer, primary_key=True)
 
-    path = db.Column(db.String(512), nullable=False, unique=True)
+    path = db.Column(db.String(255), nullable=False, unique=True)
     description = db.Column(db.String(256), nullable=True)
     mime = db.Column(db.String(128), nullable=False)
     uploaded_at = db.Column(
@@ -214,7 +214,7 @@ class Page(BaseModel):
     )
     title = db.Column(db.String(255), nullable=False)
     mini = db.Column(db.String(50), nullable=False)
-    route = db.Column(db.String(512), nullable=False, unique=True)
+    route = db.Column(db.String(255), nullable=False, unique=True)
     custom_head = db.Column(db.Text, nullable=True)
     content = db.Column(db.Text, nullable=False)
     is_published = db.Column(db.Boolean, default=False)
@@ -259,7 +259,7 @@ class Post(BaseModel):
         nullable=True
     )
     title = db.Column(db.String(255), nullable=False)
-    slug = db.Column(db.String(512), nullable=False, unique=True)
+    slug = db.Column(db.String(255), nullable=False, unique=True)
     content = db.Column(db.Text, nullable=False)
     is_published = db.Column(db.Boolean, default=False)
     comments_enabled = db.Column(db.Boolean, default=False)
