@@ -63,7 +63,7 @@ setup(
         'Flask-Babel==1.0.0',
         'Flask-Discussion>=0.1.1',
         'Flask-Login==0.5.0',
-        'Flask-Migrate==2.5.2',
+        'Flask-Migrate==2.5.3',
         'Flask-Mail==0.9.1',
         'Flask-Misaka==1.0.0',
         'Flask-SQLAlchemy==2.4.1',
