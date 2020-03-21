@@ -126,7 +126,7 @@
         <p class="menu-label">{{ _('Profile') }}</p>
         <ul class="menu-list">
             <li>
-                <a href="{{ url_for('admin.profile_edit') }}" {% if request.endpoint == 'admin.edit_profile' %}class="is-active"{% endif %}>
+                <a href="{{ url_for('admin.profile_edit') }}" {% if request.endpoint == 'admin.profile_edit' %}class="is-active"{% endif %}>
                     <span class="icon"><i class="fas fa-user"></i></span>
                     <span>{{ _('Edit profile') }}</span>
                 </a>
