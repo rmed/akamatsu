@@ -57,7 +57,7 @@ setup(
         'bcrypt>=3.1.7',
         'blinker==1.4',
         'feedgen==0.9.0',
-        'Flask==1.1.1',
+        'Flask==2.3.2',
         'Flask-Analytics==0.6.0',
         'Flask-Assets==2.0',
         'Flask-Babel==1.0.0',
